@@ -1,0 +1,433 @@
+@import "tailwindcss";
+
+/* @theme directive must come after tailwindcss import */
+@theme {
+  /* Breakpoints */
+  --breakpoint-xs: 475px;
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+
+  /* Colors */
+  --color-parchment: #F2EEE1;
+  --color-ink: #1A1400;
+  --color-chartreuse: #D4FF28;
+  --color-orchid: #FF2DF4;
+  --color-aqua: #2BFAE9;
+  --color-vermillion: #FF1A1A;
+  --color-malachite: #001F18;
+  --color-aubergine: #2E0026;
+  --color-lapis: #00122E;
+  --color-oxblood: #2E0700;
+
+  /* Font Family - dengan namespace yang benar */
+  --font-body: system-ui, -apple-system, sans-serif;
+  --font-arizona-serif: "Arizona Serif", serif;
+  --font-oracle-triple-medium: "Oracle Triple Medium", sans-serif;
+  --font-oracle-triple-book: "Oracle Triple Book", sans-serif;
+  --font-md-thermochrome: "MD Thermochrome", sans-serif;
+  --font-francesco: "Francesco", serif;
+  --font-oracle-standard: "Oracle Standard", sans-serif;
+  --font-arizona-text: "Arizona Text Light", sans-serif;
+
+  /* Font Size - harus tanpa prefix family */
+  --text-hero: clamp(4.5rem, 11vw, 13rem);
+  --text-h2: clamp(3.5rem, 8vw, 9rem);
+  --text-h3: clamp(2rem, 5vw, 5rem);
+  --text-h4: clamp(1.75rem, 2.5vw, 2.25rem);
+  --text-supporting: clamp(1.5rem, 2.25vw, 2.5rem);
+  --text-stats: clamp(3.5rem, 6.94vw, 7rem);
+  --text-label: 0.875rem;
+  --text-paragraph: 1.0625rem);
+
+  /* Letter Spacing */
+  --tracking-tight-5: -0.05em;
+  --tracking-tight-2: -0.02em;
+  --tracking-wide-8: 0.08em;
+
+  /* Line Height */
+  --leading-90: 90%;
+  --leading-95: 95%;
+  --leading-100: 100%;
+  --leading-125: 125%;
+  --leading-133: 133%;
+  --leading-140: 140%;
+  --leading-150: 150%;
+
+  /* Backdrop Blur */
+  --backdrop-blur-xs: 2px;
+
+  /* Animation Timing */
+  --animate-fade-up: fadeUp 0.6s ease-out forwards;
+  --animate-shimmer: shimmer 2s infinite;
+}
+
+/* Aztec Brand Font Faces */
+@font-face {
+  font-family: "Francesco";
+  src: url("https://cdn.prod.website-files.com/6847005bc403085c1aa846e0/68a48c23f460b5ef9ca3bc5c_FrancescoWeb-Regular.woff2") format("woff2"), url("https://cdn.prod.website-files.com/6847005bc403085c1aa846e0/68a48be986ea8d97d1e9dca3_FrancescoWeb-Regular.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Arizona Serif";
+  src: url("https://cdn.prod.website-files.com/6847005bc403085c1aa846e0/68a4949a4a2b7324ce9c388a_ArizonaSerifLight.woff2") format("woff2"), url("https://cdn.prod.website-files.com/6847005bc403085c1aa846e0/68a4949a854fee2642bdeb08_ArizonaSerifLight.woff") format("woff");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Oracle Triple Medium";
+  src: url("https://cdn.prod.website-files.com/6847005bc403085c1aa846e0/68a4aae2d7637161beea198d_ABCOracleTriple-Medium.woff2") format("woff2"), url("https://cdn.prod.website-files.com/6847005bc403085c1aa846e0/68a4aae350092e43784ef510_ABCOracleTriple-Medium.woff") format("woff");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Oracle Triple Book";
+  src: url("https://cdn.prod.website-files.com/6847005bc403085c1aa846e0/68a4ac1ee6334ecdd4209a9b_ABCOracleTriple-Book.woff2") format("woff2"), url("https://cdn.prod.website-files.com/6847005bc403085c1aa846e0/68a4ac1e4f2cb03b14e21627_ABCOracleTriple-Book.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Oracle Standard";
+  src: url("https://cdn.prod.website-files.com/6847005bc403085c1aa846e0/68a4ad383cba3c5264504dfc_ABCOracle-Medium.woff2") format("woff2"), url("https://cdn.prod.website-files.com/6847005bc403085c1aa846e0/68a4ad38a0956ce2e4a398ed_ABCOracle-Medium.woff") format("woff");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  line-height: 125%;
+  letter-spacing: -0.02em;
+}
+
+@font-face {
+  font-family: "MD Thermochrome";
+  src: url("https://cdn.prod.website-files.com/6847005bc403085c1aa846e0/68a4af0262e25779dd6c12d5_MDThermochrome0.2-Regular.woff2") format("woff2"), url("https://cdn.prod.website-files.com/6847005bc403085c1aa846e0/68a4af021d38629df81e002b_MDThermochrome0.2-Regular.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Arizona Text Light";
+  src: url("https://cdn.prod.website-files.com/6847005bc403085c1aa846e0/68a4b1697f408250b73e6db7_ABCArizonaText-Light.woff2") format("woff2"), url("https://cdn.prod.website-files.com/6847005bc403085c1aa846e0/68a4b169554913da6c39b48a_ABCArizonaText-Light.woff") format("woff");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+  line-height: 125%;
+}
+
+@font-face {
+  font-family: "Arizona Serif Italic";
+  src: url("https://cdn.prod.website-files.com/6847005bc403085c1aa846e0/68a4b36bdbfc3561caaf152a_ABCArizonaSerif-LightItalic.woff2") format("woff2"), url("https://cdn.prod.website-files.com/6847005bc403085c1aa846e0/68a4b36b8728198c061f0183_ABCArizonaSerif-LightItalic.woff") format("woff");
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Keyframes */
+@keyframes fadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes snakeLine {
+  0% {
+    height: 0;
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    height: 100%;
+    opacity: 0.6;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+
+  100% {
+    left: 100%;
+  }
+}
+
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    transform: translateX(100px) translateY(20px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0) translateY(0);
+  }
+}
+
+@keyframes expandWidth {
+  0% {
+    max-height: 0;
+    opacity: 0;
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+
+  100% {
+    max-height: 600px;
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(212, 255, 40, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 20px 5px rgba(212, 255, 40, 0.2);
+  }
+}
+
+/* Global Button Styles */
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+/* Custom Utilities */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .font-smoothing {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Make animations run by default */
+  .animate-fade-up {
+    animation: fadeUp 0.6s ease-out forwards;
+    animation-play-state: running !important;
+  }
+
+  .animate-shimmer {
+    animation: shimmer 2s infinite;
+  }
+
+  .animate-slide-in {
+    animation: slideIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+
+  .animate-expand {
+    animation: expandWidth 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 2s infinite;
+  }
+
+  .bg-gradient-hero {
+    background:
+      linear-gradient(180deg, rgba(46, 7, 0, 0.85) 0%, rgba(26, 20, 0, 0.95) 100%),
+      url('/assets/Aztec%20Image_15.png');
+    background-size: cover;
+    background-position: center;
+  }
+
+  .bg-radial-accent {
+    background:
+      radial-gradient(circle at 20% 50%, rgba(212, 255, 40, 0.05) 0%, transparent 50%),
+      url('/assets/Aztec%20Image_08.png');
+    background-size: 40% auto;
+    background-position: top right;
+    background-repeat: no-repeat;
+    opacity: 0.15;
+  }
+
+  .border-gradient {
+    background: linear-gradient(90deg, #D4FF28 0%, #FF2DF4 50%, #2BFAE9 100%);
+    padding: 1px;
+  }
+
+  /* Custom scrollbar to match Aztec UI */
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(212, 255, 40, 0.3) rgba(242, 238, 225, 0.1);
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(242, 238, 225, 0.1);
+    border-radius: 4px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(212, 255, 40, 0.3);
+    border-radius: 4px;
+    border: 1px solid rgba(242, 238, 225, 0.2);
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(212, 255, 40, 0.5);
+  }
+
+  .shimmer::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(212, 255, 40, 0.1), transparent);
+    animation: shimmer 2s infinite;
+  }
+
+  .bg-card-texture {
+    position: relative;
+  }
+
+  .bg-card-texture::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('/assets/Aztec%20Image_28.webp');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.08;
+    z-index: 0;
+  }
+
+
+  .bg-card-texture-absolute::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('/assets/Aztec%20Image_28.webp');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.1;
+    z-index: -1;
+  }
+
+  .bg-stats-accent {
+    position: relative;
+  }
+
+  .bg-stats-accent::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('/assets/Aztec%20Image_06.png');
+    background-size: 70% auto;
+    background-position: center right;
+    background-repeat: no-repeat;
+    opacity: 0.05;
+    z-index: 0;
+  }
+
+  .bg-sidebar-texture {
+    position: relative;
+  }
+
+  .bg-sidebar-texture::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('/assets/Aztec%20Image_12.png');
+    background-size: 80% auto;
+    background-position: center right;
+    background-repeat: no-repeat;
+    opacity: 0.06;
+    z-index: 0;
+  }
+
+  .bg-rewards-accent {
+    position: relative;
+  }
+
+  .bg-rewards-accent::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('/assets/Aztec%20Image_28.png');
+    background-size: 50% auto;
+    background-position: center left;
+    background-repeat: no-repeat;
+    opacity: 0.06;
+    z-index: 0;
+  }
+
+  .bg-privacy-accent {
+    position: relative;
+  }
+
+  .bg-privacy-accent::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('/assets/Aztec%20Image_19.png');
+    background-size: 60% auto;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.08;
+    z-index: 0;
+  }
+
+  @keyframes alertBounce {
+    0% {
+      transform: translateX(100%) scale(0.9);
+      opacity: 0;
+    }
+    50% {
+      transform: translateX(-10px) scale(1.02);
+    }
+    100% {
+      transform: translateX(0) scale(1);
+      opacity: 1;
+    }
+  }
+}

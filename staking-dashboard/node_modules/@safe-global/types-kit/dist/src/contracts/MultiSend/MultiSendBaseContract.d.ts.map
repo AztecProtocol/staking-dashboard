@@ -1,0 +1,1 @@
+{"version":3,"file":"MultiSendBaseContract.d.ts","sourceRoot":"","sources":["../../../../src/contracts/MultiSend/MultiSendBaseContract.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,GAAG,EAAE,MAAM,SAAS,CAAA;AAC7B,OAAO,YAAY,MAAM,wBAAwB,CAAA;AAEjD;;;;;GAKG;AACH,KAAK,qBAAqB,CAAC,oBAAoB,SAAS,GAAG,IAAI,YAAY,CACzE,oBAAoB,EACpB,KAAK,CACN,CAAA;AAED,eAAe,qBAAqB,CAAA"}

@@ -1,0 +1,1 @@
+{"version":3,"file":"getPasskeyOwnerAddress.d.ts","sourceRoot":"","sources":["../../../../src/utils/passkeys/getPasskeyOwnerAddress.ts"],"names":[],"mappings":"AAAA,OAAO,IAAI,MAAM,gCAAgC,CAAA;AAEjD,OAAO,EAAE,cAAc,EAAE,MAAM,iCAAiC,CAAA;AAEhE;;;;;;GAMG;AACH,iBAAe,sBAAsB,CAAC,IAAI,EAAE,IAAI,EAAE,OAAO,EAAE,cAAc,GAAG,OAAO,CAAC,MAAM,CAAC,CAmB1F;AAED,eAAe,sBAAsB,CAAA"}

@@ -1,0 +1,44 @@
+/* src/layouts/MainLayout.module.css */
+.layout {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr); /* sidebar | content */
+  grid-template-rows: auto 1fr; /* header | main */
+  height: 100vh; /* fixed full screen height */
+  overflow: hidden; /* prevent layout from scrolling */
+}
+
+/* Sidebar occupies the entire left column from top to bottom - FIXED */
+.sidebarCol {
+  grid-column: 1;
+  grid-row: 1 / span 2; /* spans header + content rows */
+  display: flex; /* lets the <Sidebar> fill the column height */
+  position: fixed; /* fixed positioning */
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 240px;
+  z-index: 10;
+}
+
+/* Header sits only in the right column (limited by sidebar) - FIXED */
+.header {
+  grid-column: 2;
+  grid-row: 1;
+  position: fixed; /* fixed positioning */
+  top: 0;
+  left: 240px; /* offset by sidebar width */
+  right: 0;
+  z-index: 5;
+  background: white; /* ensure header has background */
+}
+
+/* Page content area - SCROLLABLE ONLY */
+.content {
+  grid-column: 2;
+  grid-row: 2;
+  overflow-y: auto; /* vertical scroll only */
+  overflow-x: hidden; /* prevent horizontal scroll */
+  padding: 1rem;
+  margin-top: 60px; /* offset for fixed header height */
+  height: calc(100vh - 60px); /* full height minus header */
+}

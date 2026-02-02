@@ -1,0 +1,15 @@
+node_modules
+.ponder
+generated
+.env
+.env.local
+.env.docker
+tests/
+coverage/
+*.md
+.git
+.gitignore
+Dockerfile
+.dockerignore
+bootstrap.sh
+scripts/compare-databases.ts

@@ -1,0 +1,140 @@
+.providersTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.providersTable th,
+.providersTable td {
+  padding: var(--spacing-lg);
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.providersTable tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+.providersTable tbody tr.clickableRow {
+  cursor: pointer;
+}
+
+.providersTable tbody tr:hover {
+  background-color: var(--table-hover-background);
+}
+
+.arrowColumn {
+  width: 40px;
+  text-align: center;
+}
+
+.arrowRight {
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+}
+
+.providersTable tbody tr:hover .arrowRight {
+  color: var(--primary-color);
+  transform: translateX(2px);
+}
+
+.providersTable th {
+  font-weight: 400;
+  font-size: var(--font-size-sm);
+  opacity: 0.6;
+}
+
+.providersTable th.sortable {
+  cursor: pointer;
+}
+
+.providerDetails {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.providerLogo {
+  width: 32px;
+  height: 32px;
+  border-radius: 30%;
+}
+
+.providerName {
+  font-weight: 600;
+}
+
+.debugInfo {
+  display: flex;
+  gap: var(--spacing-sm);
+  font-size: var(--font-size-xs);
+  color: var(--text-tertiary);
+  margin-top: var(--spacing-xs);
+}
+
+.providerId,
+.queueLength {
+  background-color: var(--background);
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+}
+
+.registrationStatus {
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+}
+
+.registered {
+  background-color: var(--success-background);
+  color: var(--success-color);
+}
+
+.notRegistered {
+  background-color: var(--warning-light-background);
+  color: var(--warning-color);
+}
+
+.stakeAmount,
+.commissionRate,
+.delegatorsCount {
+  font-weight: 600;
+}
+
+.stakePercentageBadge {
+  color: var(--text-tertiary);
+  font-weight: 500;
+  font-size: var(--font-size-xs);
+  background-color: var(--background);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-lg);
+  margin-left: var(--spacing-sm);
+}
+
+.aztecLabel {
+  color: var(--text-tertiary);
+  font-weight: 400;
+  font-size: var(--font-size-sm);
+}
+
+.emptyState {
+  text-align: center;
+  padding: var(--spacing-xl) var(--spacing-lg);
+  color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+  .providersTable th,
+  .providersTable td {
+    padding: var(--spacing-sm);
+  }
+
+  .providerDetails {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-xs);
+  }
+
+  .providerLogo {
+    width: 24px;
+    height: 24px;
+  }
+}

@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  staking-dashboard:
+    build: .
+    ports:
+      - "5173:80"
+    env_file:
+      - .env.docker
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+
+networks:
+  staking-network:
+    driver: bridge

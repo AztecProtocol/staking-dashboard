@@ -1,0 +1,1 @@
+export { SetupTokenVaultModal } from "./SetupTokenVaultModal"

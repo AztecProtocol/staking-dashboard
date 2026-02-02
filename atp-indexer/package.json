@@ -1,0 +1,45 @@
+{
+  "name": "ponder",
+  "version": "1.0.0",
+  "description": "Staking Dashboard Indexer powered by Ponder",
+  "type": "module",
+  "scripts": {
+    "dev": "rm -rf .ponder generated && ponder dev --port ${PORT:-42068}",
+    "start": "ponder start --port ${PORT:-42068}",
+    "serve": "ponder serve --port ${PORT:-42068}",
+    "build": "ponder codegen",
+    "codegen": "ponder codegen",
+    "bootstrap": "tsx scripts/aggregate-providers.ts",
+    "compare": "tsx scripts/compare-databases.ts",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "hono": "^4.5.0",
+    "ponder": "^0.15.7",
+    "viem": "^2.21.3",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.10.1",
+    "@types/pg": "^8.15.6",
+    "eslint": "^8.53.0",
+    "eslint-config-ponder": "^0.15.7",
+    "jest": "^30.2.0",
+    "pg": "^8.13.1",
+    "ts-jest": "^29.4.5",
+    "tsx": "^4.16.2",
+    "typescript": "^5.2.2"
+  },
+  "engines": {
+    "node": ">=18.14"
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
+}

@@ -1,0 +1,94 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'staking-dashboard/**'
+      - 'atp-indexer/**'
+      - 'scripts/**'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'staking-dashboard/**'
+      - 'atp-indexer/**'
+      - 'scripts/**'
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  build-frontend:
+    name: Build staking dashboard frontend
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: staking-dashboard
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'yarn'
+          cache-dependency-path: staking-dashboard/yarn.lock
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Type check
+        run: yarn tsc --noEmit
+
+      - name: Lint
+        run: yarn lint || true  # Don't fail on lint warnings for now
+
+      - name: Build (dry run with mock addresses)
+        env:
+          # Mock addresses for build validation only
+          VITE_ATP_FACTORY_ADDRESS: "0x0000000000000000000000000000000000000001"
+          VITE_ATP_FACTORY_AUCTION_ADDRESS: "0x0000000000000000000000000000000000000002"
+          VITE_ATP_REGISTRY_ADDRESS: "0x0000000000000000000000000000000000000003"
+          VITE_ATP_REGISTRY_AUCTION_ADDRESS: "0x0000000000000000000000000000000000000004"
+          VITE_STAKING_REGISTRY_ADDRESS: "0x0000000000000000000000000000000000000005"
+          VITE_ROLLUP_ADDRESS: "0x0000000000000000000000000000000000000006"
+          VITE_ATP_NON_WITHDRAWABLE_STAKER_ADDRESS: "0x0000000000000000000000000000000000000007"
+          VITE_ATP_WITHDRAWABLE_STAKER_ADDRESS: "0x0000000000000000000000000000000000000007"
+          VITE_ATP_WITHDRAWABLE_AND_CLAIMABLE_STAKER_ADDRESS: "0x0000000000000000000000000000000000000007"
+          VITE_GENESIS_SEQUENCER_SALE_ADDRESS: "0x0000000000000000000000000000000000000008"
+          VITE_GOVERNANCE_ADDRESS: "0x0000000000000000000000000000000000000009"
+          VITE_GSE_ADDRESS: "0x000000000000000000000000000000000000000a"
+          VITE_CHAIN_ID: "1"
+          VITE_RPC_URL: "https://ethereum-rpc.publicnode.com"
+          VITE_API_HOST: "http://localhost:42068"
+        run: yarn build
+
+  build-indexer:
+    name: Build ATP indexer backend
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: atp-indexer
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'yarn'
+          cache-dependency-path: atp-indexer/yarn.lock
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Bootstrap (generate providers.json)
+        run: yarn bootstrap
+
+      - name: Generate Ponder types
+        run: yarn codegen

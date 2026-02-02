@@ -1,0 +1,167 @@
+/* Set Operator Modal Styles */
+.modalContent {
+  max-width: 700px;
+  width: 90%;
+}
+
+.modalBody {
+  padding: var(--spacing-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+}
+
+.atpDetailsSection {
+  background-color: var(--background-light);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-lg);
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+}
+
+.sectionHeader h2 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: var(--font-size-2xl);
+  font-weight: 600;
+}
+
+.atpBadge {
+  display: flex;
+  gap: var(--spacing-xs);
+  align-items: center;
+}
+
+.atpType {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  background-color: var(--success-color);
+  color: white;
+}
+
+.milestoneId {
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  background-color: var(--background);
+  color: var(--text-tertiary);
+}
+
+.description {
+  margin-bottom: var(--spacing-xl);
+}
+
+.description p {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: var(--spacing-md);
+  font-size: var(--font-size-sm);
+}
+
+.description p:last-child {
+  margin-bottom: 0;
+}
+
+.atpInfoGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-lg);
+  padding-top: var(--spacing-lg);
+  border-top: 1px solid var(--border-color);
+}
+
+.infoCard {
+  display: flex;
+  flex-direction: column;
+}
+
+.infoLabel {
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  color: var(--text-tertiary);
+  margin: 0 0 var(--spacing-xs) 0;
+}
+
+.infoValue {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.infoValueCode {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--text-primary);
+  font-family:
+    "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New",
+    monospace;
+  word-break: break-all;
+  margin: 0;
+}
+
+.operatorSection {
+  background-color: white;
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg) var(--spacing-xl);
+  border: 1px solid var(--border-color);
+}
+
+.operatorSectionTitle {
+  margin: 0 0 var(--spacing-xs) 0;
+  font-size: var(--font-size-xl);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.successMessage {
+  background-color: var(--success-bg, #f9fff9);
+  border: 1px solid var(--success-color);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-md);
+  margin-top: var(--spacing-lg);
+  text-align: center;
+  color: var(--success-color);
+  font-weight: 500;
+  font-size: var(--font-size-sm);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .modalContent {
+    width: 95%;
+    max-width: none;
+  }
+
+  .modalBody {
+    padding: var(--spacing-lg);
+  }
+
+  .atpDetailsSection {
+    padding: var(--spacing-lg);
+  }
+
+  .operatorSection {
+    padding: var(--spacing-sm);
+  }
+
+  .sectionHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .atpInfoGrid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+  }
+}

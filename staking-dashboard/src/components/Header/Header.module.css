@@ -1,0 +1,22 @@
+.header {
+  height: var(--header-height);
+  border-bottom: 1px solid var(--border-color);
+  background-color: white;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.headerContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-lg) var(--spacing-xl);
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.headerWallet {
+  display: flex;
+  align-items: center;
+}

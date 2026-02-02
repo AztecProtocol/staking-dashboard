@@ -1,0 +1,110 @@
+.modalContent {
+  background: white;
+  border-radius: var(--radius-lg);
+  width: 90%;
+  max-width: 800px;
+  max-height: 90vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.modalBody {
+  padding: calc(2 * var(--spacing-xl));
+}
+
+.modalBody h2 {
+  margin: 0 0 calc(1.5 * var(--spacing-xl)) 0;
+  font-size: calc(1.5 * var(--font-size-xl));
+  color: var(--text-primary);
+}
+
+.modalBody p {
+  margin: 0 0 calc(2 * var(--spacing-xl)) 0;
+  color: var(--text-secondary);
+  font-size: var(--font-size-md);
+  line-height: 1.5;
+}
+
+.stakingOptions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-xl);
+}
+
+.stakingOption {
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: calc(1.5 * var(--spacing-xl));
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: white;
+  text-align: center;
+}
+
+.stakingOption:hover {
+  border-color: var(--primary-color);
+  background: #f8f9ff;
+  transform: translateY(-2px);
+}
+
+.optionIcon {
+  font-size: calc(3 * var(--font-size-xl));
+  margin-bottom: var(--spacing-lg);
+}
+
+.optionContent h3 {
+  margin: 0 0 var(--spacing-md) 0;
+  font-size: var(--font-size-xl);
+  color: var(--text-primary);
+}
+
+.optionContent p {
+  margin: 0 0 var(--spacing-lg) 0;
+  color: var(--text-secondary);
+  font-size: var(--font-size-md);
+  line-height: 1.4;
+  text-align: left;
+}
+
+.optionContent ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-align: left;
+}
+
+.optionContent li {
+  padding: var(--spacing-xs) 0;
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  position: relative;
+  padding-left: var(--spacing-lg);
+}
+
+.optionContent li:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  color: var(--success-color);
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .modalContent {
+    width: 95%;
+    margin: 20px;
+  }
+
+  .modalBody {
+    padding: var(--spacing-xl);
+  }
+
+  .stakingOptions {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+  }
+
+  .stakingOption {
+    padding: var(--spacing-xl);
+  }
+}

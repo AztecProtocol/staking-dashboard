@@ -1,0 +1,431 @@
+/* Define variable input height for this modal */
+.modalContent {
+  --input-height: 36px;
+  background: white;
+  border-radius: var(--radius-lg);
+  width: 70%;
+  height: 80vh;
+  max-width: var(--modal-max-width-xl);
+  max-height: 90vh;
+  position: relative;
+  overflow: hidden;
+  transform-origin: center;
+}
+
+.modalBody {
+  display: grid;
+  grid-template-columns: 2fr 3fr;
+  height: 100%;
+  overflow: hidden;
+  padding: 0;
+}
+
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--spacing-lg);
+  gap: var(--spacing-md);
+}
+
+.providerDetailsSection {
+  padding: calc(1 * var(--spacing-xl));
+  margin: var(--spacing-md);
+  background-color: var(--background-light);
+  border-radius: var(--radius-sm);
+}
+
+.stakingStepsSection {
+  background-color: white;
+  padding: calc(1 * var(--spacing-xl));
+  /* margin: var(--spacing-xs); */
+  /* border: 0.5px solid var(--border-color); */
+  overflow-y: auto;
+}
+
+.warningMessage {
+  border-radius: var(--radius-md);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  margin-bottom: var(--spacing-lg);
+  background-color: var(--danger-color);
+  color: white;
+}
+
+.warningText {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+}
+
+.providerLogoTitle {
+  width: calc(1.8 * var(--font-size-xl));
+  height: calc(1.8 * var(--font-size-xl));
+  border-radius: 30%;
+  margin-left: var(--spacing-xs);
+}
+
+.sectionTitle h2,
+.stakingStepsSection h2 {
+  margin: 0;
+  font-size: var(--font-size-xl);
+}
+
+.stakingStepsSection h3 {
+  margin: 0;
+}
+
+.delegateTitle {
+  margin: 0 0 var(--spacing-lg) 0;
+  font-size: var(--font-size-xl);
+  font-weight: 600;
+  color: var(--text-primary);
+  padding-left: calc(1.7 * var(--spacing-xl));
+  padding-bottom: var(--spacing-lg);
+  padding-top: var(--spacing-md);
+}
+
+.providerInfoRows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  padding-left: var(--spacing-xs);
+}
+
+.providerInfoGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-xl);
+  padding-top: var(--spacing-lg);
+  border-top: 1px solid var(--border-color);
+}
+
+.infoCard {
+  display: flex;
+  flex-direction: column;
+}
+
+.infoRow {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-md);
+  /* flex-direction: column; */
+}
+
+.infoRow:last-child {
+  border-bottom: none;
+}
+
+.infoLabel {
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  color: var(--text-tertiary);
+  margin-top: 0;
+  margin-bottom: var(--spacing-xs);
+}
+
+.infoValue {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--text-primary);
+  word-break: break-word;
+}
+
+.infoValueCommission {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  /* color: var(--success-color); */
+  word-break: break-word;
+}
+
+.infoValueDescription {
+  font-size: var(--font-size-sm);
+  font-weight: 400;
+  color: var(--text-primary);
+  word-break: break-word;
+}
+
+.descriptionRow {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-md);
+}
+
+.websiteBadgeRow {
+  margin-bottom: var(--spacing-md);
+}
+
+.websiteBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  text-decoration: none;
+  color: var(--text-secondary);
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+}
+
+.websiteBadge:hover {
+  background-color: var(--background);
+  border-color: var(--background);
+}
+
+.websiteIcon {
+  font-size: var(--font-size-sm);
+}
+
+.websiteText {
+  font-size: var(--font-size-xs);
+}
+
+.connectWalletPrompt {
+  text-align: center;
+  padding: var(--spacing-xl) var(--spacing-lg);
+}
+
+.connectWalletPrompt p {
+  margin-bottom: var(--spacing-lg);
+  color: var(--text-secondary);
+  font-size: var(--font-size-md);
+}
+
+.successMessage {
+  text-align: center;
+  padding: var(--spacing-xl) var(--spacing-lg);
+}
+
+.successIcon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--success-color);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(1.5 * var(--font-size-xl));
+  font-weight: 600;
+  margin: 0 auto var(--spacing-lg);
+}
+
+.successMessage h3 {
+  margin-bottom: var(--spacing-md);
+  font-size: var(--font-size-2xl);
+  color: var(--success-color);
+}
+
+.successMessage p {
+  margin-bottom: var(--spacing-md);
+  color: var(--text-primary);
+  font-size: var(--font-size-md);
+  line-height: 1.5;
+}
+
+.successMessageCompact {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-sm);
+  margin: var(--spacing-md) auto;
+  color: var(--success-color);
+  font-weight: 500;
+}
+
+.successMessageCompact .successIcon {
+  width: auto;
+  height: auto;
+  border-radius: 0;
+  background: none;
+  color: var(--success-color);
+  display: inline;
+  align-items: unset;
+  justify-content: unset;
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  margin: 0;
+}
+
+.amountInputSection {
+  margin-bottom: var(--spacing-2xl);
+  margin-top: var(--spacing-md);
+}
+
+.inputSection label {
+  display: block;
+  margin-bottom: var(--spacing-xs);
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.inputSection input,
+.inputSection select {
+  width: 100%;
+  padding: 6px var(--spacing-sm);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-xs);
+  height: var(--input-height);
+  box-sizing: border-box;
+}
+
+.inputWithButton input {
+  flex: 1;
+}
+
+.stepsList {
+  display: flex;
+  flex-direction: column;
+}
+
+.stepItem {
+  display: flex;
+}
+
+.stepItem:last-child {
+  border-bottom: none;
+}
+
+.stepNumber {
+  color: var(--text-tertiary);
+  display: flex;
+  justify-content: center;
+  font-weight: 500;
+  font-size: var(--font-size-sm);
+  flex-shrink: 0;
+  width: calc(1.5 * var(--font-size-xl));
+}
+
+.stepMain {
+  flex: 1;
+  /* border-left: 1px solid #e9ecef; */
+  padding-left: var(--spacing-md);
+  padding-bottom: var(--spacing-xl);
+}
+
+.stepHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.stepInfo h4 {
+  margin: 0 0 2px 0;
+  font-size: var(--font-size-sm);
+}
+
+.stepInfo p {
+  color: var(--text-tertiary);
+  font-size: var(--font-size-xs);
+}
+
+.stepContent {
+  margin-top: var(--spacing-xs);
+}
+
+.stepContent input:disabled,
+.stepContent select:disabled {
+  background-color: var(--background);
+  cursor: not-allowed;
+}
+
+.stepContent.inProgress input:not(:disabled),
+.stepContent.inProgress select:not(:disabled) {
+  border-color: var(--warning-color);
+}
+
+.stepActions .btnPrimary:disabled {
+  color: var(--text-tertiary);
+  cursor: not-allowed;
+}
+
+.stepHeaderWithAction {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  margin-top: calc(-1 * var(--spacing-xs));
+}
+
+.stepHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.stepInfo {
+  flex: 1;
+}
+
+.stepItem.current {
+  opacity: 1;
+}
+
+.stepItem.current .stepNumber {
+  /* background-color: var(--primary-color); */
+  color: var(--primary-color);
+}
+
+.stepItem.current .stepInfo h4 {
+  color: var(--primary-color);
+}
+
+.stepItem.pending:not(.current) {
+  opacity: 0.3;
+}
+
+.stepItem.completed .stepNumber {
+  /* background-color: var(--success-color); */
+  color: var(--success-color);
+}
+
+.stepItem.completed .stepInfo h4 {
+  color: var(--success-color);
+}
+
+.stepItem.inProgress .stepNumber {
+  background-color: var(--warning-color);
+  color: var(--text-primary);
+}
+
+.errorMessage {
+  word-break: break-all;
+}
+
+.delegatePowerWarning {
+  background-color: var(--warning-color);
+  color: var(--text-primary);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--spacing-xl);
+  margin-left: var(--spacing-2xl);
+  font-weight: 500;
+  border: 1px solid #eba606;
+}
+
+@media (max-width: 768px) {
+  .modalContent {
+    width: 95%;
+    height: 95vh;
+    margin: var(--spacing-lg);
+  }
+
+  .modalBody {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-2xl);
+    padding: var(--spacing-lg);
+    height: calc(100% - 60px);
+  }
+
+  .infoLabel {
+    min-width: 80px;
+    font-size: var(--font-size-xs);
+  }
+
+  .infoValue {
+    font-size: var(--font-size-xs);
+  }
+}

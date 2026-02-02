@@ -1,0 +1,1 @@
+{"version":3,"file":"MultiSendCallOnlyBaseContract.d.ts","sourceRoot":"","sources":["../../../../src/contracts/MultiSend/MultiSendCallOnlyBaseContract.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,GAAG,EAAE,MAAM,SAAS,CAAA;AAC7B,OAAO,YAAY,MAAM,wBAAwB,CAAA;AAEjD;;;;;GAKG;AACH,KAAK,6BAA6B,CAAC,4BAA4B,SAAS,GAAG,IAAI,YAAY,CACzF,4BAA4B,EAC5B,KAAK,CACN,CAAA;AAED,eAAe,6BAA6B,CAAA"}

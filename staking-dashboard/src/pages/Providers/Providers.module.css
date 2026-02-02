@@ -1,0 +1,32 @@
+/* Providers Page Module Styles */
+
+/* Network Stats Section */
+.networkStatsSection {
+  margin-top: calc(3 * var(--spacing-xl));
+  padding-top: var(--spacing-xl);
+  border-top: 1px solid var(--border-color);
+}
+
+.networkStatsSection h3 {
+  margin-bottom: var(--spacing-xl);
+  color: var(--text-primary);
+  font-size: var(--font-size-xl);
+  font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .sectionHeader p {
+    font-size: var(--font-size-md);
+  }
+
+  .networkStatsSection {
+    margin-top: var(--spacing-xl);
+    padding-top: var(--spacing-lg);
+  }
+
+  .networkStatsSection h3 {
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--spacing-lg);
+  }
+}

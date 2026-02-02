@@ -1,0 +1,72 @@
+/* src/components/Sidebar/Sidebar.module.css */
+.sidebar {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  /* padding: 1rem; */
+  border-right: 1px solid var(--border-color);
+}
+
+.logoWrapper {
+  height: var(--header-height);
+  border-bottom: 1px solid var(--border-color);
+  padding: var(--spacing-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding-left: calc(2 * var(--spacing-lg));
+}
+
+.logoIcon {
+  width: 18px;
+  height: 18px;
+}
+
+.logo {
+  font-size: var(--font-size-xl);
+  margin: 0;
+  color: var(--text-primary);
+  /* AZTEC brand color */
+}
+
+.menuWrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-md);
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar li {
+  margin-bottom: var(--spacing-xs);
+}
+
+.link {
+  text-decoration: none;
+  color: var(--text-primary);
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-radius: var(--radius-md);
+  display: block;
+  font-size: var(--font-size-md);
+  font-weight: 500;
+}
+
+.link:hover {
+  background-color: var(--background-light);
+}
+
+.activeLink {
+  text-decoration: none;
+  background-color: var(--text-primary);
+  color: white;
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-radius: var(--radius-md);
+  display: block;
+  font-size: var(--font-size-md);
+  font-weight: 500;
+}

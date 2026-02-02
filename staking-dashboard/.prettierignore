@@ -1,0 +1,2 @@
+# Exclude contract ABIs from formatting
+src/contracts/abis/

@@ -1,0 +1,9 @@
+{
+  "name": "Aztec Staking",
+  "description": "Aztec Staking Dashboard - Manage your staking positions and delegate to sequencers",
+  "iconPath": "vite.svg",
+  "providedBy": {
+    "name": "Aztec Foundation",
+    "url": "https://stake.aztec.network"
+  }
+}

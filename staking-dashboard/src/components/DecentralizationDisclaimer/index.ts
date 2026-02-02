@@ -1,0 +1,1 @@
+export { DecentralizationDisclaimer } from "./DecentralizationDisclaimer"

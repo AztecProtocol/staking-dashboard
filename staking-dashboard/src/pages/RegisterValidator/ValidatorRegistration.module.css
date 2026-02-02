@@ -1,0 +1,173 @@
+/* Define variable input height */
+:root {
+  --input-height: 38px;
+}
+
+/* Validator Registration Module Styles */
+
+.registerView .sectionHeader p {
+  margin-bottom: var(--spacing-xl);
+}
+
+.registrationProcess {
+  width: 100%;
+}
+
+.stepsList {
+  width: 100%;
+}
+
+/* Step Items */
+.stepItem {
+  display: flex;
+  gap: var(--spacing-lg);
+  padding: var(--spacing-lg) 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.stepItem:last-child {
+  border-bottom: none;
+}
+
+.stepHeaderWithAction {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  margin-top: calc(-1 * var(--spacing-xs));
+}
+
+/* Step Number */
+.stepNumber {
+  color: var(--text-tertiary);
+  display: flex;
+  justify-content: center;
+  font-weight: 500;
+  font-size: var(--font-size-lg);
+  flex-shrink: 0;
+  width: calc(1.5 * var(--font-size-xl));
+}
+
+.stepMain {
+  flex: 1;
+}
+
+.stepHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-sm);
+}
+
+.stepItem.current .stepNumber {
+  color: var(--primary-color);
+}
+
+.stepItem.completed .stepNumber {
+  color: var(--success-color);
+}
+
+.stepItem.in_progress .stepNumber {
+  background-color: var(--warning-color);
+  color: var(--text-primary);
+}
+.stepItem.pending:not(.current) {
+  opacity: 0.3;
+}
+
+.stepItem.current .stepInfo h4 {
+  color: var(--primary-color);
+}
+
+.stepItem.completed .stepInfo h4 {
+  color: var(--success-color);
+}
+
+.stepInfo h4 {
+  margin: 0;
+  font-size: var(--font-size-lg);
+  color: var(--text-primary);
+}
+
+.stepInfo p {
+  margin: var(--spacing-xs) 0 0 0;
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+/* Step Content */
+.stepContent {
+  margin-top: var(--spacing-xs);
+  padding: 0;
+  transition: all 0.3s ease;
+}
+
+/* Form Elements */
+.docsInfo {
+  margin: var(--spacing-sm) 0;
+  padding: var(--spacing-xs) var(--spacing-sm) 0 var(--spacing-sm);
+  background-color: var(--background-light);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+/* Summary */
+
+/* Disabled States */
+.stepContent input:disabled,
+.stepContent select:disabled {
+  background-color: var(--background-light);
+  cursor: not-allowed;
+}
+
+/* Success */
+.successMessageCompact {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  background-color: var(--success-background);
+  color: var(--success-color);
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--success-color);
+  margin-top: var(--spacing-xl);
+}
+
+.successIcon {
+  font-size: var(--font-size-2xl);
+  color: var(--success-color);
+}
+
+/* Links */
+.docsLink {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+.docsLink:hover {
+  text-decoration: underline;
+}
+
+/* Step Actions */
+.stepActions {
+  margin-top: var(--spacing-sm);
+}
+
+.selectedIndicator {
+  margin-top: var(--spacing-xs);
+  color: var(--success-color);
+  font-weight: 600;
+  font-size: var(--font-size-sm);
+}
+
+.stakedAmount {
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+}
+
+.availableText {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  margin-top: var(--spacing-xs);
+}

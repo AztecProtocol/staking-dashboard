@@ -1,0 +1,121 @@
+name: Deploy Staking Dashboard
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Environment to deploy to"
+        required: true
+        default: "staging"
+        type: choice
+        options:
+          - staging
+          - prod
+      dry_run:
+        description: "Whether to run a dry run (plan only)"
+        required: false
+        default: false
+        type: boolean
+      green:
+        description: "Whether to use the green indexer"
+        required: false
+        default: false
+        type: boolean
+
+  push:
+    tags:
+      - 'v*-staging-dashboard'
+      - 'v*-staging-dashboard-green'
+      - 'v*-prod-dashboard'
+      - 'v*-prod-dashboard-green'
+
+permissions:
+  id-token: write
+  contents: read
+  actions: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment || (contains(github.ref, '-prod') && 'prod') || 'staging' }}
+    env:
+      ENV: ${{ inputs.environment || (contains(github.ref, '-prod') && 'prod') || 'staging' }}
+      GREEN: ${{ inputs.green || contains(github.ref, '-green') }}
+      DRY_RUN: ${{ inputs.dry_run }}
+
+      # AWS Configuration
+      AWS_ACCOUNT: ${{ secrets.AWS_ACCOUNT }}
+
+      # Auth (for staging environments)
+      BASIC_AUTH_USER: ${{ secrets.BASIC_AUTH_USER }}
+      BASIC_AUTH_PASSWORD: ${{ secrets.BASIC_AUTH_PASSWORD }}
+
+      # External Services
+      WALLETCONNECT_PROJECT_ID: ${{ secrets.WALLETCONNECT_PROJECT_ID }}
+      VITE_SAFE_API_KEY: ${{ secrets.VITE_SAFE_API_KEY }}
+
+      # Network Configuration
+      RPC_URL: ${{ vars.RPC_URL }}
+      CHAIN_ID: ${{ vars.CHAIN_ID }}
+      SEPOLIA_RPC_URL: ${{ vars.RPC_URL }}
+      TESTNET_RPC_URL: ${{ vars.RPC_URL }}
+
+      # Contract Addresses (from GitHub environment variables)
+      VITE_ATP_FACTORY_ADDRESS: ${{ vars.ATP_FACTORY_ADDRESS }}
+      VITE_ATP_FACTORY_AUCTION_ADDRESS: ${{ vars.ATP_FACTORY_AUCTION_ADDRESS }}
+      VITE_ATP_REGISTRY_ADDRESS: ${{ vars.ATP_REGISTRY_ADDRESS }}
+      VITE_ATP_REGISTRY_AUCTION_ADDRESS: ${{ vars.ATP_REGISTRY_AUCTION_ADDRESS }}
+      VITE_STAKING_REGISTRY_ADDRESS: ${{ vars.STAKING_REGISTRY_ADDRESS }}
+      VITE_ROLLUP_ADDRESS: ${{ vars.ROLLUP_ADDRESS }}
+      VITE_ATP_NON_WITHDRAWABLE_STAKER_ADDRESS: ${{ vars.ATP_WITHDRAWABLE_AND_CLAIMABLE_STAKER_ADDRESS }}
+      VITE_ATP_WITHDRAWABLE_STAKER_ADDRESS: ${{ vars.ATP_WITHDRAWABLE_AND_CLAIMABLE_STAKER_ADDRESS }}
+      VITE_ATP_WITHDRAWABLE_AND_CLAIMABLE_STAKER_ADDRESS: ${{ vars.ATP_WITHDRAWABLE_AND_CLAIMABLE_STAKER_ADDRESS }}
+      VITE_GENESIS_SEQUENCER_SALE_ADDRESS: ${{ vars.GENESIS_SEQUENCER_SALE_ADDRESS }}
+      VITE_GOVERNANCE_ADDRESS: ${{ vars.GOVERNANCE_ADDRESS }}
+      VITE_GSE_ADDRESS: ${{ vars.GSE_ADDRESS }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'yarn'
+          cache-dependency-path: staking-dashboard/yarn.lock
+
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Mark repo as safe
+        run: git config --global --add safe.directory $GITHUB_WORKSPACE
+
+      - name: Configure AWS credentials with GitHub OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_OIDC_ROLE_ARN }}
+          role-session-name: ${{ github.run_id }}
+          aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
+
+      - name: Verify AWS identity
+        run: aws sts get-caller-identity
+
+      - name: Deploy
+        working-directory: staking-dashboard
+        run: |
+          if [ "$ENV" = "staging" ]; then
+            if [ "$GREEN" = "true" ]; then
+              ./bootstrap.sh deploy-staging-green
+            else
+              ./bootstrap.sh deploy-staging
+            fi
+          elif [ "$ENV" = "prod" ]; then
+            if [ "$GREEN" = "true" ]; then
+              ./bootstrap.sh deploy-prod-green
+            else
+              ./bootstrap.sh deploy-prod
+            fi
+          else
+            echo "Unknown environment: $ENV"
+            exit 1
+          fi

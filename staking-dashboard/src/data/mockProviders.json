@@ -1,0 +1,57 @@
+[
+  {
+    "id": "1",
+    "name": "Aztec Foundation",
+    "logo_url": "https://pbs.twimg.com/profile_images/1858831582884204544/dddTFLmP_400x400.jpg",
+    "address": "0x1234567890123456789012345678901234567890",
+    "currentStake": "925000000",
+    "commission": 5,
+    "description": "Official Aztec Foundation validator with 24/7 monitoring and deep protocol expertise. Trusted by the community for maximum uptime and network security.",
+    "delegators": 142,
+    "website": "https://aztec.network"
+  },
+  {
+    "id": "2",
+    "name": "Staking Rewards",
+    "logo_url": "https://media.licdn.com/dms/image/v2/D4D0BAQFKC9rJJyLXwg/company-logo_200_200/B4DZbYkuI9IEAI-/0/1747390227345/stakingrewards_logo?e=1757548800&v=beta&t=gGzJ1uBK0P-bsHswNecSlUHGHaecD9gt1qn_PlvMg0k",
+    "address": "0x2345678901234567890123456789012345678901",
+    "currentStake": "390000000",
+    "commission": 10,
+    "description": "Professional staking service with years of blockchain validation experience. Institutional-grade security with consistent rewards across multiple networks.",
+    "delegators": 89,
+    "website": "https://www.stakingrewards.com"
+  },
+  {
+    "id": "3",
+    "name": "Figment",
+    "logo_url": "https://pbs.twimg.com/profile_images/1825644257324957696/Sy-4vYzq_400x400.png",
+    "address": "0x3456789012345678901234567890123456789012",
+    "currentStake": "670000000",
+    "commission": 6,
+    "description": "Enterprise-grade validator operating across 50+ networks. Focused on protocol governance, technical excellence, and transparent community communication.",
+    "delegators": 203,
+    "website": "https://figment.io"
+  },
+  {
+    "id": "4",
+    "name": "Galaxy",
+    "logo_url": "https://pbs.twimg.com/profile_images/1959650082183057408/TFvuqq0C_400x400.jpg",
+    "address": "0x4567890123456789012345678901234567890123",
+    "currentStake": "580000000",
+    "commission": 8,
+    "description": "Leading web3 infrastructure provider with high-performance validators and blockchain analytics. Superior rewards through cutting-edge technology and 24/7 support.",
+    "delegators": 156,
+    "website": "https://galaxy.com"
+  },
+  {
+    "id": "5",
+    "name": "P2P",
+    "logo_url": "https://pbs.twimg.com/profile_images/1609725801863303169/h_pnfCuO_400x400.jpg",
+    "address": "0x5678901234567890123456789012345678901234",
+    "currentStake": "720000000",
+    "commission": 6,
+    "description": "Professional validator securing networks since 2018. Non-custodial staking with transparent fees, regular reports, and active governance participation.",
+    "delegators": 178,
+    "website": "https://p2p.org"
+  }
+]

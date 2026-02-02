@@ -1,0 +1,1 @@
+import{S as a}from"./index-Bx_VU6TZ.js";import{a as o,M as r,b as p,R as d,g as i,i as S}from"./index-Bx_VU6TZ.js";export{o as MessageFormatter,r as Methods,p as RPC_CALLS,d as RestrictedMethods,a as default,i as getSDKVersion,S as isObjectEIP712TypedData};

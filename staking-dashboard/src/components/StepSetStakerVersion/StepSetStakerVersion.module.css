@@ -1,0 +1,85 @@
+.versionContainer {
+  width: 100%;
+}
+
+.inputWithButton {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.inputSection {
+  flex: 1;
+}
+
+.stakerVersionSelect {
+  width: 100%;
+  padding: 0 var(--spacing-md);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background-color: var(--input-bg);
+  color: var(--text-primary);
+  font-size: var(--font-size-xs);
+  height: calc(3 * var(--font-size-xs));
+}
+
+.stakerVersionSelect:disabled {
+  background-color: var(--input-disabled-bg);
+  color: var(--text-disabled);
+  cursor: not-allowed;
+}
+
+.versionSetButton {
+  background-color: var(--success-color);
+  border-color: var(--success-color);
+  height: calc(3 * var(--font-size-xs));
+  padding: auto 1rem;
+}
+
+.dangerButton {
+  background-color: var(--danger-color) !important;
+  border-color: var(--danger-color) !important;
+  color: white !important;
+}
+
+.versionSetStatus {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.versionSetText {
+  font-weight: 500;
+}
+
+.versionSetCheckmark {
+  font-weight: bold;
+}
+
+.errorMessage {
+  color: var(--danger-color);
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  background-color: var(--danger-bg);
+  border: 1px solid var(--danger-border);
+  border-radius: 4px;
+}
+
+.stepDescription {
+  font-size: var(--font-size-xs);
+  margin-bottom: var(--spacing-md);
+  color: var(--text-tertiary);
+}
+
+.currentVersion {
+  color: var(--primary-color);
+  font-weight: 500;
+}
+
+.currentImplementationAddress {
+  color: var(--text-tertiary);
+  font-weight: 400;
+}

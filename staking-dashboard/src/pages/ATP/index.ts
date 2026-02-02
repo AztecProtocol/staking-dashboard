@@ -1,0 +1,1 @@
+export { default as MyPositionPage } from "./MyPositionPage";

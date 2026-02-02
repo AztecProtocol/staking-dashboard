@@ -1,0 +1,1 @@
+{"version":3,"file":"safeOperation.d.ts","sourceRoot":"","sources":["../../../src/utils/safeOperation.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,aAAa,EAAE,MAAM,wBAAwB,CAAA;AACtD,OAAO,EAAE,qBAAqB,EAAE,MAAM,sCAAsC,CAAA;AAE5E,eAAO,MAAM,wBAAwB,kBAAyB,aAAa;;;;;;;;;EAc1E,CAAA;AAED,eAAO,MAAM,eAAe,QACrB,qBAAqB,GAAG,aAAa,KACzC,GAAG,IAAI,aAET,CAAA"}

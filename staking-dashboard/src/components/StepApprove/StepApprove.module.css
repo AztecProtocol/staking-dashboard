@@ -1,0 +1,47 @@
+.approveContainer {
+  /* width: 100%; */
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.approveButton {
+  background-color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  color: white;
+  padding: 0 var(--spacing-md);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-xs);
+  cursor: pointer;
+  height: calc(3 * var(--font-size-xs));
+}
+
+.approveButton:disabled {
+  background-color: var(--background);
+  border-color: var(--border-color);
+  color: var(--text-tertiary);
+  cursor: not-allowed;
+}
+
+.errorMessage {
+  color: var(--danger-color);
+  font-size: var(--font-size-sm);
+  margin-top: var(--spacing-sm);
+  padding: var(--spacing-sm);
+  background-color: var(--danger-background);
+  border: 1px solid var(--danger-color);
+  border-radius: var(--radius-sm);
+  word-break: break-all;
+}
+
+.allowanceInfo {
+  font-size: var(--font-size-xs);
+  color: var(--text-tertiary);
+  font-weight: 300;
+}
+
+.stepDescription {
+  font-size: var(--font-size-xs);
+  margin-bottom: var(--spacing-md);
+  color: var(--text-tertiary);
+}

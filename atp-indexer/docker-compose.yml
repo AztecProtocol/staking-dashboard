@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: ponder-postgres
+    environment:
+      POSTGRES_DB: ${DB_NAME:-aztec_staking_ponder}
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - ponder-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres} -d ${DB_NAME:-aztec_staking_ponder}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  ponder:
+    build: .
+    container_name: ponder-indexer
+    env_file:
+      - .env.docker
+    environment:
+      DATABASE_URL: postgresql://${DB_USER:-postgres}:${DB_PASSWORD:-postgres}@postgres:5432/${DB_NAME:-aztec_staking_ponder}
+    ports:
+      - "${PORT:-42069}:${PORT:-42069}"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    command: ["sh", "-c", "yarn ponder db prune && yarn start --schema ${NETWORK_SCHEMA:-sepolia}"]
+
+volumes:
+  ponder-postgres-data:

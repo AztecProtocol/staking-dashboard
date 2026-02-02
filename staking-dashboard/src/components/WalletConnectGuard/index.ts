@@ -1,0 +1,1 @@
+export { WalletConnectGuard } from './WalletConnectGuard'

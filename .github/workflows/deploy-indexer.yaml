@@ -1,0 +1,112 @@
+name: Deploy ATP Indexer
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Environment to deploy to"
+        required: true
+        default: "staging"
+        type: choice
+        options:
+          - staging
+          - prod
+      dry_run:
+        description: "Whether to run a dry run (plan only)"
+        required: false
+        default: false
+        type: boolean
+      green:
+        description: "Whether to deploy green instance"
+        required: false
+        default: false
+        type: boolean
+
+  push:
+    tags:
+      - 'v*-staging-indexer'
+      - 'v*-staging-indexer-green'
+      - 'v*-prod-indexer'
+      - 'v*-prod-indexer-green'
+
+permissions:
+  id-token: write
+  contents: read
+  actions: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment || (contains(github.ref, '-prod') && 'prod') || 'staging' }}
+    env:
+      ENV: ${{ inputs.environment || (contains(github.ref, '-prod') && 'prod') || 'staging' }}
+      GREEN: ${{ inputs.green || contains(github.ref, '-green') }}
+      DRY_RUN: ${{ inputs.dry_run }}
+
+      # AWS Configuration
+      AWS_ACCOUNT: ${{ secrets.AWS_ACCOUNT }}
+      AWS_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+
+      # Network Configuration
+      RPC_URL: ${{ vars.RPC_URL }}
+      CHAIN_ID: ${{ vars.CHAIN_ID }}
+      SEPOLIA_RPC_URL: ${{ vars.RPC_URL }}
+      TESTNET_RPC_URL: ${{ vars.RPC_URL }}
+
+      # Contract Addresses (from GitHub environment variables)
+      ATP_FACTORY_ADDRESS: ${{ vars.ATP_FACTORY_ADDRESS }}
+      ATP_FACTORY_AUCTION_ADDRESS: ${{ vars.ATP_FACTORY_AUCTION_ADDRESS }}
+      ATP_REGISTRY_ADDRESS: ${{ vars.ATP_REGISTRY_ADDRESS }}
+      ATP_REGISTRY_AUCTION_ADDRESS: ${{ vars.ATP_REGISTRY_AUCTION_ADDRESS }}
+      STAKING_REGISTRY_ADDRESS: ${{ vars.STAKING_REGISTRY_ADDRESS }}
+      ROLLUP_ADDRESS: ${{ vars.ROLLUP_ADDRESS }}
+      START_BLOCK: ${{ vars.ATP_FACTORY_DEPLOYMENT_BLOCK }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'yarn'
+          cache-dependency-path: atp-indexer/yarn.lock
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Mark repo as safe
+        run: git config --global --add safe.directory $GITHUB_WORKSPACE
+
+      - name: Configure AWS credentials with GitHub OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_OIDC_ROLE_ARN }}
+          role-session-name: ${{ github.run_id }}
+          aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
+
+      - name: Verify AWS identity
+        run: aws sts get-caller-identity
+
+      - name: Deploy
+        working-directory: atp-indexer
+        run: |
+          if [ "$ENV" = "staging" ]; then
+            if [ "$GREEN" = "true" ]; then
+              ./bootstrap.sh deploy-staging-green
+            else
+              ./bootstrap.sh deploy-staging
+            fi
+          elif [ "$ENV" = "prod" ]; then
+            if [ "$GREEN" = "true" ]; then
+              ./bootstrap.sh deploy-prod-green
+            else
+              ./bootstrap.sh deploy-prod
+            fi
+          else
+            echo "Unknown environment: $ENV"
+            exit 1
+          fi

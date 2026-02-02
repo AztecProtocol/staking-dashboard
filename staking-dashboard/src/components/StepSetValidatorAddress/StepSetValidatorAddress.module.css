@@ -1,0 +1,74 @@
+.validatorContainer {
+  width: 100%;
+}
+
+.stepDescription {
+  font-size: var(--font-size-xs);
+  margin-bottom: var(--spacing-md);
+  color: var(--text-tertiary);
+}
+
+.docsLink {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+.inputWithButton {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-md);
+}
+
+.inputSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.inputSection input {
+  width: 100%;
+  padding: var(--spacing-sm);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+  font-family: monospace;
+}
+
+.inputSection input.invalid {
+  border-color: var(--danger-color);
+}
+
+.inputSection input:disabled {
+  background-color: var(--background);
+  color: var(--text-tertiary);
+  cursor: not-allowed;
+}
+
+.errorText {
+  color: var(--danger-color);
+  font-size: var(--font-size-xs);
+}
+
+.checkboxSection {
+  display: flex;
+  align-items: center;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.checkboxLabel input[type="checkbox"] {
+  width: auto;
+  margin: 0;
+}
+
+.checkboxLabel input[type="checkbox"]:disabled {
+  cursor: not-allowed;
+}
