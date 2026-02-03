@@ -256,7 +256,7 @@ resource "aws_cloudfront_distribution" "staking_dashboard_distribution" {
 # ACM Certificate + DNS (creates cert, validates, and creates A record)
 #
 module "domain" {
-  source = "../../../backends/terraform/modules/acm-certificate"
+  source = "../../terraform/modules/acm-certificate"
   
   providers = {
     aws.us_east_1 = aws.us_east_1

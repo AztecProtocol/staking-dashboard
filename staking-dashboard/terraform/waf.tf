@@ -1,6 +1,6 @@
 # WAF for staking dashboard website
 module "website_waf" {
-  source = "../../../backends/terraform/modules/waf"
+  source = "../../terraform/modules/waf"
   
   providers = {
     aws = aws.us_east_1
