@@ -41,7 +41,7 @@ locals {
   full_name = "${var.app_name}-${var.env}${var.deployment_suffix}"
 
   # Read database schemas from central configuration file
-  db_schemas      = jsondecode(file("${path.module}/../../../db-schemas.json"))
+  db_schemas      = jsondecode(file("${path.module}/../../db-schemas.json"))
   database_schema = local.db_schemas["atp-indexer"][var.env]
 
   common_tags = {
