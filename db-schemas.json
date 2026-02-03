@@ -1,9 +1,5 @@
 {
-  "comment": "Database schema versions for each environment. These are incremented automatically on contract deployments.",
   "atp-indexer": {
-    "dev": "atp-indexer-dev-v13",
-    "dev-tn": "atp-indexer-dev-tn-v3",
-    "staging": "atp-indexer-staging-v6",
     "prod": "atp-indexer-prod-v10"
   }
 }
