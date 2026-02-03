@@ -370,11 +370,6 @@ function deploy() {
     exit 1
   fi
 
-  if [ -z "${BASIC_AUTH_USER:-}" ] || [ -z "${BASIC_AUTH_PASSWORD:-}" ]; then
-    echo "Error: BASIC_AUTH_USER and BASIC_AUTH_PASSWORD environment variables must be set"
-    exit 1
-  fi
-
   if [ "$environment" = "dev" ]; then
     if [ -z "${SEPOLIA_RPC_URL:-}" ]; then
       echo "Error: SEPOLIA_RPC_URL environment variable must be set"
@@ -437,8 +432,8 @@ function deploy() {
   # Run terraform
   export TF_VAR_env=$environment
   export TF_VAR_region=$region
-  export TF_VAR_basic_auth_user=$BASIC_AUTH_USER
-  export TF_VAR_basic_auth_pass=$BASIC_AUTH_PASSWORD
+  export TF_VAR_basic_auth_user="${BASIC_AUTH_USER:-}"
+  export TF_VAR_basic_auth_pass="${BASIC_AUTH_PASSWORD:-}"
 
   if [ "${DRY_RUN:-false}" = "true" ]; then
     # Dry-run mode: plan and save to terraform-plans directory

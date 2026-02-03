@@ -46,10 +46,6 @@ jobs:
       # AWS Configuration
       AWS_ACCOUNT: ${{ secrets.AWS_ACCOUNT }}
 
-      # Auth (for staging environments)
-      BASIC_AUTH_USER: ${{ secrets.BASIC_AUTH_USER }}
-      BASIC_AUTH_PASSWORD: ${{ secrets.BASIC_AUTH_PASSWORD }}
-
       # External Services
       WALLETCONNECT_PROJECT_ID: ${{ secrets.WALLETCONNECT_PROJECT_ID }}
       VITE_SAFE_API_KEY: ${{ secrets.VITE_SAFE_API_KEY }}
