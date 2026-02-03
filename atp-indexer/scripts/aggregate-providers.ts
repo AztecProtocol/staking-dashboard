@@ -103,7 +103,7 @@ function normalizeProvider(metadata: any, filename: string): ProviderMetadata | 
  * Aggregate all provider metadata files into a single JSON file
  */
 function aggregateProviders() {
-  const providersDir = join(__dirname, '../../../providers');
+  const providersDir = join(__dirname, '../../providers');
   const outputDir = join(__dirname, '../src/api/data');
   const outputFile = join(outputDir, 'providers.json');
 
