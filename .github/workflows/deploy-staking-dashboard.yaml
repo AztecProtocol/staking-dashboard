@@ -55,10 +55,10 @@ jobs:
       VITE_SAFE_API_KEY: ${{ secrets.VITE_SAFE_API_KEY }}
 
       # Network Configuration
-      RPC_URL: ${{ vars.RPC_URL }}
+      RPC_URL: ${{ secrets.RPC_URL }}
       CHAIN_ID: ${{ vars.CHAIN_ID }}
-      SEPOLIA_RPC_URL: ${{ vars.RPC_URL }}
-      TESTNET_RPC_URL: ${{ vars.RPC_URL }}
+      SEPOLIA_RPC_URL: ${{ secrets.RPC_URL }}
+      TESTNET_RPC_URL: ${{ secrets.RPC_URL }}
 
       # Contract Addresses (from GitHub environment variables)
       VITE_ATP_FACTORY_ADDRESS: ${{ vars.ATP_FACTORY_ADDRESS }}
