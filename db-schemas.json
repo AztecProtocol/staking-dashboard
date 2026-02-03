@@ -1,14 +1,9 @@
 {
   "comment": "Database schema versions for each environment. These are incremented automatically on contract deployments.",
-  "auction-indexer": {
-    "dev": "auction-indexer-v190",
-    "staging": "auction-indexer-staging-v150",
-    "prod": "auction-indexer-prod-v110"
-  },
   "atp-indexer": {
     "dev": "atp-indexer-dev-v13",
     "dev-tn": "atp-indexer-dev-tn-v3",
     "staging": "atp-indexer-staging-v6",
-    "prod": "atp-indexer-prod-v9"
+    "prod": "atp-indexer-prod-v10"
   }
 }
