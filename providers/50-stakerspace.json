@@ -1,0 +1,9 @@
+{
+  "providerId": 50,
+  "providerName": "Staker Space",
+  "providerDescription": "High-performance Aztec sequencer provider focused on reliability, low latency, and secure infrastructure.",
+  "providerEmail": "hello@staker.space",
+  "providerWebsite": "https://staker.space",
+  "providerLogoUrl": "https://raw.githubusercontent.com/StakerSpace/assets/main/logo.png",
+  "discordUsername": "_ilhan"
+}

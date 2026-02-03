@@ -1,0 +1,9 @@
+{
+    "providerId": 89,
+    "providerName": "Kalypso",
+    "providerDescription": "Kalypso is a circuit-agnostic ZK proof marketplace enabling users to outsource generation of ZK proofs to sophisticated hardware providers. It leverages TEEs to support circuits with private inputs.",
+    "providerEmail": "hello@kalypso.org",
+    "providerWebsite": "https://kalypso.org",
+    "providerLogoUrl": "https://drive.google.com/file/d/11iYUmK_RXOXORFQA_OFtIRjse5qSL8Jg/view?usp=drive_link",
+    "discordUsername": "0xesli"
+}

@@ -1,0 +1,9 @@
+{
+  "providerId": 5,
+  "providerName": "moonli.me",
+  "providerDescription": "Independent validator, focused on decentralization and supporting networks with real value. Active in staking since 2019, we run nodes on Ethereum, Substrate, and Tendermint chains serving blockchain enthusiasts and crypto communities.",
+  "providerEmail": "tequila@moonli.me",
+  "providerWebsite": "https://moonli.me",
+  "providerLogoUrl": "https://raw.githubusercontent.com/y3v63n/eigenlayer/refs/heads/main/logo_new.png",
+  "discordUsername": "y3v63n"
+}

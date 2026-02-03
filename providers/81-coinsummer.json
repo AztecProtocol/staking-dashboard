@@ -1,0 +1,9 @@
+{
+    "providerId": 81,
+    "providerName": "CoinSummerLabs",
+    "providerDescription": "Backed by crypto-native degens, CoinSummer is a trusted liquidity provider, staking validator, and AVS operator supporting the crypto and DeFi evolution.",
+    "providerEmail": "k@coinsummer.io",
+    "providerWebsite": "https://coinsummer.io/",
+    "providerLogoUrl": "https://raw.githubusercontent.com/CoinSummer/eigenlayer-operator/main/logo.png",
+    "discordUsername": "coinsummer"
+}

@@ -1,0 +1,9 @@
+{
+  "providerId": 38,
+  "providerName": "Hayhouse Projects",
+  "providerDescription": "Hayhouse Projects is a professional sequencing operation run by Hackworth, a Genesis Sequencer for Aztec. My infrastructure is built for resilience, centered on a high-availability cluster with three geographically diversified nodes to ensure maximum uptime and performance. I am an operator with deep roots in the Ethereum ecosystem, having run infrastructure since the network's early days. My experience includes serving as a trusted public operator for SSV network (since the 2021 testnet) and managing a cluster of SDVT operators for the Lido protocol. I am committed to providing rock-solid, reliable infrastructure for the new frontier of Ethereum",
+  "providerEmail": "hello@hayhouseprojects.com",
+  "providerWebsite": "https://hayhouseprojects.com",
+  "providerLogoUrl": "https://www.hayhouseprojects.com/wp-content/uploads/2025/11/hayhouse-logo-gr.png",
+  "discordUsername": "hackworth.eth"
+}
