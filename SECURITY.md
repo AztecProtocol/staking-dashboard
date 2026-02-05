@@ -15,7 +15,7 @@ Instead, please use the [Private Vulnerability Reporting](https://github.com/Azt
     2. Steps to reproduce (including logs, requests, or PoCs as appropriate)
     3. Environment details (browser, OS, network assumptions)
 
-You can also email security@aztec
+You can also email security@aztec.foundation
 
 We will:
 - Acknowledge receipt of your report as soon as reasonably possible
