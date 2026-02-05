@@ -11,10 +11,6 @@ on:
   pull_request:
     branches:
       - main
-    paths:
-      - 'staking-dashboard/**'
-      - 'atp-indexer/**'
-      - 'scripts/**'
 
   workflow_dispatch:
 
