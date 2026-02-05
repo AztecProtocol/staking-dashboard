@@ -1,0 +1,7 @@
+# CODEOWNERS for Aztec Staking Dashboard
+
+
+# Default owners for everything not matched by a more specific rule
+*                                             @AztecProtocol/sdb-review
+
+

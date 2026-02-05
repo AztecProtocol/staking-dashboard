@@ -18,6 +18,8 @@ If you find a bug, please open an issue with:
 4. **Environment details** (browser, OS, Node version)
 5. **Screenshots** if applicable
 
+If your report relates to a **security vulnerability or security-sensitive issue**, please **do not** open a public issue and instead follow the private disclosure process described in `SECURITY.md`.
+
 ### Suggesting Features
 
 For feature requests, open an issue with:
