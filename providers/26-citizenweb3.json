@@ -5,5 +5,12 @@
   "providerEmail": "citizenweb3@protonmail.com",
   "providerWebsite": "https://citizenweb3.com",
   "providerLogoUrl": "https://raw.githubusercontent.com/citizenweb3/citizenweb3/refs/heads/master/project/branding/Citizen-Web3-latest-logo256-256.png",
-  "discordUsername": "serejandmyself_citizenweb3, alibabaedge"
+  "discordUsername": "serejandmyself_citizenweb3, alibabaedge",
+  "providerSelfStake": [
+    "0x31d9d6b1e666db12a537f70740671d9fb3e7d6a5",
+    "0x082109fc2a4730ee2add9c3639fad5cba2c34abb",
+    "0xbc7118972b92169aaae190b2a6c4efb67fd9c3a7",
+    "0xe6eef9bad63817bd61524ab939495f5e2a6752a0",
+    "0x9d48e0cdd7c21a0c6203a280651253fcd9e68327"
+  ]
 }
