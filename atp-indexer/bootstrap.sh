@@ -325,6 +325,14 @@ function deploy() {
   fi
 
   yarn install --frozen-lockfile
+
+  # Use providers-testnet folder for testnet, providers for prod
+  if [ "$infra_environment" = "testnet" ]; then
+    export PROVIDERS_DIR="providers-testnet"
+  else
+    export PROVIDERS_DIR="providers"
+  fi
+  log_step "Using providers directory: $PROVIDERS_DIR"
   yarn bootstrap
 
   # Load contract addresses from environment variables or JSON file

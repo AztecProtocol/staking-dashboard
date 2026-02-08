@@ -103,9 +103,14 @@ function normalizeProvider(metadata: any, filename: string): ProviderMetadata | 
  * Aggregate all provider metadata files into a single JSON file
  */
 function aggregateProviders() {
-  const providersDir = join(__dirname, '../../providers');
+  // Allow overriding the providers directory via environment variable
+  // Defaults to 'providers' for production
+  const providersFolderName = process.env.PROVIDERS_DIR || 'providers';
+  const providersDir = join(__dirname, '../..', providersFolderName);
   const outputDir = join(__dirname, '../src/api/data');
   const outputFile = join(outputDir, 'providers.json');
+
+  console.log(`Using providers directory: ${providersDir}`);
 
   const providerMap = new Map<number, { provider: ProviderMetadata; filename: string }>();
   let skippedCount = 0;
