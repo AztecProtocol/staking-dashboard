@@ -2,6 +2,7 @@ import { useState } from "react"
 import { Link } from "react-router-dom"
 import { Icon } from "@/components/Icon"
 import { CustomConnectButton } from "../CustomConnectButton"
+import { NetworkSwitcher } from "../NetworkSwitcher"
 
 /**
  * Main navigation bar component
@@ -27,13 +28,16 @@ export const Navbar = () => {
     <nav className="fixed top-0 w-full bg-ink/80 backdrop-blur-md border-b border-parchment/10 z-[60]">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          <Link to="/" className="flex items-center min-w-[44px] min-h-[44px] justify-center p-2">
-            <img
-              src="https://cdn.prod.website-files.com/6847005bc403085c1aa846e0/6847514dc37a9e8cfe8a66b8_aztec-logo.svg"
-              alt="Aztec"
-              className="h-4 w-auto xs:h-5 sm:h-6 md:h-7 lg:h-8 transition-all duration-200 hover:scale-105"
-            />
-          </Link>
+          <div className="flex items-center gap-3 sm:gap-4">
+            <Link to="/" className="flex items-center min-w-[44px] min-h-[44px] justify-center p-2">
+              <img
+                src="https://cdn.prod.website-files.com/6847005bc403085c1aa846e0/6847514dc37a9e8cfe8a66b8_aztec-logo.svg"
+                alt="Aztec"
+                className="h-4 w-auto xs:h-5 sm:h-6 md:h-7 lg:h-8 transition-all duration-200 hover:scale-105"
+              />
+            </Link>
+            <NetworkSwitcher />
+          </div>
 
           <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
             {menuItems.map((item) =>
@@ -100,7 +104,13 @@ export const Navbar = () => {
                 </a>
               )
             )}
-            <div className="pt-4 border-t border-parchment/10">
+            <div className="pt-4 border-t border-parchment/10 space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="font-oracle-standard text-sm uppercase tracking-wider text-parchment/60">
+                  Network
+                </span>
+                <NetworkSwitcher />
+              </div>
               <CustomConnectButton fullWidth size="lg" />
             </div>
           </div>
