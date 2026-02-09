@@ -66,10 +66,11 @@ export function useSequencerStatus(sequencerAddress: Address | undefined) {
   // The REAL unlock time is the MAX of:
   // 1. Rollup's exitableAt (currently 4 days, but could be higher in future)
   // 2. Governance's withdrawal.unlocksAt (14.6 days)
+  // Both must be available to calculate the actual unlock time
   const actualUnlockTime =
     exit && withdrawal
       ? (exit.exitableAt > withdrawal.unlocksAt ? exit.exitableAt : withdrawal.unlocksAt)
-      : exit?.exitableAt;
+      : undefined;
 
   // Check if withdrawal can be finalized using the REAL unlock time
   const canFinalize = !!(
