@@ -47,3 +47,6 @@ coverage/
 # Cache
 .cache/
 .parcel-cache/
+
+# AI
+.claude
