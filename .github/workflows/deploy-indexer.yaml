@@ -42,6 +42,7 @@ jobs:
       ENV: ${{ inputs.environment || (contains(github.ref, '-prod') && 'prod') || 'testnet' }}
       GREEN: ${{ inputs.green || contains(github.ref, '-green') }}
       DRY_RUN: ${{ inputs.dry_run }}
+      NODE_ENV: ${{ inputs.environment || (contains(github.ref, '-prod') && 'prod') || 'testnet' }}
 
       # AWS Configuration
       AWS_ACCOUNT: ${{ secrets.AWS_ACCOUNT }}
