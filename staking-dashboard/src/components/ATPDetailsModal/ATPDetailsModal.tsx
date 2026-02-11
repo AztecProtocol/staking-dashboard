@@ -342,7 +342,7 @@ export const ATPDetailsModal = ({ atp, isOpen, onClose, onWithdrawSuccess, onRef
                       Error: Staker contract address not found
                     </div>
                   </div>
-                ) : !rollupVersion ? (
+                ) : rollupVersion === undefined ? (
                   <div className="bg-parchment/5 border border-parchment/20 p-4 text-center">
                     <div className="text-sm text-parchment/60">
                       Loading stake details...

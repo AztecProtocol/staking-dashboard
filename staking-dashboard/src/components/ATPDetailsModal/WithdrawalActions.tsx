@@ -76,7 +76,7 @@ interface WithdrawalActionsProps {
   rollupVersion: bigint;
   status: number | undefined;
   canFinalize: boolean;
-  exitableAt?: bigint;
+  actualUnlockTime?: bigint;
   withdrawalDelayDays?: number;
   onSuccess?: () => void;
 }
@@ -91,7 +91,7 @@ export const WithdrawalActions = ({
   rollupVersion,
   status,
   canFinalize,
-  exitableAt,
+  actualUnlockTime,
   withdrawalDelayDays,
   onSuccess,
 }: WithdrawalActionsProps) => {
@@ -227,7 +227,7 @@ export const WithdrawalActions = ({
               maxWidth="max-w-xs"
             />
             <span className="text-[10px] text-parchment/50">
-              {getUnlockTimeDisplay({ isExiting, exitableAt, withdrawalDelayDays })}
+              {getUnlockTimeDisplay({ isExiting, actualUnlockTime, withdrawalDelayDays })}
             </span>
           </div>
         </div>

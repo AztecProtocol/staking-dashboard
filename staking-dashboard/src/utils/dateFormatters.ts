@@ -51,18 +51,18 @@ export function formatBlockTimestamp(timestamp: string | number): { date: string
 
 interface UnlockTimeDisplayParams {
   isExiting: boolean
-  exitableAt?: bigint
+  actualUnlockTime?: bigint
   withdrawalDelayDays?: number
 }
 
 /**
  * Formats the unlock time for withdrawal display
- * @param params - Object containing isExiting status, exitableAt timestamp, and withdrawalDelayDays
+ * @param params - Object containing isExiting status, actualUnlockTime timestamp, and withdrawalDelayDays
  * @returns Formatted unlock time string for display
  */
-export function getUnlockTimeDisplay({ isExiting, exitableAt, withdrawalDelayDays }: UnlockTimeDisplayParams): string {
-  if (isExiting && exitableAt && exitableAt > 0n) {
-    const { date, time } = formatBlockTimestamp(Number(exitableAt))
+export function getUnlockTimeDisplay({ isExiting, actualUnlockTime, withdrawalDelayDays }: UnlockTimeDisplayParams): string {
+  if (isExiting && actualUnlockTime && actualUnlockTime > 0n) {
+    const { date, time } = formatBlockTimestamp(Number(actualUnlockTime))
     return `Unlocks: ${date} ${time}`
   }
   if (withdrawalDelayDays !== undefined) {

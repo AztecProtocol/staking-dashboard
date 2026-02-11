@@ -66,7 +66,7 @@ interface WalletWithdrawalActionsProps {
   recipientAddress: Address
   status: number | undefined
   canFinalize: boolean
-  exitableAt?: bigint
+  actualUnlockTime?: bigint
   withdrawalDelayDays?: number
   onSuccess?: () => void
 }
@@ -80,7 +80,7 @@ export const WalletWithdrawalActions = ({
   recipientAddress,
   status,
   canFinalize,
-  exitableAt,
+  actualUnlockTime,
   withdrawalDelayDays,
   onSuccess,
 }: WalletWithdrawalActionsProps) => {
@@ -224,7 +224,7 @@ export const WalletWithdrawalActions = ({
               maxWidth="max-w-xs"
             />
             <span className="text-[10px] text-parchment/50">
-              {getUnlockTimeDisplay({ isExiting, exitableAt, withdrawalDelayDays })}
+              {getUnlockTimeDisplay({ isExiting, actualUnlockTime, withdrawalDelayDays })}
             </span>
           </div>
         </div>

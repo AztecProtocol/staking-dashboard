@@ -10,6 +10,7 @@
     "build": "ponder codegen",
     "codegen": "ponder codegen",
     "bootstrap": "tsx scripts/aggregate-providers.ts",
+    "bootstrap-testnet": "tsx scripts/aggregate-providers-testnet.ts",
     "compare": "tsx scripts/compare-databases.ts",
     "test": "jest",
     "test:watch": "jest --watch",

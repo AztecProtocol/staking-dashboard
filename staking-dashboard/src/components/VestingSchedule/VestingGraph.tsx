@@ -29,36 +29,21 @@ export const VestingGraph = ({ globalLock, registryAddress, className = "" }: Ve
   // Check for invalid time range
   const hasInvalidTimeRange = Number(globalLock.endTime) < Number(globalLock.startTime)
 
-  // If invalid, show error state
+  // If vesting has completed (end date is before start date in current time context)
   if (hasInvalidTimeRange) {
-    const startDate = new Date(Number(globalLock.startTime) * 1000).toLocaleDateString('en-US', {
-      day: 'numeric',
-      month: 'short',
-      year: 'numeric'
-    })
-    const endDate = new Date(Number(globalLock.endTime) * 1000).toLocaleDateString('en-US', {
-      day: 'numeric',
-      month: 'short',
-      year: 'numeric'
-    })
-
     return (
-      <div className={`bg-ink/8 border border-vermillion/20 backdrop-blur-sm p-8 ${className}`}>
+      <div className={`bg-ink/8 border border-chartreuse/20 backdrop-blur-sm p-8 ${className}`}>
         <div className="flex items-center gap-4 text-left">
-          <div className="flex-shrink-0 w-12 h-12 flex items-center justify-center rounded border border-vermillion/30 bg-vermillion/10">
-            <svg className="w-6 h-6 text-vermillion" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          <div className="flex-shrink-0 w-12 h-12 flex items-center justify-center rounded border border-chartreuse/30 bg-chartreuse/10">
+            <svg className="w-6 h-6 text-chartreuse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
           </div>
           <div className="flex-1">
-            <h3 className="font-arizona-text text-lg text-vermillion mb-1">Invalid Vesting Schedule</h3>
-            <p className="font-md-thermochrome text-sm text-parchment/60 mb-2">
-              End date cannot be earlier than or equal to start date. Please check the vesting configuration.
+            <h3 className="font-arizona-text text-lg text-chartreuse mb-1">Vesting Schedule Complete</h3>
+            <p className="font-md-thermochrome text-sm text-parchment/60">
+              All tokens from this vesting schedule have been fully vested.
             </p>
-            <div className="font-md-thermochrome text-xs text-parchment/50">
-              <div>Start Date: <span className="text-parchment/70">{startDate}</span></div>
-              <div>End Date: <span className="text-parchment/70">{endDate}</span></div>
-            </div>
           </div>
         </div>
       </div>

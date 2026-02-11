@@ -39,7 +39,7 @@ export const ATPDetailsDirectStakeItem = ({ stake, stakerAddress, rollupVersion,
   const { date, time } = formatBlockTimestamp(stake.timestamp)
   const { isRewardsClaimable } = useIsRewardsClaimable()
 
-  const { status, statusLabel, isLoading: isLoadingStatus, canFinalize, exit, refetch: refetchStatus } = useSequencerStatus(stake.attesterAddress as Address)
+  const { status, statusLabel, isLoading: isLoadingStatus, canFinalize, actualUnlockTime, refetch: refetchStatus } = useSequencerStatus(stake.attesterAddress as Address)
   const { withdrawalDelayDays } = useGovernanceConfig()
 
   const {
@@ -387,7 +387,7 @@ export const ATPDetailsDirectStakeItem = ({ stake, stakerAddress, rollupVersion,
                     rollupVersion={rollupVersion}
                     status={status}
                     canFinalize={canFinalize}
-                    exitableAt={exit?.exitableAt}
+                    actualUnlockTime={actualUnlockTime}
                     withdrawalDelayDays={withdrawalDelayDays}
                     onSuccess={() => {
                       refetchStatus()

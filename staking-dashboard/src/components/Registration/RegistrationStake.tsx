@@ -116,7 +116,7 @@ export const RegistrationStake = ({ onComplete }: RegistrationStakeProps) => {
 
   const handleAddValidatorToQueue = (index: number) => {
     const keystore = uploadedKeystores[index]
-    if (!rollupVersion === undefined || !selectedAtp || !activationThreshold || completedValidatorsWithQueue.has(keystore.attester)) return
+    if (rollupVersion === undefined || !selectedAtp || !activationThreshold || completedValidatorsWithQueue.has(keystore.attester)) return
 
     const transaction = buildValidatorTransaction(keystore)
     if (!transaction) return
@@ -144,7 +144,7 @@ export const RegistrationStake = ({ onComplete }: RegistrationStakeProps) => {
   }
 
   const handleAddAllToQueue = () => {
-    if (!selectedAtp || !rollupVersion === undefined || uploadedKeystores.length === 0) return
+    if (!selectedAtp || rollupVersion === undefined || uploadedKeystores.length === 0) return
     if (!areAllKeystoresValid) {
       showAlert('error', 'Invalid keystores detected')
       return

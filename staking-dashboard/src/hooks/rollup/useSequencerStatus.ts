@@ -1,6 +1,7 @@
 import type { Address } from "viem";
 import { useBlock } from "wagmi";
 import { useAttesterView } from "./useAttesterView";
+import { useGovernanceWithdrawal } from "../governance/useGovernanceWithdrawal";
 
 /**
  * Enum for sequencer status values
@@ -45,6 +46,9 @@ export function useSequencerStatus(sequencerAddress: Address | undefined) {
   const { status, effectiveBalance, exit, isLoading, error, refetch } =
     useAttesterView(sequencerAddress);
 
+  // Query the governance withdrawal to get the REAL unlock time
+  const { withdrawal, isLoading: isLoadingWithdrawal } = useGovernanceWithdrawal(exit?.withdrawalId);
+
   // ANVIL FIX: Use blockchain timestamp instead of Date.now() for local testing
   // When using anvil with time manipulation (anvil_increaseTime), Date.now() returns
   // real system time while the blockchain has a different timestamp. This causes
@@ -59,19 +63,34 @@ export function useSequencerStatus(sequencerAddress: Address | undefined) {
   const isZombie = status === SequencerStatus.ZOMBIE;
   const isExiting = status === SequencerStatus.EXITING;
 
-  // Check if withdrawal can be finalized (status is EXITING and current time >= exitable time)
-  const canFinalize = !!(isExiting && exit && blockTimestamp >= exit.exitableAt);
+  // The REAL unlock time is the MAX of:
+  // 1. Rollup's exitableAt (currently 4 days, but could be higher in future)
+  // 2. Governance's withdrawal.unlocksAt (14.6 days)
+  // Both must be available to calculate the actual unlock time
+  const actualUnlockTime =
+    exit && withdrawal
+      ? (exit.exitableAt > withdrawal.unlocksAt ? exit.exitableAt : withdrawal.unlocksAt)
+      : undefined;
+
+  // Check if withdrawal can be finalized using the REAL unlock time
+  const canFinalize = !!(
+    isExiting &&
+    actualUnlockTime &&
+    blockTimestamp >= actualUnlockTime
+  );
 
   return {
     status,
     statusLabel,
     effectiveBalance,
     exit,
+    withdrawal,
+    actualUnlockTime,
     isActive,
     isZombie,
     isExiting,
     canFinalize,
-    isLoading,
+    isLoading: isLoading || isLoadingWithdrawal,
     error,
     refetch,
   };

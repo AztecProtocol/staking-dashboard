@@ -223,7 +223,13 @@ function build() {
 
   # Aggregate provider metadata
   log_step "Aggregating provider metadata"
-  yarn bootstrap
+
+  # call separate provider bootstrap script if environment is testnet
+  if [ "$ENVIRONMENT" = "testnet" ]; then
+    yarn bootstrap-testnet
+  else
+    yarn bootstrap
+  fi
 
   # Build TypeScript
   log_step "Building TypeScript"
@@ -325,7 +331,11 @@ function deploy() {
   fi
 
   yarn install --frozen-lockfile
-  yarn bootstrap
+  if [ "$infra_environment" = "testnet" ]; then
+    yarn bootstrap-testnet
+  else
+    yarn bootstrap
+  fi
 
   # Load contract addresses from environment variables or JSON file
   # For CI/CD, these should be passed as environment variables
