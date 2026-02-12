@@ -3,11 +3,12 @@ import { useAccount } from "wagmi"
 import { WalletConnectGuard } from "@/components/WalletConnectGuard"
 import { PageHeader } from "@/components/PageHeader"
 import { Tooltip, TooltipIcon } from "@/components/Tooltip"
+import { Icon } from "@/components/Icon"
 import { StakingChoiceModal } from "../../components/StakingChoiceModal/StakingChoiceModal"
 import { ATPStakingCardList } from "../../components/ATPStakingCardList"
 import { ATPStakingOverview } from "@/components/ATPStakingOverview"
 import { WalletStakesDetailsModal } from "@/components/WalletStakesDetailsModal/WalletStakesDetailsModal"
-import { formatTokenAmount } from "@/utils/atpFormatters"
+import { formatTokenAmount, formatTokenAmountFull } from "@/utils/atpFormatters"
 import { calculateStakeableAmount } from "@/hooks/atp/useStakeableAmount"
 import { formatUnits } from "viem"
 import type { ATPData } from "@/hooks/atp/atpTypes"
@@ -100,7 +101,16 @@ export default function MyPositionPage() {
       {/* Token Balance Section */}
       <div className="pb-6 mb-6 border-b border-parchment/20">
         <PageHeader
-          title="Wallet Balance"
+          title={
+            <span className="flex items-baseline gap-3">
+              Wallet Balance:
+              {!isWalletDataLoading && balance !== undefined && decimals !== undefined && (
+                <span className="text-2xl font-normal text-parchment/60">
+                  {formatTokenAmountFull(balance, decimals, symbol || "AZTEC")}
+                </span>
+              )}
+            </span>
+          }
           description={`${symbol || 'AZTEC'} tokens in your connected wallet.`}
         />
 
@@ -180,31 +190,41 @@ export default function MyPositionPage() {
           </div>
         </div>
 
-        {/* Progress bar */}
-        <div className="flex h-6 overflow-hidden border border-parchment/20 bg-parchment/5">
-          {/* Staked portion */}
-          {stakedPercent > 0 && (
-            <div
-              className="bg-parchment/30 relative flex items-center justify-center"
-              style={{ width: `${stakedPercent}%` }}
-            >
-              <span className="text-xs font-oracle-standard font-bold text-parchment">
-                {stakedPercent}%
-              </span>
-            </div>
-          )}
-          {/* Available portion */}
-          {availablePercent > 0 && (
-            <div
-              className="bg-chartreuse relative flex items-center justify-center"
-              style={{ width: `${availablePercent}%` }}
-            >
-              <span className="text-xs font-oracle-standard font-bold text-ink">
-                {availablePercent}%
-              </span>
-            </div>
-          )}
-        </div>
+        {/* Info box when below activation threshold */}
+        {!canStake && !isWalletDataLoading && (
+          <div className="flex items-center gap-3 p-3 bg-aqua/10 border border-aqua/30">
+            <Icon name="info" size="md" className="text-aqua flex-shrink-0" />
+            <p className="text-sm font-oracle-standard text-aqua">
+              Your wallet balance is below the activation threshold of {formattedThreshold}. You cannot stake directly from your wallet.
+            </p>
+          </div>
+        )}
+
+        {/* Progress bar - only show when user can stake */}
+        {canStake && (
+          <div className="flex h-6 overflow-hidden border border-parchment/20 bg-parchment/5">
+            {stakedPercent > 0 && (
+              <div
+                className="bg-parchment/30 relative flex items-center justify-center"
+                style={{ width: `${stakedPercent}%` }}
+              >
+                <span className="text-xs font-oracle-standard font-bold text-parchment">
+                  {stakedPercent}%
+                </span>
+              </div>
+            )}
+            {availablePercent > 0 && (
+              <div
+                className="bg-chartreuse relative flex items-center justify-center"
+                style={{ width: `${availablePercent}%` }}
+              >
+                <span className="text-xs font-oracle-standard font-bold text-ink">
+                  {availablePercent}%
+                </span>
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       <PageHeader
