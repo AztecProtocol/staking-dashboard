@@ -350,14 +350,14 @@ function deploy() {
   )
 
   # Downsize DB resources for non-prod environments (defaults are prod-safe)
-  # if [ "$infra_environment" != "prod" ]; then
-  DB_INSTANCE_CLASS=${TF_VAR_db_instance_class:-db.t4g.medium}
-  DB_READ_REPLICA_COUNT=${TF_VAR_db_read_replica_count:-0}
-  # else
+  if [ "$infra_environment" != "prod" ]; then
+    DB_INSTANCE_CLASS=${TF_VAR_db_instance_class:-db.t4g.medium}
+    DB_READ_REPLICA_COUNT=${TF_VAR_db_read_replica_count:-0}
+  else
     # Use defaults from variables.tf for prod (db.r7g.2xlarge, 2 replicas)
-  #   DB_INSTANCE_CLASS=${TF_VAR_db_instance_class:-db.r7g.2xlarge}
-  #   DB_READ_REPLICA_COUNT=${TF_VAR_db_read_replica_count:-2}
-  # fi
+    DB_INSTANCE_CLASS=${TF_VAR_db_instance_class:-db.r7g.2xlarge}
+    DB_READ_REPLICA_COUNT=${TF_VAR_db_read_replica_count:-3}
+  fi
 
   local args="-var=rpc_url=$RPC_URL \
     -var=atp_factory_address=$ATP_FACTORY_ADDRESS \
