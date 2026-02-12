@@ -237,7 +237,7 @@ variable "db_instance_class" {
 variable "db_read_replica_count" {
   description = "Number of read replicas (0-3). Defaults to 2 for prod HA, reduced in non-prod"
   type        = number
-  default     = 2
+  default     = 3
 
   validation {
     condition     = var.db_read_replica_count >= 0 && var.db_read_replica_count <= 3
