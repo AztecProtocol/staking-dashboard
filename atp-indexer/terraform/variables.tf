@@ -82,25 +82,25 @@ variable "server_autoscaling_requests_target" {
 variable "indexer_cpu" {
   description = "CPU units for indexer task"
   type        = number
-  default     = 4096
+  default     = 8192
 }
 
 variable "indexer_memory" {
   description = "Memory units for indexer task"
   type        = number
-  default     = 8192 # 8 GB
+  default     = 32768 # 32 GB
 }
 
 variable "server_cpu" {
   description = "CPU units for server task"
   type        = number
-  default     = 4096
+  default     = 8192
 }
 
 variable "server_memory" {
   description = "Memory units for server task"
   type        = number
-  default     = 8192 # 8 GB
+  default     = 32768 # 32 GB
 }
 
 
