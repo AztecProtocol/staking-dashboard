@@ -1,0 +1,10 @@
+{
+    "providerId": 78,
+    "providerName": "Forstaken",
+    "providerDescription": "Aztec Staking",
+    "providerEmail": "hello@forstaken.com",
+    "providerWebsite": "https://forstaken.com",
+    "providerLogoUrl": "https://forstaken.com/images/forstaken.png",
+    "discordUsername": "jackfarrington#6892",
+    "providerSelfStake": ["0xa97e8e5c3c9f077cda2596170a51a67133d61672"]
+}
