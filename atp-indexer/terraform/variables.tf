@@ -49,7 +49,7 @@ variable "env_parent" {
 variable "desired_server_count" {
   description = "Desired number of server instances"
   type        = number
-  default     = 3
+  default     = 6
 }
 
 variable "server_autoscaling_min" {
