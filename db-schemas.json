@@ -1,6 +1,6 @@
 {
   "atp-indexer": {
     "testnet": "atp-indexer-testnet-v03",
-    "prod": "atp-indexer-prod-v16"
+    "prod": "atp-indexer-prod-v17"
   }
 }
