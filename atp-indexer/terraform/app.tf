@@ -270,6 +270,8 @@ locals {
     { name = "NODE_ENV", value = "production" },
     { name = "TRUST_PROXY", value = var.trust_proxy },
     { name = "PONDER_TELEMETRY_DISABLED", value = "true" },
+    { name = "MATP_FACTORY_START_BLOCK", value = var.matp_factory_start_block },
+    { name = "LATP_FACTORY_START_BLOCK", value = var.latp_factory_start_block },
   ]
 
   server_env_vars = [
@@ -296,7 +298,9 @@ locals {
     { name = "PONDER_LOG_LEVEL", value = "info" },
     { name = "PORT", value = tostring(var.container_port) },
     { name = "API_PORT", value = tostring(var.container_port) },
-    { name = "TRUST_PROXY", value = var.trust_proxy }
+    { name = "TRUST_PROXY", value = var.trust_proxy },
+    { name = "MATP_FACTORY_START_BLOCK", value = var.matp_factory_start_block },
+    { name = "LATP_FACTORY_START_BLOCK", value = var.latp_factory_start_block },
   ]
 }
 

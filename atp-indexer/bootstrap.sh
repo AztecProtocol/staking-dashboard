@@ -52,6 +52,8 @@ get_contract_addresses() {
     STAKING_REGISTRY_ADDRESS="${STAKING_REGISTRY_ADDRESS:-}"
     ROLLUP_ADDRESS="${ROLLUP_ADDRESS:-}"
     START_BLOCK="${START_BLOCK:-0}"
+    MATP_FACTORY_START_BLOCK="${MATP_FACTORY_START_BLOCK:-0}"
+    LATP_FACTORY_START_BLOCK="${LATP_FACTORY_START_BLOCK:-0}"
     return 0
   fi
 
@@ -351,6 +353,8 @@ function deploy() {
 
   # Ensure START_BLOCK is set for deployment
   START_BLOCK="${START_BLOCK:-0}"
+  MATP_FACTORY_START_BLOCK="${MATP_FACTORY_START_BLOCK:-0}"
+  LATP_FACTORY_START_BLOCK="${LATP_FACTORY_START_BLOCK:-0}"
 
   # Initialize Terraform with the S3 backend
   (cd terraform && terraform init \
@@ -374,6 +378,8 @@ function deploy() {
     -var=staking_registry_address=$STAKING_REGISTRY_ADDRESS \
     -var=rollup_address=$ROLLUP_ADDRESS \
     -var=start_block=$START_BLOCK \
+    -var=matp_factory_start_block=$MATP_FACTORY_START_BLOCK \
+    -var=latp_factory_start_block=$LATP_FACTORY_START_BLOCK \
     -var=db_password_ssm_name=/atp-indexer/${infra_environment}${deployment_suffix}/db_password \
     -var=db_instance_class=$DB_INSTANCE_CLASS \
     -var=db_read_replica_count=$DB_READ_REPLICA_COUNT \

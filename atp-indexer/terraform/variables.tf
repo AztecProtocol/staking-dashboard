@@ -154,6 +154,16 @@ variable "start_block" {
   type        = string
 }
 
+variable "matp_factory_start_block" {
+  description = "MATP Factory start block"
+  type        = string
+}
+
+variable "latp_factory_start_block" {
+  description = "LATP Factory start block"
+  type        = string
+}
+
 variable "block_batch_size" {
   description = "Number of blocks to process in each batch"
   type        = string
