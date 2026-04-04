@@ -1,0 +1,10 @@
+{
+    "providerId": 48,
+    "providerName": "DanDan Node",
+    "providerDescription": "Reliable Aztec sequencer node running 24/7 on Azure",
+    "providerEmail": "ycy19950724@gmail.com",
+    "providerWebsite": "",
+    "providerLogoUrl": "",
+    "discordUsername": "dandan2095",
+    "providerSelfStake": ["0x0643191d5CD36A561B6ED931D4aE6bf036FC19E1"]
+}
