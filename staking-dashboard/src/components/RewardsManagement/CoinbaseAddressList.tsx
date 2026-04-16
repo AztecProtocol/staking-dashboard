@@ -1,4 +1,4 @@
-import { useMemo } from "react"
+import { useMemo, useState } from "react"
 import { Icon } from "@/components/Icon"
 import { CopyButton } from "@/components/CopyButton"
 import { formatTokenAmountFull } from "@/utils/atpFormatters"
@@ -45,6 +45,11 @@ export const CoinbaseAddressList = ({
   const { removeCoinbaseAddress, isPending: isRemoving } = useRemoveCoinbaseAddress()
   // Hook is instantiated once and the per-row rollup is passed as the `claimRewards` override.
   const claimRewards = useClaimCoinbaseRewards()
+  // Track which row initiated the claim. Combined with the hook's reactive state
+  // (isPending/isConfirming) to show the spinner only on the active row.
+  // Not cleared explicitly — stale value is harmless because it's AND-ed with isClaiming.
+  const [claimingRowKey, setClaimingRowKey] = useState<string | null>(null)
+  const isClaiming = claimRewards.isPending || claimRewards.isConfirming
 
   // Multicall isRewardsClaimable() across every rollup represented in the breakdown so each
   // row's claim button reflects its own rollup's state, not just the configured rollup.
@@ -59,9 +64,9 @@ export const CoinbaseAddressList = ({
     onRefetch?.()
   }
 
-  const handleClaim = async (address: Address, rollupAddress: Address) => {
-    await claimRewards.claimRewards(address, rollupAddress)
-    onRefetch?.()
+  const handleClaim = (address: Address, rollupAddress: Address) => {
+    setClaimingRowKey(`${address}-${rollupAddress}`)
+    claimRewards.claimRewards(address, rollupAddress)
   }
 
   if (isLoading) {
@@ -137,15 +142,18 @@ export const CoinbaseAddressList = ({
           </div>
 
           {/* Claim Button */}
-          {item.rewards > 0n && (
+          {item.rewards > 0n && (() => {
+            const rowKey = `${item.address}-${item.rollupAddress}`
+            const isThisRowClaiming = claimingRowKey === rowKey && isClaiming
+            return (
             <div className="mt-3 pt-3 border-t border-parchment/10">
               {rowIsClaimable ? (
                 <button
                   onClick={() => handleClaim(item.address, item.rollupAddress)}
-                  disabled={claimRewards.isPending || claimRewards.isConfirming}
+                  disabled={isClaiming}
                   className="w-full py-2 bg-chartreuse text-ink font-bold text-sm uppercase tracking-wide hover:bg-chartreuse/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
-                  {claimRewards.isPending || claimRewards.isConfirming ? (
+                  {isThisRowClaiming ? (
                     <span className="flex items-center justify-center gap-2">
                       <Icon name="loader" size="sm" className="animate-spin" />
                       {claimRewards.isPending ? "Confirming..." : "Processing..."}
@@ -160,7 +168,8 @@ export const CoinbaseAddressList = ({
                 </div>
               )}
             </div>
-          )}
+            )
+          })()}
         </div>
         )
       })}
