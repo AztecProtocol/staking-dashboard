@@ -383,19 +383,35 @@ export const useClaimAllRewards = (): UseClaimAllRewardsReturn => {
     }
 
     if (taskError) {
-      // Mark task as failed
+      // Mark task as failed and continue to next task instead of stopping.
+      // In a multi-rollup setup, some rollups may have locked rewards while
+      // others are claimable — stopping on the first failure would strand
+      // the claimable ones.
       setTasks(prev => prev.map((t, i) =>
         i === currentTaskIndex ? { ...t, status: 'error' as const, error: taskError } : t
       ))
-
-      // Stop processing on error
-      setIsProcessing(false)
       setError(taskError)
-      setHasTriggeredClaim(false)
 
-      // Reset hooks
-      delegationClaimRef.current.reset()
-      coinbaseClaimRef.current.reset()
+      // Reset hooks and advance to next task
+      if (advanceTimeoutRef.current) clearTimeout(advanceTimeoutRef.current)
+      advanceTimeoutRef.current = setTimeout(() => {
+        advanceTimeoutRef.current = null
+        if (cancelledRef.current) return
+
+        delegationClaimRef.current.reset()
+        coinbaseClaimRef.current.reset()
+
+        const nextIndex = currentTaskIndex + 1
+        if (nextIndex < tasks.length) {
+          setCurrentTaskIndex(nextIndex)
+          setHasTriggeredClaim(false)
+          handledCompletionRef.current = null
+        } else {
+          setIsProcessing(false)
+          setCurrentTaskIndex(null)
+          handledCompletionRef.current = null
+        }
+      }, 500)
     }
   }, [
     isProcessing,
@@ -407,16 +423,18 @@ export const useClaimAllRewards = (): UseClaimAllRewardsReturn => {
     coinbaseClaimHook.error,
   ])
 
-  // Calculate progress
+  // Calculate progress (both completed and failed count as "done")
   const completedTasks = tasks.filter(t => t.status === 'completed')
   const failedTasks = tasks.filter(t => t.status === 'error')
+  const doneTasks = completedTasks.length + failedTasks.length
   const progressPercent = tasks.length > 0
-    ? Math.round((completedTasks.length / tasks.length) * 100)
+    ? Math.round((doneTasks / tasks.length) * 100)
     : 0
 
-  // Determine overall success/error state
-  const isSuccess = tasks.length > 0 && completedTasks.length === tasks.length
-  const isError = failedTasks.length > 0
+  // Determine overall success/error state — isSuccess means all tasks processed
+  // (some may have failed). isError means at least one failed.
+  const isSuccess = tasks.length > 0 && !isProcessing && doneTasks === tasks.length && completedTasks.length > 0
+  const isError = !isProcessing && failedTasks.length > 0
 
   return {
     startClaiming,

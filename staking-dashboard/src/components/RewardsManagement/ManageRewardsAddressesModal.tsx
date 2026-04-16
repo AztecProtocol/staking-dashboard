@@ -50,9 +50,11 @@ export const ManageRewardsAddressesModal = ({
 
   const addCoinbaseAddress = useAddCoinbaseAddress()
 
-  // Get rewards for all coinbase addresses
+  // Get rewards for all coinbase addresses.
+  // Use allCoinbaseBreakdown for the management UI so zero-balance addresses
+  // remain visible and removable.
   const {
-    coinbaseBreakdown,
+    allCoinbaseBreakdown,
     isLoading: isLoadingCoinbaseRewards,
     refetch: refetchCoinbaseRewards
   } = useMultipleCoinbaseRewards(coinbaseAddresses as Address[])
@@ -206,7 +208,7 @@ export const ManageRewardsAddressesModal = ({
                   Your Coinbase Addresses
                 </div>
                 <CoinbaseAddressList
-                  coinbaseBreakdown={coinbaseBreakdown}
+                  coinbaseBreakdown={allCoinbaseBreakdown}
                   decimals={decimals ?? 18}
                   symbol={symbol ?? ""}
                   isRewardsClaimable={isRewardsClaimable ?? false}

@@ -61,9 +61,9 @@ export function useCoinbaseRewardsAcrossRollups(coinbaseAddresses: Address[]) {
     },
   })
 
-  // Expand the results into one CoinbaseBreakdown per (coinbase, rollup) with non-zero balance.
-  // Zero balances are filtered so the rewards UI doesn't render empty rows for inactive rollups.
-  const coinbaseBreakdown = useMemo<CoinbaseBreakdown[]>(() => {
+  // Expand the results into one CoinbaseBreakdown per (coinbase, rollup) pair.
+  // Includes zero-balance rows so saved addresses remain visible in the management UI.
+  const allCoinbaseBreakdown = useMemo<CoinbaseBreakdown[]>(() => {
     if (!data || pairs.length === 0) return []
     const out: CoinbaseBreakdown[] = []
     for (let i = 0; i < pairs.length; i++) {
@@ -71,7 +71,6 @@ export function useCoinbaseRewardsAcrossRollups(coinbaseAddresses: Address[]) {
       const result = data[i]
       const rewards =
         result?.status === "success" ? ((result.result as bigint | undefined) ?? 0n) : 0n
-      if (rewards <= 0n) continue
       out.push({
         address: pair.coinbase,
         rewards,
@@ -83,12 +82,21 @@ export function useCoinbaseRewardsAcrossRollups(coinbaseAddresses: Address[]) {
     return out
   }, [data, pairs])
 
+  // Filtered to non-zero for claim UIs (Claim All, per-rollup claim buttons)
+  const coinbaseBreakdown = useMemo(
+    () => allCoinbaseBreakdown.filter((item) => item.rewards > 0n),
+    [allCoinbaseBreakdown],
+  )
+
   const totalCoinbaseRewards = useMemo(
     () => coinbaseBreakdown.reduce((total, item) => total + item.rewards, 0n),
     [coinbaseBreakdown],
   )
 
   return {
+    /** All (coinbase, rollup) pairs including zero-balance — for management UI */
+    allCoinbaseBreakdown,
+    /** Only non-zero balances — for claim UIs */
     coinbaseBreakdown,
     totalCoinbaseRewards,
     isLoading: isLoading || isLoadingRegistry,
