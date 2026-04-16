@@ -17,6 +17,7 @@ import { useERC20Balance } from "@/hooks/erc20"
 import { useActivationThresholdFormatted } from "@/hooks/rollup/useActivationThresholdFormatted"
 import { useATP } from "@/hooks/useATP"
 import { useAggregatedStakingData } from "@/hooks/atp/useAggregatedStakingData"
+import { useCoinbaseAddresses } from "@/hooks/rewards"
 
 /**
  * My Position page for ATP (Aztec Token Positions)
@@ -40,13 +41,16 @@ export default function MyPositionPage() {
     useActivationThresholdFormatted()
   const { atpData } = useATP()
   const { totalErc20Staked, directStakeBreakdown, delegationBreakdown, erc20DelegationBreakdown, erc20DirectStakeBreakdown, refetch } = useAggregatedStakingData()
+  const { coinbaseAddresses } = useCoinbaseAddresses()
 
   // Check if user has any staked positions (ATP vaults or ERC20 wallet stakes)
+  // or saved coinbase addresses (for self-stake rewards tracking)
   const hasStakedPositions =
     directStakeBreakdown.length > 0 ||
     delegationBreakdown.length > 0 ||
     erc20DelegationBreakdown.length > 0 ||
-    erc20DirectStakeBreakdown.length > 0
+    erc20DirectStakeBreakdown.length > 0 ||
+    (coinbaseAddresses && coinbaseAddresses.length > 0)
 
   // Calculate stakeable amount (rounded down to nearest activation threshold multiple)
   const walletStakeableAmount = useMemo(() => {
