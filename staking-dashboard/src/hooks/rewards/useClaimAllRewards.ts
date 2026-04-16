@@ -80,6 +80,8 @@ export const useClaimAllRewards = (): UseClaimAllRewardsReturn => {
 
   // Track if we were cancelled
   const cancelledRef = useRef(false)
+  // Ref-based timeout for advancing between tasks — survives effect re-runs
+  const advanceTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   // Get current task
   const currentTask = currentTaskIndex !== null ? tasks[currentTaskIndex] : null
@@ -199,6 +201,7 @@ export const useClaimAllRewards = (): UseClaimAllRewardsReturn => {
    */
   const cancelClaiming = useCallback(() => {
     cancelledRef.current = true
+    if (advanceTimeoutRef.current) { clearTimeout(advanceTimeoutRef.current); advanceTimeoutRef.current = null }
     setIsProcessing(false)
     setCurrentTaskIndex(null)
     setHasTriggeredClaim(false)
@@ -234,6 +237,7 @@ export const useClaimAllRewards = (): UseClaimAllRewardsReturn => {
    */
   const reset = useCallback(() => {
     cancelledRef.current = false
+    if (advanceTimeoutRef.current) { clearTimeout(advanceTimeoutRef.current); advanceTimeoutRef.current = null }
     setTasks([])
     setCurrentTaskIndex(null)
     setIsProcessing(false)
@@ -242,6 +246,13 @@ export const useClaimAllRewards = (): UseClaimAllRewardsReturn => {
     delegationClaimHook.reset()
     coinbaseClaimHook.reset()
   }, [delegationClaimHook, coinbaseClaimHook])
+
+  // Keep stable refs to claim functions so the trigger effect doesn't re-fire
+  // when the hook objects change identity (e.g. after reset()).
+  const delegationClaimRef = useRef(delegationClaimHook)
+  delegationClaimRef.current = delegationClaimHook
+  const coinbaseClaimRef = useRef(coinbaseClaimHook)
+  coinbaseClaimRef.current = coinbaseClaimHook
 
   /**
    * Start claim for current task when ready
@@ -261,15 +272,15 @@ export const useClaimAllRewards = (): UseClaimAllRewardsReturn => {
     ))
     setHasTriggeredClaim(true)
 
-    // Start the appropriate claim
+    // Start the appropriate claim (read from refs to avoid stale closures)
     if (task.type === 'delegation') {
-      delegationClaimHook.claim()
+      delegationClaimRef.current.claim()
     } else if (task.type === 'coinbase' && task.coinbaseAddress) {
       // Pass the per-task rollup address so the claim lands on the correct rollup contract
       // (the hook itself defaults to the configured rollup when no override is given).
-      coinbaseClaimHook.claimRewards(task.coinbaseAddress, task.rollupAddress)
+      coinbaseClaimRef.current.claimRewards(task.coinbaseAddress, task.rollupAddress)
     }
-  }, [isProcessing, currentTaskIndex, tasks, hasTriggeredClaim, isLoadingBalances, delegationClaimHook, coinbaseClaimHook])
+  }, [isProcessing, currentTaskIndex, tasks, hasTriggeredClaim, isLoadingBalances])
 
   /**
    * Update sub-step for delegation tasks
@@ -285,11 +296,16 @@ export const useClaimAllRewards = (): UseClaimAllRewardsReturn => {
     }
   }, [delegationClaimHook.claimStep, currentTaskIndex, currentTask?.type, isProcessing])
 
+  // Track whether we've already handled the current task's completion to avoid
+  // re-processing when hook state oscillates during reset.
+  const handledCompletionRef = useRef<number | null>(null)
+
   /**
    * Handle task completion and move to next
    */
   useEffect(() => {
     if (!isProcessing || currentTaskIndex === null || !hasTriggeredClaim || cancelledRef.current) return
+    if (handledCompletionRef.current === currentTaskIndex) return
 
     const task = tasks[currentTaskIndex]
     if (!task || task.status !== 'processing') return
@@ -304,32 +320,36 @@ export const useClaimAllRewards = (): UseClaimAllRewardsReturn => {
     }
 
     if (isComplete) {
+      // Guard against re-entry
+      handledCompletionRef.current = currentTaskIndex
+
       // Mark task as completed
       setTasks(prev => prev.map((t, i) =>
         i === currentTaskIndex ? { ...t, status: 'completed' as const } : t
       ))
 
-      // Reset hooks for next task
-      delegationClaimHook.reset()
-      coinbaseClaimHook.reset()
-
-      // Small delay before moving to next task
-      const timeoutId = setTimeout(() => {
+      // Reset hooks and advance to next task after a small delay.
+      // Use a ref-based timeout so it survives effect re-runs — the setTasks()
+      // above changes `tasks`, which re-triggers this effect. A cleanup return
+      // would kill the timeout before it fires.
+      if (advanceTimeoutRef.current) clearTimeout(advanceTimeoutRef.current)
+      advanceTimeoutRef.current = setTimeout(() => {
+        advanceTimeoutRef.current = null
         if (cancelledRef.current) return
 
-        // Move to next task
+        delegationClaimRef.current.reset()
+        coinbaseClaimRef.current.reset()
+
         const nextIndex = currentTaskIndex + 1
         if (nextIndex < tasks.length) {
           setCurrentTaskIndex(nextIndex)
           setHasTriggeredClaim(false)
+          handledCompletionRef.current = null
         } else {
-          // All done
           setIsProcessing(false)
           setCurrentTaskIndex(null)
         }
       }, 500)
-
-      return () => clearTimeout(timeoutId)
     }
   }, [
     isProcessing,
@@ -339,8 +359,6 @@ export const useClaimAllRewards = (): UseClaimAllRewardsReturn => {
     delegationClaimHook.isSuccess,
     delegationClaimHook.claimStep,
     coinbaseClaimHook.isSuccess,
-    delegationClaimHook,
-    coinbaseClaimHook
   ])
 
   /**
@@ -372,8 +390,8 @@ export const useClaimAllRewards = (): UseClaimAllRewardsReturn => {
       setHasTriggeredClaim(false)
 
       // Reset hooks
-      delegationClaimHook.reset()
-      coinbaseClaimHook.reset()
+      delegationClaimRef.current.reset()
+      coinbaseClaimRef.current.reset()
     }
   }, [
     isProcessing,
@@ -383,8 +401,6 @@ export const useClaimAllRewards = (): UseClaimAllRewardsReturn => {
     delegationClaimHook.error,
     coinbaseClaimHook.isError,
     coinbaseClaimHook.error,
-    delegationClaimHook,
-    coinbaseClaimHook
   ])
 
   // Calculate progress
