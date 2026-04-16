@@ -9,6 +9,7 @@ import { GenesisSequencerSale } from "./abis/GenesisSequencerSale";
 import { ATPWithdrawableAndClaimableStakerAbi } from "./abis/ATPWithdrawableAndClaimableStaker";
 import { GovernanceAbi } from "./abis/Governance";
 import { GSEAbi } from "./abis/GSE";
+import { RollupRegistryAbi } from "./abis/RollupRegistry";
 
 // Define a reusable schema for Ethereum addresses
 const addressSchema = z
@@ -74,6 +75,11 @@ const contracts = {
   gse: {
     address: env.VITE_GSE_ADDRESS,
     abi: GSEAbi,
+  },
+  // The rollup registry's address is not configured statically — it is discovered at runtime via
+  // stakingRegistry.ROLLUP_REGISTRY(). Only the ABI is exported here so callers can pass it to wagmi.
+  rollupRegistry: {
+    abi: RollupRegistryAbi,
   },
 } as const;
 

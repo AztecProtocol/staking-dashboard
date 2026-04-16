@@ -3,6 +3,7 @@ export { useActivationThresholdFormatted } from "./useActivationThresholdFormatt
 export { useSequencerRewards } from "./useSequencerRewards";
 export { useClaimSequencerRewards } from "./useClaimSequencerRewards";
 export { useIsRewardsClaimable } from "./useIsRewardsClaimable";
+export { useIsRewardsClaimableAcrossRollups } from "./useIsRewardsClaimableAcrossRollups";
 export { useEjectionThreshold } from "./useEjectionThreshold";
 export { useStakeHealth } from "./useStakeHealth";
 export type { StakeHealth } from "./useStakeHealth";
@@ -10,3 +11,7 @@ export { useFinalizeWithdraw } from "./useFinalizeWithdraw";
 export { useWalletInitiateWithdraw } from "./useWalletInitiateWithdraw";
 export { useWalletDirectStake } from "./useWalletDirectStake";
 export { useSequencerStatus, SequencerStatus, getStatusLabel } from "./useSequencerStatus";
+export { useRollupRegistry } from "./useRollupRegistry";
+export type { RollupInstance } from "./useRollupRegistry";
+export { useAttesterStakeLocation } from "./useAttesterStakeLocation";
+export type { AttesterStakeLocation } from "./useAttesterStakeLocation";
