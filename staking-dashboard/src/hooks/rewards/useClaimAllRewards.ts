@@ -28,6 +28,15 @@ export interface ClaimTask {
   providerTakeRate?: number
   // Coinbase-specific data
   coinbaseAddress?: Address
+  /**
+   * The rollup contract this task targets. Coinbase tasks pulled from a multi-rollup
+   * breakdown carry the rollup the balance lives on so the engine routes the
+   * `claimSequencerRewards` call to the correct contract. Delegation tasks default to
+   * the configured rollup (delegation rewards are split-contract scoped, but the
+   * underlying balance still flows from a specific rollup).
+   */
+  rollupAddress?: Address
+  rollupVersion?: bigint
   // Sub-step tracking for delegations
   currentSubStep?: 'claiming' | 'distributing' | 'withdrawing'
 }
@@ -78,10 +87,14 @@ export const useClaimAllRewards = (): UseClaimAllRewardsReturn => {
   // Get current task's addresses
   const currentSplitContract = currentTask?.type === 'delegation' ? currentTask.splitContract : undefined
   const currentCoinbase = currentTask?.type === 'coinbase' ? currentTask.coinbaseAddress : undefined
+  // Each task carries the rollup the balance lives on. For delegation tasks (which have not
+  // been multi-rollup-expanded yet) and legacy callers that omit the field, fall back to the
+  // configured rollup so existing behavior is preserved.
+  const currentTaskRollup = currentTask?.rollupAddress
 
   // Fetch balances for current task (for delegations) - extract refetch functions
   const { warehouseAddress, isLoading: isLoadingWarehouse } = useSplitsWarehouse(currentSplitContract)
-  const { rewards: rollupBalance, isLoading: isLoadingRollup, refetch: refetchRollup } = useSequencerRewards(currentSplitContract || currentCoinbase || '')
+  const { rewards: rollupBalance, isLoading: isLoadingRollup, refetch: refetchRollup } = useSequencerRewards(currentSplitContract || currentCoinbase || '', currentTaskRollup)
   const { balance: splitContractBalance, isLoading: isLoadingSplitBalance, refetch: refetchSplitContract } = useERC20Balance(tokenAddress, currentSplitContract)
   const { balance: warehouseBalance, isLoading: isLoadingWarehouseBalance, refetch: refetchWarehouse } = useWarehouseBalance(warehouseAddress, userAddress, tokenAddress)
 
@@ -147,12 +160,18 @@ export const useClaimAllRewards = (): UseClaimAllRewardsReturn => {
         providerTakeRate: delegation.providerTakeRate
       })),
       ...coinbases.map((coinbase): ClaimTask => ({
-        id: `coinbase-${coinbase.address}`,
+        // Include the rollup in the task id so the same coinbase address claimed across
+        // multiple rollups produces distinct tasks instead of collapsing into one.
+        id: `coinbase-${coinbase.address}-${coinbase.rollupAddress}`,
         type: 'coinbase',
-        displayName: `${coinbase.address.slice(0, 6)}...${coinbase.address.slice(-4)}`,
+        displayName: coinbase.rollupVersion !== undefined
+          ? `${coinbase.address.slice(0, 6)}...${coinbase.address.slice(-4)} (rollup v${coinbase.rollupVersion})`
+          : `${coinbase.address.slice(0, 6)}...${coinbase.address.slice(-4)}`,
         estimatedRewards: coinbase.rewards,
         status: 'pending',
-        coinbaseAddress: coinbase.address
+        coinbaseAddress: coinbase.address,
+        rollupAddress: coinbase.rollupAddress,
+        rollupVersion: coinbase.rollupVersion,
       }))
     ]
 
@@ -246,7 +265,9 @@ export const useClaimAllRewards = (): UseClaimAllRewardsReturn => {
     if (task.type === 'delegation') {
       delegationClaimHook.claim()
     } else if (task.type === 'coinbase' && task.coinbaseAddress) {
-      coinbaseClaimHook.claimRewards(task.coinbaseAddress)
+      // Pass the per-task rollup address so the claim lands on the correct rollup contract
+      // (the hook itself defaults to the configured rollup when no override is given).
+      coinbaseClaimHook.claimRewards(task.coinbaseAddress, task.rollupAddress)
     }
   }, [isProcessing, currentTaskIndex, tasks, hasTriggeredClaim, isLoadingBalances, delegationClaimHook, coinbaseClaimHook])
 
