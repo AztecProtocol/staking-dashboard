@@ -125,8 +125,13 @@ export const ATPStakingOverview = ({ atpData, walletBalance = 0n }: ATPStakingOv
     }
   }, [])
 
-  // Show skeleton while loading or if required data is missing
-  if (isLoadingAggregated || isLoadingStakeable || isLoadingTokenDetails || decimals === undefined || symbol === undefined || activationThreshold === undefined) {
+  // Only show skeleton on initial load — during refetches keep the existing tree
+  // mounted so modals (like ClaimAllRewardsModal) aren't destroyed mid-flow.
+  const hasLoadedOnce = useRef(false)
+  if (!isLoadingAggregated && !isLoadingStakeable && !isLoadingTokenDetails) {
+    hasLoadedOnce.current = true
+  }
+  if (!hasLoadedOnce.current && (isLoadingAggregated || isLoadingStakeable || isLoadingTokenDetails || decimals === undefined || symbol === undefined || activationThreshold === undefined)) {
     return <ATPStakingOverviewSkeleton />
   }
 

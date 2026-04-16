@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react"
+import { useState, useMemo, useRef } from "react"
 import { useAccount } from "wagmi"
 import { WalletConnectGuard } from "@/components/WalletConnectGuard"
 import { PageHeader } from "@/components/PageHeader"
@@ -44,13 +44,18 @@ export default function MyPositionPage() {
   const { coinbaseAddresses } = useCoinbaseAddresses()
 
   // Check if user has any staked positions (ATP vaults or ERC20 wallet stakes)
-  // or saved coinbase addresses (for self-stake rewards tracking)
-  const hasStakedPositions =
+  // or saved coinbase addresses (for self-stake rewards tracking).
+  // Once true, stay true for the session — prevents unmounting the Positions
+  // Overview (and its claim modal) when a successful claim zeros out rewards.
+  const hasPositionsNow =
     directStakeBreakdown.length > 0 ||
     delegationBreakdown.length > 0 ||
     erc20DelegationBreakdown.length > 0 ||
     erc20DirectStakeBreakdown.length > 0 ||
     (coinbaseAddresses && coinbaseAddresses.length > 0)
+  const hadPositionsRef = useRef(false)
+  if (hasPositionsNow) hadPositionsRef.current = true
+  const hasStakedPositions = hadPositionsRef.current
 
   // Calculate stakeable amount (rounded down to nearest activation threshold multiple)
   const walletStakeableAmount = useMemo(() => {
