@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, useCallback, useMemo } from "react"
 import { useRollupData } from "@/hooks/rollup/useRollupData"
+import { useRollupRegistry } from "@/hooks/rollup/useRollupRegistry"
 import { useERC20TokenDetails } from "@/hooks/erc20/useERC20TokenDetails"
 import { useATPStakingStepsContext, ATPStakingStepsWithTransaction, buildConditionalDependencies } from "@/contexts/ATPStakingStepsContext"
 import { useTransactionCart } from "@/contexts/TransactionCartContext"
@@ -29,7 +30,11 @@ interface RegistrationStakeProps {
 export const RegistrationStake = ({ onComplete }: RegistrationStakeProps) => {
   const { formData, handlePrevStep } = useATPStakingStepsContext<ValidatorRegistrationForm>()
   const { selectedAtp, uploadedKeystores, transactionType } = formData
-  const { activationThreshold, version: rollupVersion, isLoading: isLoadingRollup } = useRollupData()
+  // Resolve the canonical rollup so registrations target the latest one even if the dashboard
+  // was deployed against an older `VITE_ROLLUP_ADDRESS`. The activation threshold and version
+  // both come from the canonical rollup so the staked amount and `_rollupVersion` arg agree.
+  const { canonical: canonicalRollup, isLoading: isLoadingRegistry } = useRollupRegistry()
+  const { activationThreshold, version: rollupVersion, isLoading: isLoadingRollup } = useRollupData(canonicalRollup?.address)
   const { symbol, decimals, isLoading: isLoadingToken } = useERC20TokenDetails(selectedAtp?.token!)
   const { addTransaction, checkTransactionInQueue, isSafe, openCart } = useTransactionCart()
   const { showAlert } = useAlert()
@@ -170,7 +175,7 @@ export const RegistrationStake = ({ onComplete }: RegistrationStakeProps) => {
     onComplete()
   }
 
-  const isLoading = isLoadingRollup || isLoadingToken
+  const isLoading = isLoadingRollup || isLoadingToken || isLoadingRegistry
 
   return (
     <div className="space-y-6">

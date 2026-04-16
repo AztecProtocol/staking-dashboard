@@ -69,6 +69,9 @@ interface WalletWithdrawalActionsProps {
   actualUnlockTime?: bigint
   withdrawalDelayDays?: number
   onSuccess?: () => void
+  /** The rollup contract the stake actually lives on. Stranded stakes pass the old rollup here
+   *  so `initiateWithdraw` / `finalizeWithdraw` target the correct contract. */
+  rollupAddress?: Address
 }
 
 /**
@@ -83,17 +86,20 @@ export const WalletWithdrawalActions = ({
   actualUnlockTime,
   withdrawalDelayDays,
   onSuccess,
+  rollupAddress,
 }: WalletWithdrawalActionsProps) => {
   const { showAlert } = useAlert()
   const isExiting = status === SequencerStatus.EXITING
 
+  // Pass the per-stake rollup so stranded stakes call initiateWithdraw/finalizeWithdraw on the
+  // correct rollup contract, not the configured one.
   const {
     initiateWithdraw,
     isPending: isInitiatingWithdraw,
     isConfirming: isConfirmingInitiate,
     isSuccess: isInitiateSuccess,
     error: initiateError,
-  } = useWalletInitiateWithdraw()
+  } = useWalletInitiateWithdraw(rollupAddress)
 
   const {
     finalizeWithdraw,
@@ -101,7 +107,7 @@ export const WalletWithdrawalActions = ({
     isConfirming: isConfirmingFinalize,
     isSuccess: isFinalizeSuccess,
     error: finalizeError,
-  } = useFinalizeWithdraw()
+  } = useFinalizeWithdraw(rollupAddress)
 
   const canInitiateUnstake =
     status === SequencerStatus.VALIDATING || status === SequencerStatus.ZOMBIE

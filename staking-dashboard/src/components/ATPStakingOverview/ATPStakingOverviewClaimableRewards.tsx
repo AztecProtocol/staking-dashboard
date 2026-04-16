@@ -4,6 +4,7 @@ import { TooltipIcon } from "@/components/Tooltip"
 import { formatTokenAmount, formatTokenAmountFull } from "@/utils/atpFormatters"
 import { ManageRewardsAddressesModal } from "@/components/RewardsManagement"
 import { ClaimAllRewardsModal } from "@/components/ClaimAllRewardsModal"
+import { useTermsModal } from "@/contexts/TermsModalContext"
 import type { DelegationBreakdown } from "@/hooks/atp/useAggregatedStakingData"
 import type { CoinbaseBreakdown } from "@/hooks/rewards/rewardsTypes"
 
@@ -28,6 +29,7 @@ export const ATPStakingOverviewClaimableRewards = forwardRef<HTMLDivElement, ATP
   ({ totalRewards, selfStakeRewards = 0n, pendingWarehouseWithdrawal = 0n, isRewardsClaimable = true, isExpanded, onToggle, decimals, symbol, delegationBreakdown = [], coinbaseBreakdown = [], onClaimSuccess }, ref) => {
     const [isManageModalOpen, setIsManageModalOpen] = useState(false)
     const [isClaimAllModalOpen, setIsClaimAllModalOpen] = useState(false)
+    const { requireTermsAcceptance } = useTermsModal()
 
     // Combined total rewards (delegation + self-stake)
     const combinedTotalRewards = totalRewards + selfStakeRewards
@@ -111,13 +113,14 @@ export const ATPStakingOverviewClaimableRewards = forwardRef<HTMLDivElement, ATP
 
               {/* Action Buttons */}
               <div className="mt-4 pt-4 border-t border-parchment/10 space-y-2">
-                {/* Claim All Button */}
+                {/* Claim All Button — no longer gated by the configured rollup's claimability,
+                    since each per-task rollup gates its own claim and engine surfaces per-task errors. */}
                 <button
                   onClick={(e) => {
                     e.stopPropagation()
-                    setIsClaimAllModalOpen(true)
+                    requireTermsAcceptance(() => setIsClaimAllModalOpen(true))
                   }}
-                  disabled={!isRewardsClaimable || combinedTotalRewards === 0n}
+                  disabled={combinedTotalRewards === 0n}
                   className="w-full py-2 bg-chartreuse text-ink text-sm font-bold uppercase tracking-wide hover:bg-chartreuse/90 transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <Icon name="gift" size="sm" />

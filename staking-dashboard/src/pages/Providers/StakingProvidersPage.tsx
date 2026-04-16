@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom"
 import { Icon } from "@/components/Icon"
 import { DecentralizationDisclaimer } from "@/components/DecentralizationDisclaimer"
+import { IndexerRollupDisclaimer } from "@/components/IndexerRollupDisclaimer"
 import { PageHeader } from "@/components/PageHeader"
 import { Pagination } from "@/components/Pagination"
 import { ProviderSearch } from "@/components/Provider/ProviderSearch"
@@ -120,6 +121,8 @@ export default function StakingProvidersPage() {
         itemsPerPage={10}
         totalItems={allProviders.length}
       />
+
+      <IndexerRollupDisclaimer />
 
       {disclaimerProvider && (
         <DecentralizationDisclaimer

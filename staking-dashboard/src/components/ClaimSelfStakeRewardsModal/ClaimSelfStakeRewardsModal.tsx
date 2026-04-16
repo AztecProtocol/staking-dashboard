@@ -5,9 +5,9 @@ import { CopyButton } from "@/components/CopyButton"
 import { formatTokenAmount } from "@/utils/atpFormatters"
 import { debounce } from "@/utils/debounce"
 import { useStakingAssetTokenDetails } from "@/hooks/stakingRegistry"
-import { useSequencerRewards } from "@/hooks/rollup/useSequencerRewards"
 import { useClaimSequencerRewards } from "@/hooks/rollup/useClaimSequencerRewards"
-import { useIsRewardsClaimable } from "@/hooks/rollup/useIsRewardsClaimable"
+import { useIsRewardsClaimableAcrossRollups } from "@/hooks/rollup/useIsRewardsClaimableAcrossRollups"
+import { useCoinbaseRewardsAcrossRollups } from "@/hooks/rewards/useCoinbaseRewardsAcrossRollups"
 import { useAlert } from "@/contexts/AlertContext"
 import type { ATPData } from "@/hooks/atp"
 import type { Address } from "viem"
@@ -43,11 +43,29 @@ export const ClaimSelfStakeRewardsModal = ({
   const [hasCheckedRewards, setHasCheckedRewards] = useState(false)
   const [isDebouncing, setIsDebouncing] = useState(false)
 
+  const isValidAddress = coinbaseAddress.length === 42 && coinbaseAddress.startsWith('0x')
+  // Empty array while typing prevents firing reads against an invalid coinbase.
+  const coinbasesForQuery = useMemo<Address[]>(
+    () => (isValidAddress ? [coinbaseAddress as Address] : []),
+    [coinbaseAddress, isValidAddress],
+  )
+
+  // Fan the read out across every rollup discovered via the Aztec governance Registry, so a
+  // sequencer with stranded balances on older rollups sees them all listed (one row per rollup).
   const {
-    rewards,
+    coinbaseBreakdown,
+    totalCoinbaseRewards,
     isLoading: isLoadingRewards,
-    refetch: checkRewards
-  } = useSequencerRewards(coinbaseAddress)
+    refetch: checkRewards,
+  } = useCoinbaseRewardsAcrossRollups(coinbasesForQuery)
+
+  // Multicall isRewardsClaimable() across the same rollups so the per-row claim button reflects
+  // the right rollup's gating, not the configured rollup's.
+  const rollupAddressesInBreakdown = useMemo(
+    () => coinbaseBreakdown.map((row) => row.rollupAddress),
+    [coinbaseBreakdown],
+  )
+  const { isClaimable: isClaimableForRollup } = useIsRewardsClaimableAcrossRollups(rollupAddressesInBreakdown)
 
   const {
     claimRewards,
@@ -57,8 +75,6 @@ export const ClaimSelfStakeRewardsModal = ({
     error,
     reset
   } = useClaimSequencerRewards()
-
-  const { isRewardsClaimable } = useIsRewardsClaimable()
 
   // Create debounced check function that manages debouncing state
   const debouncedCheckRewards = useMemo(
@@ -81,8 +97,10 @@ export const ClaimSelfStakeRewardsModal = ({
     }
   }, [coinbaseAddress, debouncedCheckRewards])
 
-  const handleClaim = () => {
-    claimRewards(coinbaseAddress as Address)
+  // Per-rollup claim helper — passes the rollup the row's balance lives on so the
+  // `claimSequencerRewards` tx is sent to the correct contract.
+  const handleClaim = (rollupAddress: Address) => {
+    claimRewards(coinbaseAddress as Address, rollupAddress)
   }
 
   // Handle success
@@ -117,8 +135,6 @@ export const ClaimSelfStakeRewardsModal = ({
       handleClose()
     }
   }
-
-  const isValidAddress = coinbaseAddress.length === 42 && coinbaseAddress.startsWith('0x')
 
   if (!isOpen) return null
 
@@ -204,43 +220,74 @@ export const ClaimSelfStakeRewardsModal = ({
             )}
           </div>
 
-          {/* Rewards Display */}
+          {/* Rewards Display — one row per rollup with a non-zero balance for this coinbase. */}
           {hasCheckedRewards && !isLoadingRewards && !isDebouncing && (
             <>
-              {rewards !== undefined ? (
-                <div className="bg-chartreuse/10 border border-chartreuse/30 p-4 mb-6">
+              {coinbaseBreakdown.length > 0 ? (
+                <div className="space-y-3 mb-6">
+                  <div className="flex items-baseline justify-between">
+                    <div className="text-xs text-parchment/60 uppercase tracking-wide">
+                      Available Rewards
+                    </div>
+                    <div className="font-mono text-sm text-parchment/80">
+                      Total: <span className="text-chartreuse font-bold">{decimals && symbol ? formatTokenAmount(totalCoinbaseRewards, decimals, symbol) : '-'}</span>
+                    </div>
+                  </div>
+                  {coinbaseBreakdown.map((row) => {
+                    const perRollupClaimable = isClaimableForRollup(row.rollupAddress)
+                    // Default to allowing the claim while loading; the contract will revert if it's
+                    // genuinely locked. Disable explicitly only when we've confirmed false.
+                    const rowIsClaimable = perRollupClaimable !== false
+                    return (
+                      <div
+                        key={row.rollupAddress}
+                        className="bg-chartreuse/10 border border-chartreuse/30 p-4"
+                      >
+                        <div className="flex items-center justify-between gap-3 mb-2">
+                          {row.rollupVersion !== undefined ? (
+                            <span
+                              className="font-oracle-standard text-[10px] uppercase tracking-wide bg-aqua/15 border border-aqua/30 text-aqua px-2 py-0.5"
+                              title={`Rollup contract: ${row.rollupAddress}`}
+                            >
+                              Rollup v{row.rollupVersion.toString()}
+                            </span>
+                          ) : (
+                            <span className="font-oracle-standard text-[10px] uppercase tracking-wide text-parchment/50">
+                              Configured rollup
+                            </span>
+                          )}
+                          <div className="font-mono text-lg font-bold text-chartreuse">
+                            {decimals && symbol ? formatTokenAmount(row.rewards, decimals, symbol) : '-'}
+                          </div>
+                        </div>
+                        <button
+                          onClick={() => handleClaim(row.rollupAddress)}
+                          disabled={isPending || isConfirming || !rowIsClaimable}
+                          className="w-full py-2 bg-chartreuse text-ink font-oracle-standard font-bold text-xs uppercase tracking-wider hover:bg-chartreuse/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          {isPending || isConfirming ? (
+                            <div className="flex items-center justify-center gap-2">
+                              <div className="w-3 h-3 border border-ink/30 border-t-ink rounded-full animate-spin"></div>
+                              {isPending ? 'Confirming' : 'Claiming'}
+                            </div>
+                          ) : !rowIsClaimable ? (
+                            'Locked on this rollup'
+                          ) : (
+                            'Claim from this rollup'
+                          )}
+                        </button>
+                      </div>
+                    )
+                  })}
+                </div>
+              ) : (
+                <div className="bg-parchment/5 border border-parchment/20 p-4 mb-6">
                   <div className="text-xs text-parchment/60 uppercase tracking-wide mb-2">
                     Available Rewards
                   </div>
-                  <div className="font-mono text-2xl font-bold text-chartreuse">
-                    {decimals && symbol ? formatTokenAmount(rewards, decimals, symbol) : '-'}
-                  </div>
-                  {rewards === 0n && (
-                    <p className="text-xs text-parchment/60 mt-2">
-                      No rewards available for this coinbase address
-                    </p>
-                  )}
-                </div>
-              ) : (
-                <div className="bg-vermillion/10 border border-vermillion/20 p-4 mb-6">
-                  <div className="text-xs font-oracle-standard font-bold text-vermillion mb-1 uppercase tracking-wide">
-                    Coinbase Not Found
-                  </div>
-                  <div className="text-xs text-parchment/80">
-                    Cannot find rewards for this coinbase address. Please verify the address is correct.
-                  </div>
-                </div>
-              )}
-
-              {/* Rewards Not Claimable Warning */}
-              {isRewardsClaimable === false && (
-                <div className="bg-parchment/10 border border-parchment/30 p-4 mb-6">
-                  <div className="text-xs font-oracle-standard font-bold text-parchment mb-1 uppercase tracking-wide">
-                    Rewards Currently Locked
-                  </div>
-                  <div className="text-xs text-parchment/80">
-                    All rewards are currently locked by the network protocol (rollup). Claiming will be enabled once the protocol unlocks rewards.
-                  </div>
+                  <p className="text-sm text-parchment/80">
+                    No rewards found for this coinbase address on any known rollup.
+                  </p>
                 </div>
               )}
             </>
@@ -262,27 +309,7 @@ export const ClaimSelfStakeRewardsModal = ({
               onClick={handleClose}
               className="px-6 py-3 border border-parchment/30 text-parchment font-oracle-standard font-bold text-sm uppercase tracking-wider hover:bg-parchment/10 transition-all"
             >
-              Cancel
-            </button>
-            <button
-              onClick={handleClaim}
-              disabled={
-                !rewards ||
-                rewards === 0n ||
-                isPending ||
-                isConfirming ||
-                isRewardsClaimable === false
-              }
-              className="px-6 py-3 bg-chartreuse text-ink font-oracle-standard font-bold text-sm uppercase tracking-wider hover:bg-chartreuse/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {isPending || isConfirming ? (
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 border border-ink/30 border-t-ink rounded-full animate-spin"></div>
-                  {isPending ? 'Confirming' : 'Claiming'}
-                </div>
-              ) : (
-                'Claim Rewards'
-              )}
+              Close
             </button>
           </div>
         </div>

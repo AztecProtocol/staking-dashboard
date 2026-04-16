@@ -11,7 +11,7 @@ import { formatBlockTimestamp } from "@/utils/dateFormatters"
 import { useStakingAssetTokenDetails } from "@/hooks/stakingRegistry"
 import { getValidatorDashboardValidatorUrl } from "@/utils/validatorDashboardUtils"
 import { getExplorerTxUrl } from "@/utils/explorerUtils"
-import { useSequencerStatus, SequencerStatus, useStakeHealth } from "@/hooks/rollup"
+import { useSequencerStatus, SequencerStatus, useStakeHealth, useAttesterStakeLocation } from "@/hooks/rollup"
 import { useGovernanceConfig } from "@/hooks/governance"
 import { WalletWithdrawalActions } from "./WalletWithdrawalActions"
 import type { Erc20DirectStakeBreakdown } from "@/hooks/atp/useAggregatedStakingData"
@@ -34,7 +34,13 @@ export const WalletDirectStakeItem = ({
   const { symbol, decimals } = useStakingAssetTokenDetails()
   const { date, time } = formatBlockTimestamp(stake.timestamp)
 
-  const { status, statusLabel, isLoading: isLoadingStatus, canFinalize, actualUnlockTime, refetch: refetchStatus } = useSequencerStatus(stake.attesterAddress as Address)
+  // Discover which rollup the attester's stake actually lives on. For non-stranded stakes this
+  // returns the configured/canonical rollup; for stranded stakes it returns the specific old
+  // rollup so that withdraw/finalize calls target the correct contract.
+  const { location: stakeLocation } = useAttesterStakeLocation(stake.attesterAddress as Address)
+  const resolvedRollup = stakeLocation?.rollupAddress
+
+  const { status, statusLabel, isLoading: isLoadingStatus, canFinalize, actualUnlockTime, refetch: refetchStatus } = useSequencerStatus(stake.attesterAddress as Address, resolvedRollup)
   const { withdrawalDelayDays } = useGovernanceConfig()
 
   const {
@@ -46,7 +52,7 @@ export const WalletDirectStakeItem = ({
     isAtRisk,
     isCritical,
     isLoading: isLoadingHealth
-  } = useStakeHealth(stake.attesterAddress as Address)
+  } = useStakeHealth(stake.attesterAddress as Address, resolvedRollup)
 
   const isUnstaked = stake.status === 'UNSTAKED'
   const isInQueue = status === SequencerStatus.NONE && !stake.hasFailedDeposit && !isUnstaked
@@ -252,6 +258,7 @@ export const WalletDirectStakeItem = ({
                     canFinalize={canFinalize}
                     actualUnlockTime={actualUnlockTime}
                     withdrawalDelayDays={withdrawalDelayDays}
+                    rollupAddress={resolvedRollup}
                     onSuccess={() => {
                       refetchStatus()
                       onWithdrawSuccess?.()

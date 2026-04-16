@@ -4,6 +4,7 @@ import { ProviderStakingFlow } from "@/components/Provider/ProviderStakingFlow";
 import { ProviderSequencerList } from "@/components/Provider/ProviderSequencerList";
 import { ProviderDetailSkeleton } from "@/components/Provider/ProviderDetailSkeleton";
 import { PageHeader } from "@/components/PageHeader";
+import { IndexerRollupDisclaimer } from "@/components/IndexerRollupDisclaimer";
 import { useProviderDetail } from "@/hooks/providers/useProviderDetail";
 import { Link } from "react-router-dom";
 import { applyHeroItalics } from "@/utils/typographyUtils";
@@ -60,6 +61,8 @@ export default function StakingProviderDetailPage() {
           provider={provider}
         />
       </div>
+
+      <IndexerRollupDisclaimer />
     </div>
   );
 }

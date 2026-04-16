@@ -4,6 +4,7 @@ import { Icon } from "@/components/Icon"
 import { StepIndicator } from "@/components/StepIndicator"
 import { SuccessAlert } from "@/components/SuccessAlert"
 import { useRollupData } from "@/hooks/rollup/useRollupData"
+import { useRollupRegistry } from "@/hooks/rollup/useRollupRegistry"
 import { useStakingAssetTokenDetails } from "@/hooks/stakingRegistry/useStakingAssetTokenDetails"
 import { useAllowance } from "@/hooks/erc20/useAllowance"
 import { useApproveRollup } from "@/hooks/erc20/useApproveRollup"
@@ -41,7 +42,12 @@ export const WalletDirectStakingFlow = ({
   onComplete,
 }: WalletDirectStakingFlowProps) => {
   const { address } = useAccount()
-  const { activationThreshold, isLoading: isLoadingRollup } = useRollupData()
+  // Discover the canonical rollup so registrations target whichever rollup is currently
+  // canonical, even if the dashboard was deployed against an older `VITE_ROLLUP_ADDRESS`.
+  // Falls back to the configured rollup while the registry is loading or if discovery fails.
+  const { canonical: canonicalRollup, isLoading: isLoadingRegistry } = useRollupRegistry()
+  const targetRollupAddress = canonicalRollup?.address ?? contracts.rollup.address
+  const { activationThreshold, isLoading: isLoadingRollup } = useRollupData(targetRollupAddress)
   const { stakingAssetAddress, symbol, decimals, isLoading: isLoadingToken } = useStakingAssetTokenDetails()
   const { addTransaction, openCart, transactions, checkTransactionInQueue } = useTransactionCart()
   const { showAlert } = useAlert()
@@ -70,18 +76,20 @@ export const WalletDirectStakingFlow = ({
     return activationThreshold * BigInt(stakeCount)
   }, [activationThreshold, stakeCount])
 
-  // Check current allowance for Rollup contract
+  // Check current allowance against the *canonical* rollup, since that's where the deposit
+  // will be sent. The approval and the deposit must agree on the spender address.
   const { allowance, isLoading: isLoadingAllowance, refetch: refetchAllowance } = useAllowance({
     tokenAddress: stakingAssetAddress,
     owner: address,
-    spender: contracts.rollup.address,
+    spender: targetRollupAddress,
   })
 
   const hasEnoughAllowance = allowance !== undefined && allowance >= totalAmount
 
-  // Hooks for building transactions
-  const approveHook = useApproveRollup(stakingAssetAddress)
-  const depositHook = useWalletDirectStake()
+  // Hooks for building transactions — both bound to the canonical rollup so the approval and
+  // deposit land on the same contract.
+  const approveHook = useApproveRollup(stakingAssetAddress, targetRollupAddress)
+  const depositHook = useWalletDirectStake(targetRollupAddress)
 
   // Track transactions in the queue
   const approvalTx = useMemo(() => {
@@ -342,7 +350,7 @@ export const WalletDirectStakingFlow = ({
     setShowSuccessAlert(false)
   }
 
-  const isLoading = isLoadingRollup || isLoadingToken || isLoadingAllowance
+  const isLoading = isLoadingRollup || isLoadingToken || isLoadingAllowance || isLoadingRegistry
 
   const canProceedToStep2 = uploadedKeystores.length > 0 && validatorRunningConfirmed && !uploadError
   const canProceedToStep3 = hasEnoughAllowance || isApprovalInQueue || isApprovalCompleted

@@ -9,6 +9,12 @@ interface ClaimAllRewardsSummaryProps {
   pendingWarehouseWithdrawal?: bigint
   decimals: number
   symbol: string
+  /**
+   * Configured-rollup claimability flag. Used as an informational banner only — the
+   * "Claim All" button is no longer gated by this, because the per-task rollups in the
+   * coinbase list may be claimable even when the configured rollup is locked. Individual
+   * task failures are surfaced by the claim engine via the existing retry flow.
+   */
   isRewardsClaimable: boolean
   onStartClaiming: () => void
   isDisabled: boolean
@@ -41,15 +47,16 @@ export const ClaimAllRewardsSummary = ({
 
   return (
     <div className="space-y-6">
-      {/* Rewards Locked Warning */}
+      {/* Rewards Locked Warning — informational only. Each individual task is gated by its own
+          rollup's `isRewardsClaimable` flag, so claims may still succeed for non-configured rollups. */}
       {!isRewardsClaimable && (
         <div className="bg-amber-500/10 border border-amber-500/30 p-4">
           <div className="flex items-start gap-3">
             <Icon name="warning" size="md" className="text-amber-500 flex-shrink-0 mt-0.5" />
             <div>
-              <p className="text-amber-500 font-bold text-sm">Rewards Locked</p>
+              <p className="text-amber-500 font-bold text-sm">Configured Rollup Locked</p>
               <p className="text-parchment/60 text-xs mt-1">
-                Rewards are currently locked and cannot be claimed. Check back later.
+                Rewards on the configured rollup are currently locked. Claims targeting older or canonical rollups may still succeed; failed tasks will be marked individually.
               </p>
             </div>
           </div>
@@ -116,7 +123,7 @@ export const ClaimAllRewardsSummary = ({
         </div>
       )}
 
-      {/* Coinbase Rewards */}
+      {/* Coinbase Rewards — one row per (coinbase, rollup) pair surfaced by the multi-rollup fan-out. */}
       {coinbasesWithRewards.length > 0 && (
         <div>
           <div className="text-xs text-parchment/40 uppercase tracking-wide mb-3">
@@ -125,7 +132,7 @@ export const ClaimAllRewardsSummary = ({
           <div className="space-y-2">
             {coinbasesWithRewards.map((coinbase) => (
               <div
-                key={coinbase.address}
+                key={`${coinbase.address}-${coinbase.rollupAddress}`}
                 className="bg-parchment/5 border border-parchment/20 p-3"
               >
                 <div className="flex items-center justify-between">
@@ -137,6 +144,14 @@ export const ClaimAllRewardsSummary = ({
                     <span className="font-mono text-xs text-parchment/60">
                       {coinbase.address.slice(0, 6)}...{coinbase.address.slice(-4)}
                     </span>
+                    {coinbase.rollupVersion !== undefined && (
+                      <span
+                        className="font-oracle-standard text-[10px] uppercase tracking-wide bg-aqua/15 border border-aqua/30 text-aqua px-2 py-0.5"
+                        title={`Rollup contract: ${coinbase.rollupAddress}`}
+                      >
+                        Rollup v{coinbase.rollupVersion.toString()}
+                      </span>
+                    )}
                   </div>
                   <div className="font-mono text-sm font-bold text-chartreuse">
                     {formatTokenAmountFull(coinbase.rewards, decimals, symbol)}
@@ -184,21 +199,18 @@ export const ClaimAllRewardsSummary = ({
         </div>
       )}
 
-      {/* Claim Button */}
+      {/* Claim Button — no longer gated by the configured rollup's `isRewardsClaimable`.
+          Per-task rollups handle their own gating; failed tasks surface via the engine's retry flow. */}
       <button
         onClick={onStartClaiming}
-        disabled={isDisabled || !hasRewards || !isRewardsClaimable}
+        disabled={isDisabled || !hasRewards}
         className="w-full py-4 bg-chartreuse text-ink font-oracle-standard font-bold text-sm uppercase tracking-wider hover:bg-chartreuse/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {!isRewardsClaimable
-          ? "Rewards Locked"
-          : !hasRewards
-            ? "No Rewards to Claim"
-            : "Claim All Rewards"}
+        {!hasRewards ? "No Rewards to Claim" : "Claim All Rewards"}
       </button>
 
       {/* Transaction Info */}
-      {hasRewards && isRewardsClaimable && (
+      {hasRewards && (
         <p className="text-xs text-parchment/40 text-center">
           This will require multiple transactions. Each claim will prompt for approval.
         </p>

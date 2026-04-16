@@ -74,12 +74,12 @@ export const ClaimAllRewardsProgress = ({
 
       {/* Error Banner */}
       {isError && error && (
-        <div className="bg-red-500/10 border border-red-500/30 p-4">
+        <div className="bg-red-500/10 border border-red-500/30 p-4 overflow-hidden">
           <div className="flex items-start gap-3">
             <Icon name="alertCircle" size="md" className="text-red-400 flex-shrink-0 mt-0.5" />
-            <div className="flex-1">
+            <div className="flex-1 min-w-0">
               <p className="text-red-400 font-bold text-sm">Transaction Failed</p>
-              <p className="text-parchment/60 text-xs mt-1">
+              <p className="text-parchment/60 text-xs mt-1 break-words line-clamp-3">
                 {error.message.includes('rejected')
                   ? 'Transaction was rejected. You can retry or cancel.'
                   : error.message}

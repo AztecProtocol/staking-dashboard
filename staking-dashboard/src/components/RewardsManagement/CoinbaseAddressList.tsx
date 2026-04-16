@@ -1,21 +1,38 @@
+import { useMemo } from "react"
 import { Icon } from "@/components/Icon"
 import { CopyButton } from "@/components/CopyButton"
 import { formatTokenAmountFull } from "@/utils/atpFormatters"
 import { useClaimCoinbaseRewards, useRemoveCoinbaseAddress } from "@/hooks/rewards"
+import { useIsRewardsClaimableAcrossRollups } from "@/hooks/rollup"
 import type { CoinbaseBreakdown } from "@/hooks/rewards"
 import type { Address } from "viem"
 
 interface CoinbaseAddressListProps {
+  /**
+   * Reward breakdown produced by `useCoinbaseRewardsAcrossRollups` (or its compatibility
+   * wrapper `useMultipleCoinbaseRewards`). May contain multiple entries for the same
+   * coinbase address — one per rollup that holds a non-zero balance.
+   */
   coinbaseBreakdown: CoinbaseBreakdown[]
   decimals: number
   symbol: string
+  /**
+   * Configured-rollup claimability flag, kept for backwards compatibility. Used as a fallback
+   * for rows whose specific rollup hasn't loaded yet. The component itself fetches per-rollup
+   * `isRewardsClaimable()` for every distinct rollup it sees in the breakdown so each row's
+   * button reflects its own rollup's state.
+   */
   isRewardsClaimable: boolean
   isLoading?: boolean
   onRefetch?: () => void
 }
 
 /**
- * Display list of coinbase addresses with their rewards
+ * Display list of coinbase addresses with their rewards.
+ *
+ * Renders one row per (coinbase, rollup) pair with rewards > 0, so operators can see
+ * stranded balances on older rollups and claim them individually. Each claim button issues
+ * a `claimSequencerRewards` tx against the specific rollup the row's balance lives on.
  */
 export const CoinbaseAddressList = ({
   coinbaseBreakdown,
@@ -26,15 +43,24 @@ export const CoinbaseAddressList = ({
   onRefetch
 }: CoinbaseAddressListProps) => {
   const { removeCoinbaseAddress, isPending: isRemoving } = useRemoveCoinbaseAddress()
+  // Hook is instantiated once and the per-row rollup is passed as the `claimRewards` override.
   const claimRewards = useClaimCoinbaseRewards()
+
+  // Multicall isRewardsClaimable() across every rollup represented in the breakdown so each
+  // row's claim button reflects its own rollup's state, not just the configured rollup.
+  const rollupAddressesInBreakdown = useMemo(
+    () => coinbaseBreakdown.map((item) => item.rollupAddress),
+    [coinbaseBreakdown],
+  )
+  const { isClaimable: isClaimableForRollup } = useIsRewardsClaimableAcrossRollups(rollupAddressesInBreakdown)
 
   const handleRemove = async (address: Address) => {
     await removeCoinbaseAddress(address)
     onRefetch?.()
   }
 
-  const handleClaim = async (address: Address) => {
-    await claimRewards.claimRewards(address)
+  const handleClaim = async (address: Address, rollupAddress: Address) => {
+    await claimRewards.claimRewards(address, rollupAddress)
     onRefetch?.()
   }
 
@@ -60,9 +86,14 @@ export const CoinbaseAddressList = ({
 
   return (
     <div className="space-y-3">
-      {coinbaseBreakdown.map((item) => (
+      {coinbaseBreakdown.map((item) => {
+        // Per-rollup claimability flag; fall back to the prop while the multicall is still loading.
+        const perRollupClaimable = isClaimableForRollup(item.rollupAddress)
+        const rowIsClaimable = perRollupClaimable ?? isRewardsClaimable
+
+        return (
         <div
-          key={item.address}
+          key={`${item.address}-${item.rollupAddress}`}
           className="bg-parchment/5 border border-parchment/20 p-4"
         >
           <div className="flex items-start justify-between gap-3">
@@ -73,6 +104,14 @@ export const CoinbaseAddressList = ({
                   {item.address.slice(0, 10)}...{item.address.slice(-8)}
                 </span>
                 <CopyButton text={item.address} size="sm" />
+                {item.rollupVersion !== undefined && (
+                  <span
+                    className="font-oracle-standard text-[10px] uppercase tracking-wide bg-aqua/15 border border-aqua/30 text-aqua px-2 py-0.5"
+                    title={`Rollup contract: ${item.rollupAddress}`}
+                  >
+                    Rollup v{item.rollupVersion.toString()}
+                  </span>
+                )}
               </div>
 
               {/* Rewards */}
@@ -100,9 +139,9 @@ export const CoinbaseAddressList = ({
           {/* Claim Button */}
           {item.rewards > 0n && (
             <div className="mt-3 pt-3 border-t border-parchment/10">
-              {isRewardsClaimable ? (
+              {rowIsClaimable ? (
                 <button
-                  onClick={() => handleClaim(item.address)}
+                  onClick={() => handleClaim(item.address, item.rollupAddress)}
                   disabled={claimRewards.isPending || claimRewards.isConfirming}
                   className="w-full py-2 bg-chartreuse text-ink font-bold text-sm uppercase tracking-wide hover:bg-chartreuse/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
@@ -123,7 +162,8 @@ export const CoinbaseAddressList = ({
             </div>
           )}
         </div>
-      ))}
+        )
+      })}
     </div>
   )
 }
