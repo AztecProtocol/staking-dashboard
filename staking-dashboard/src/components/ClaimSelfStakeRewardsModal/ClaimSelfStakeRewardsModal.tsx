@@ -4,6 +4,7 @@ import { Icon } from "@/components/Icon"
 import { CopyButton } from "@/components/CopyButton"
 import { formatTokenAmount } from "@/utils/atpFormatters"
 import { validateAddress } from "@/utils/validateAddress"
+import { RollupRewardRow } from "./RollupRewardRow"
 import { debounce } from "@/utils/debounce"
 import { useStakingAssetTokenDetails } from "@/hooks/stakingRegistry"
 import { useClaimSequencerRewards } from "@/hooks/rollup/useClaimSequencerRewards"
@@ -225,68 +226,38 @@ export const ClaimSelfStakeRewardsModal = ({
             )}
           </div>
 
-          {/* Rewards Display — one row per rollup with a non-zero balance for this coinbase. */}
+          {/* Rewards Display */}
           {hasCheckedRewards && !isLoadingRewards && !isDebouncing && (
-            <>
+            <div className="mb-6">
               {coinbaseBreakdown.length > 0 ? (
-                <div className="space-y-3 mb-6">
+                <div className="space-y-3">
                   <div className="flex items-baseline justify-between">
                     <div className="text-xs text-parchment/60 uppercase tracking-wide">
                       Available Rewards
                     </div>
                     <div className="font-mono text-sm text-parchment/80">
-                      Total: <span className="text-chartreuse font-bold">{decimals && symbol ? formatTokenAmount(totalCoinbaseRewards, decimals, symbol) : '-'}</span>
+                      Total: <span className="text-chartreuse font-bold">
+                        {decimals && symbol ? formatTokenAmount(totalCoinbaseRewards, decimals, symbol) : '-'}
+                      </span>
                     </div>
                   </div>
-                  {coinbaseBreakdown.map((row) => {
-                    const perRollupClaimable = isClaimableForRollup(row.rollupAddress)
-                    // Default to allowing the claim while loading; the contract will revert if it's
-                    // genuinely locked. Disable explicitly only when we've confirmed false.
-                    const rowIsClaimable = perRollupClaimable !== false
-                    return (
-                      <div
-                        key={row.rollupAddress}
-                        className="bg-chartreuse/10 border border-chartreuse/30 p-4"
-                      >
-                        <div className="flex items-center justify-between gap-3 mb-2">
-                          {row.rollupVersion !== undefined ? (
-                            <span
-                              className="font-oracle-standard text-[10px] uppercase tracking-wide bg-aqua/15 border border-aqua/30 text-aqua px-2 py-0.5"
-                              title={`Rollup contract: ${row.rollupAddress}`}
-                            >
-                              Rollup v{row.rollupVersion.toString()}
-                            </span>
-                          ) : (
-                            <span className="font-oracle-standard text-[10px] uppercase tracking-wide text-parchment/50">
-                              Configured rollup
-                            </span>
-                          )}
-                          <div className="font-mono text-lg font-bold text-chartreuse">
-                            {decimals && symbol ? formatTokenAmount(row.rewards, decimals, symbol) : '-'}
-                          </div>
-                        </div>
-                        <button
-                          onClick={() => handleClaim(row.rollupAddress)}
-                          disabled={isPending || isConfirming || !rowIsClaimable}
-                          className="w-full py-2 bg-chartreuse text-ink font-oracle-standard font-bold text-xs uppercase tracking-wider hover:bg-chartreuse/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                          {isPending || isConfirming ? (
-                            <div className="flex items-center justify-center gap-2">
-                              <div className="w-3 h-3 border border-ink/30 border-t-ink rounded-full animate-spin"></div>
-                              {isPending ? 'Confirming' : 'Claiming'}
-                            </div>
-                          ) : !rowIsClaimable ? (
-                            'Locked on this rollup'
-                          ) : (
-                            'Claim from this rollup'
-                          )}
-                        </button>
-                      </div>
-                    )
-                  })}
+                  {coinbaseBreakdown.map((row) => (
+                    <RollupRewardRow
+                      key={row.rollupAddress}
+                      rollupAddress={row.rollupAddress}
+                      rollupVersion={row.rollupVersion}
+                      rewards={row.rewards}
+                      decimals={decimals ?? 18}
+                      symbol={symbol ?? ''}
+                      isClaimable={isClaimableForRollup(row.rollupAddress) !== false}
+                      isBusy={isPending || isConfirming}
+                      isPending={isPending}
+                      onClaim={handleClaim}
+                    />
+                  ))}
                 </div>
               ) : (
-                <div className="bg-parchment/5 border border-parchment/20 p-4 mb-6">
+                <div className="bg-parchment/5 border border-parchment/20 p-4">
                   <div className="text-xs text-parchment/60 uppercase tracking-wide mb-2">
                     Available Rewards
                   </div>
@@ -295,7 +266,7 @@ export const ClaimSelfStakeRewardsModal = ({
                   </p>
                 </div>
               )}
-            </>
+            </div>
           )}
 
           {/* Error Display */}
