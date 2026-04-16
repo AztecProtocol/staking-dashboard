@@ -1,16 +1,19 @@
 import { useReadContract } from "wagmi"
+import type { Address } from "viem"
 import { contracts } from "../../contracts"
 import { useStakingAssetTokenDetails } from "../stakingRegistry/useStakingAssetTokenDetails"
 import { formatTokenAmount } from "@/utils/atpFormatters"
 
 /**
- * Hook to get formatted activation threshold with token details
- * Fetches activation threshold directly from rollup contract and formats with staking asset token details
+ * Hook to get formatted activation threshold with token details.
+ *
+ * @param rollupAddress - Optional rollup contract to query. Defaults to the configured rollup.
  */
-export function useActivationThresholdFormatted() {
+export function useActivationThresholdFormatted(rollupAddress?: Address) {
+  const targetRollup = rollupAddress ?? contracts.rollup.address
   const { data: activationThreshold, isLoading: isLoadingThreshold, error: thresholdError } = useReadContract({
     abi: contracts.rollup.abi,
-    address: contracts.rollup.address,
+    address: targetRollup,
     functionName: "getActivationThreshold",
     query: {
       staleTime: Infinity,

@@ -3,15 +3,19 @@ import { contracts } from "@/contracts"
 import type { Address } from "viem"
 
 /**
- * Hook to finalize withdrawal from the rollup
+ * Hook to finalize withdrawal from a rollup.
  *
  * This hook calls the Rollup contract directly instead of going through the staker contract.
  * The staker contract has a bug where it calls `finaliseWithdraw` (British spelling) but
  * the actual Rollup contract uses `finalizeWithdraw` (American spelling).
  *
+ * @param rollupAddress - Optional rollup contract to finalize on. Defaults to the configured
+ *                        rollup. For stranded stakes, pass the specific rollup the exit lives on.
+ *
  * @returns Hook with finalizeWithdraw function and transaction status
  */
-export function useFinalizeWithdraw() {
+export function useFinalizeWithdraw(rollupAddress?: Address) {
+  const targetRollup = rollupAddress ?? contracts.rollup.address
   const write = useWriteContract()
 
   const receipt = useWaitForTransactionReceipt({
@@ -19,10 +23,10 @@ export function useFinalizeWithdraw() {
   })
 
   return {
-    finalizeWithdraw: (attesterAddress: Address) => {
+    finalizeWithdraw: (attesterAddress: Address, overrideRollup?: Address) => {
       return write.writeContract({
         abi: contracts.rollup.abi,
-        address: contracts.rollup.address,
+        address: overrideRollup ?? targetRollup,
         functionName: "finalizeWithdraw",
         args: [attesterAddress]
       })

@@ -28,15 +28,15 @@ const SLASH_AMOUNT = 2000n * 10n ** 18n
  * - isAtRisk: healthPercentage < 50 (has been slashed significantly)
  * - isCritical: effectiveBalance <= ejectionThreshold (imminent ejection)
  */
-export function useStakeHealth(attesterAddress: Address | undefined) {
+export function useStakeHealth(attesterAddress: Address | undefined, rollupAddress?: Address) {
   const { effectiveBalance, status, isLoading: isLoadingAttester, error: attesterError, refetch: refetchAttester } =
-    useAttesterView(attesterAddress)
+    useAttesterView(attesterAddress, rollupAddress)
 
   const { ejectionThreshold, isLoading: isLoadingEjection, error: ejectionError, refetch: refetchEjection } =
-    useEjectionThreshold()
+    useEjectionThreshold(rollupAddress)
 
   const { activationThreshold, isLoading: isLoadingActivation, error: activationError } =
-    useActivationThresholdFormatted()
+    useActivationThresholdFormatted(rollupAddress)
 
   const isLoading = isLoadingAttester || isLoadingEjection || isLoadingActivation
   const error = attesterError || ejectionError || activationError

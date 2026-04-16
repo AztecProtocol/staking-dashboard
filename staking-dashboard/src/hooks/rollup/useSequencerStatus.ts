@@ -38,13 +38,16 @@ export function getStatusLabel(status: number | undefined): string {
 }
 
 /**
- * Hook to get sequencer status information
+ * Hook to get sequencer status information.
  * @param sequencerAddress - The address of the sequencer
+ * @param rollupAddress    - Optional rollup contract to query. Defaults to the configured rollup.
+ *                           Pass an explicit address to inspect status on a non-canonical rollup
+ *                           (e.g. for stranded-stake withdrawal flows).
  * @returns Sequencer status, label, and related information
  */
-export function useSequencerStatus(sequencerAddress: Address | undefined) {
+export function useSequencerStatus(sequencerAddress: Address | undefined, rollupAddress?: Address) {
   const { status, effectiveBalance, exit, isLoading, error, refetch } =
-    useAttesterView(sequencerAddress);
+    useAttesterView(sequencerAddress, rollupAddress);
 
   // Query the governance withdrawal to get the REAL unlock time
   const { withdrawal, isLoading: isLoadingWithdrawal } = useGovernanceWithdrawal(exit?.withdrawalId);

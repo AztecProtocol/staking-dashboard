@@ -5,11 +5,16 @@ import type { RawTransaction } from "@/contexts/TransactionCartContext"
 import type { G1Point, G2Point } from "@/hooks/staker/types"
 
 /**
- * Hook for direct ERC20 staking via Rollup.deposit()
- * This is for wallet-based direct staking (own validator registration)
- * User calls Rollup.deposit() directly with their BLS keys
+ * Hook for direct ERC20 staking via Rollup.deposit().
+ * This is for wallet-based direct staking (own validator registration).
+ * User calls Rollup.deposit() directly with their BLS keys.
+ *
+ * @param rollupAddress - Optional rollup contract to deposit into. Defaults to the configured
+ *                        rollup. Registration flows should pass the *canonical* rollup so the
+ *                        deposit lands on the active rollup, not on a pinned/stale one.
  */
-export function useWalletDirectStake() {
+export function useWalletDirectStake(rollupAddress?: Address) {
+  const targetRollup = rollupAddress ?? contracts.rollup.address
   const write = useWriteContract()
 
   const receipt = useWaitForTransactionReceipt({
@@ -36,7 +41,7 @@ export function useWalletDirectStake() {
     ) =>
       write.writeContract({
         abi: contracts.rollup.abi,
-        address: contracts.rollup.address,
+        address: targetRollup,
         functionName: "deposit",
         args: [
           attester,
@@ -70,7 +75,7 @@ export function useWalletDirectStake() {
       signature: G1Point,
       moveWithRollup: boolean,
     ): RawTransaction => ({
-      to: contracts.rollup.address,
+      to: targetRollup,
       data: encodeFunctionData({
         abi: contracts.rollup.abi,
         functionName: "deposit",

@@ -5,11 +5,17 @@ import { contracts } from "@/contracts"
 import type { RawTransaction } from "@/contexts/TransactionCartContext"
 
 /**
- * Hook for approving ERC20 tokens for the Rollup contract to spend
- * Used for wallet-based direct staking (own validator registration)
- * @param tokenAddress - The ERC20 token contract address
+ * Hook for approving ERC20 tokens for a Rollup contract to spend.
+ * Used for wallet-based direct staking (own validator registration).
+ *
+ * @param tokenAddress  - The ERC20 token contract address
+ * @param rollupAddress - Optional rollup contract that will be the approval spender. Defaults
+ *                        to the configured rollup. Registration flows should pass the
+ *                        canonical rollup so the approval matches whichever rollup the
+ *                        deposit lands on.
  */
-export function useApproveRollup(tokenAddress?: Address) {
+export function useApproveRollup(tokenAddress?: Address, rollupAddress?: Address) {
+  const targetRollup = rollupAddress ?? contracts.rollup.address
   const write = useWriteContract()
 
   const receipt = useWaitForTransactionReceipt({
@@ -29,7 +35,7 @@ export function useApproveRollup(tokenAddress?: Address) {
         abi: ERC20Abi,
         address: tokenAddress,
         functionName: "approve",
-        args: [contracts.rollup.address, amount],
+        args: [targetRollup, amount],
       })
     },
 
@@ -46,7 +52,7 @@ export function useApproveRollup(tokenAddress?: Address) {
         data: encodeFunctionData({
           abi: ERC20Abi,
           functionName: "approve",
-          args: [contracts.rollup.address, amount],
+          args: [targetRollup, amount],
         }),
         value: 0n,
       }

@@ -3,9 +3,14 @@ import { contracts } from "@/contracts"
 import type { Address } from "viem"
 
 /**
- * Hook to claim sequencer rewards to a specified coinbase address
+ * Hook to claim sequencer rewards to a specified coinbase address.
+ *
+ * @param rollupAddress - Optional rollup contract to claim from. Defaults to the configured
+ *                        rollup. Callers that need to claim across multiple rollups should pass
+ *                        the specific rollup address each call lives on.
  */
-export function useClaimSequencerRewards() {
+export function useClaimSequencerRewards(rollupAddress?: Address) {
+  const targetRollup = rollupAddress ?? contracts.rollup.address
   const write = useWriteContract()
 
   const receipt = useWaitForTransactionReceipt({
@@ -13,10 +18,10 @@ export function useClaimSequencerRewards() {
   })
 
   return {
-    claimRewards: (coinbaseAddress: Address) => {
+    claimRewards: (coinbaseAddress: Address, overrideRollup?: Address) => {
       return write.writeContract({
         abi: contracts.rollup.abi,
-        address: contracts.rollup.address,
+        address: overrideRollup ?? targetRollup,
         functionName: "claimSequencerRewards",
         args: [coinbaseAddress]
       })
