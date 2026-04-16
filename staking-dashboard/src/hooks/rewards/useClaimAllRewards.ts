@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef, useMemo } from "react"
+import { useEffect, useCallback, useRef, useMemo, useReducer } from "react"
 import { useAccount } from "wagmi"
 import { useClaimSplitRewards } from "@/hooks/splits/useClaimSplitRewards"
 import { useClaimSequencerRewards } from "@/hooks/rollup/useClaimSequencerRewards"
@@ -12,6 +12,8 @@ import type { SplitData } from "@/hooks/splits/types"
 import type { DelegationBreakdown } from "@/hooks/atp/useAggregatedStakingData"
 import type { CoinbaseBreakdown } from "./rewardsTypes"
 
+// ── Types ──────────────────────────────────────────────────────────────
+
 export type ClaimTaskStatus = 'pending' | 'processing' | 'completed' | 'error' | 'skipped'
 export type ClaimTaskType = 'delegation' | 'coinbase'
 
@@ -22,34 +24,128 @@ export interface ClaimTask {
   estimatedRewards: bigint
   status: ClaimTaskStatus
   error?: Error
-  // Delegation-specific data
   splitContract?: Address
   splitData?: SplitData
   providerTakeRate?: number
-  // Coinbase-specific data
   coinbaseAddress?: Address
   /** Rollup contract this task targets for claiming. */
   rollupAddress?: Address
   rollupVersion?: bigint
-  // Sub-step tracking for delegations
   currentSubStep?: 'claiming' | 'distributing' | 'withdrawing'
 }
 
+// ── State machine ──────────────────────────────────────────────────────
+
+type Phase = 'idle' | 'ready_to_trigger' | 'waiting_for_result' | 'advancing'
+
+interface EngineState {
+  tasks: ClaimTask[]
+  currentIndex: number | null
+  phase: Phase
+  error: Error | null
+}
+
+type Action =
+  | { type: 'START'; tasks: ClaimTask[] }
+  | { type: 'TRIGGERED' }
+  | { type: 'TASK_COMPLETED' }
+  | { type: 'TASK_FAILED'; error: Error }
+  | { type: 'UPDATE_SUBSTEP'; subStep: string }
+  | { type: 'ADVANCED' }
+  | { type: 'CANCEL' }
+  | { type: 'RESET' }
+  | { type: 'RETRY' }
+
+const initialState: EngineState = {
+  tasks: [],
+  currentIndex: null,
+  phase: 'idle',
+  error: null,
+}
+
+function reducer(state: EngineState, action: Action): EngineState {
+  switch (action.type) {
+    case 'START':
+      return { tasks: action.tasks, currentIndex: 0, phase: 'ready_to_trigger', error: null }
+
+    case 'TRIGGERED':
+      return {
+        ...state,
+        phase: 'waiting_for_result',
+        tasks: state.tasks.map((t, i) =>
+          i === state.currentIndex ? { ...t, status: 'processing' as const } : t
+        ),
+      }
+
+    case 'TASK_COMPLETED':
+      return {
+        ...state,
+        phase: 'advancing',
+        tasks: state.tasks.map((t, i) =>
+          i === state.currentIndex ? { ...t, status: 'completed' as const } : t
+        ),
+      }
+
+    case 'TASK_FAILED':
+      return {
+        ...state,
+        phase: 'advancing',
+        error: action.error,
+        tasks: state.tasks.map((t, i) =>
+          i === state.currentIndex ? { ...t, status: 'error' as const, error: action.error } : t
+        ),
+      }
+
+    case 'UPDATE_SUBSTEP':
+      return {
+        ...state,
+        tasks: state.tasks.map((t, i) =>
+          i === state.currentIndex
+            ? { ...t, currentSubStep: action.subStep as ClaimTask['currentSubStep'] }
+            : t
+        ),
+      }
+
+    case 'ADVANCED': {
+      const nextIndex = state.currentIndex! + 1
+      if (nextIndex < state.tasks.length) {
+        return { ...state, currentIndex: nextIndex, phase: 'ready_to_trigger' }
+      }
+      return { ...state, currentIndex: null, phase: 'idle' }
+    }
+
+    case 'CANCEL':
+      return { ...state, currentIndex: null, phase: 'idle' }
+
+    case 'RESET':
+      return initialState
+
+    case 'RETRY': {
+      const retried = state.tasks.map(t =>
+        t.status === 'error' ? { ...t, status: 'pending' as const, error: undefined } : t
+      )
+      const firstPending = retried.findIndex(t => t.status === 'pending')
+      if (firstPending === -1) return state
+      return { tasks: retried, currentIndex: firstPending, phase: 'ready_to_trigger', error: null }
+    }
+
+    default:
+      return state
+  }
+}
+
+// ── Return type ────────────────────────────────────────────────────────
+
 interface UseClaimAllRewardsReturn {
-  // Actions
   startClaiming: (delegations: DelegationBreakdown[], coinbases: CoinbaseBreakdown[]) => void
   cancelClaiming: () => void
   retryFailed: () => void
   reset: () => void
-
-  // State
   tasks: ClaimTask[]
   currentTask: ClaimTask | null
   currentTaskIndex: number | null
   isProcessing: boolean
   progressPercent: number
-
-  // Results
   isSuccess: boolean
   isError: boolean
   error: Error | null
@@ -57,374 +153,208 @@ interface UseClaimAllRewardsReturn {
   failedTasks: ClaimTask[]
 }
 
-/**
- * Hook to orchestrate claiming rewards from multiple delegation splits and coinbase addresses
- * Processes tasks sequentially: delegations first (3 steps each), then coinbases (1 step each)
- */
+// ── Hook ───────────────────────────────────────────────────────────────
+
 export const useClaimAllRewards = (): UseClaimAllRewardsReturn => {
   const { address: userAddress } = useAccount()
   const { stakingAssetAddress: tokenAddress } = useStakingAssetTokenDetails()
 
-  // Task queue state
-  const [tasks, setTasks] = useState<ClaimTask[]>([])
-  const [currentTaskIndex, setCurrentTaskIndex] = useState<number | null>(null)
-  const [isProcessing, setIsProcessing] = useState(false)
-  const [error, setError] = useState<Error | null>(null)
-  const [hasTriggeredClaim, setHasTriggeredClaim] = useState(false)
+  const [state, dispatch] = useReducer(reducer, initialState)
+  const currentTask = state.currentIndex !== null ? state.tasks[state.currentIndex] : null
 
-  // Track if we were cancelled
-  const cancelledRef = useRef(false)
-  // Ref-based timeout for advancing between tasks — survives effect re-runs
-  const advanceTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-
-  // Get current task
-  const currentTask = currentTaskIndex !== null ? tasks[currentTaskIndex] : null
-
-  // Get current task's addresses
+  // ── Delegation balance hooks (driven by currentTask) ─────────────
   const currentSplitContract = currentTask?.type === 'delegation' ? currentTask.splitContract : undefined
   const currentCoinbase = currentTask?.type === 'coinbase' ? currentTask.coinbaseAddress : undefined
   const currentTaskRollup = currentTask?.rollupAddress
 
-  // Fetch balances for current task (for delegations) - extract refetch functions
   const { warehouseAddress, isLoading: isLoadingWarehouse } = useSplitsWarehouse(currentSplitContract)
-  const { rewards: rollupBalance, isLoading: isLoadingRollup, refetch: refetchRollup } = useSequencerRewards(currentSplitContract || currentCoinbase || '', currentTaskRollup)
-  const { balance: splitContractBalance, isLoading: isLoadingSplitBalance, refetch: refetchSplitContract } = useERC20Balance(tokenAddress, currentSplitContract)
-  const { balance: warehouseBalance, isLoading: isLoadingWarehouseBalance, refetch: refetchWarehouse } = useWarehouseBalance(warehouseAddress, userAddress, tokenAddress)
+  const { rewards: rollupBalance, isLoading: isLoadingRollup, refetch: refetchRollup } =
+    useSequencerRewards(currentSplitContract || currentCoinbase || '', currentTaskRollup)
+  const { balance: splitContractBalance, isLoading: isLoadingSplitBalance, refetch: refetchSplitContract } =
+    useERC20Balance(tokenAddress, currentSplitContract)
+  const { balance: warehouseBalance, isLoading: isLoadingWarehouseBalance, refetch: refetchWarehouse } =
+    useWarehouseBalance(warehouseAddress, userAddress, tokenAddress)
 
   const isLoadingBalances = currentTask?.type === 'delegation'
     ? (isLoadingWarehouse || isLoadingRollup || isLoadingSplitBalance || isLoadingWarehouseBalance)
     : isLoadingRollup
 
-  // Memoize balances object to prevent effect re-runs on every render
   const balances = useMemo(() => ({
-    rollupBalance,
-    splitContractBalance,
-    warehouseBalance,
-    refetchRollup,
-    refetchSplitContract,
-    refetchWarehouse
+    rollupBalance, splitContractBalance, warehouseBalance,
+    refetchRollup, refetchSplitContract, refetchWarehouse
   }), [rollupBalance, splitContractBalance, warehouseBalance, refetchRollup, refetchSplitContract, refetchWarehouse])
 
-  // Use existing hooks for claiming
+  // ── Claim hooks ──────────────────────────────────────────────────
   const delegationClaimHook = useClaimSplitRewards(
     currentSplitContract,
     currentTask?.splitData || { recipients: [], allocations: [], totalAllocation: 0n, distributionIncentive: 0 },
-    tokenAddress,
-    userAddress,
-    balances
+    tokenAddress, userAddress, balances
   )
-
   const coinbaseClaimHook = useClaimSequencerRewards()
 
-  /**
-   * Build SplitData from delegation info
-   */
+  // Stable refs for calling inside effects without dep issues
+  const delegationRef = useRef(delegationClaimHook)
+  delegationRef.current = delegationClaimHook
+  const coinbaseRef = useRef(coinbaseClaimHook)
+  coinbaseRef.current = coinbaseClaimHook
+
+  // ── Effect 1: TRIGGER — start the claim for the current task ─────
+  useEffect(() => {
+    if (state.phase !== 'ready_to_trigger' || state.currentIndex === null) return
+    const task = state.tasks[state.currentIndex]
+    if (!task) return
+    if (task.type === 'delegation' && isLoadingBalances) return
+
+    dispatch({ type: 'TRIGGERED' })
+
+    if (task.type === 'delegation') {
+      delegationRef.current.claim()
+    } else if (task.type === 'coinbase' && task.coinbaseAddress) {
+      coinbaseRef.current.claimRewards(task.coinbaseAddress, task.rollupAddress)
+    }
+  }, [state.phase, state.currentIndex, state.tasks, isLoadingBalances])
+
+  // ── Effect 2: RESULT — watch hooks for success or error ──────────
+  useEffect(() => {
+    if (state.phase !== 'waiting_for_result' || !currentTask) return
+
+    const isSuccess = currentTask.type === 'delegation'
+      ? delegationClaimHook.isSuccess && delegationClaimHook.claimStep === 'idle'
+      : coinbaseClaimHook.isSuccess
+
+    const isError = currentTask.type === 'delegation'
+      ? delegationClaimHook.isError
+      : coinbaseClaimHook.isError
+
+    const hookError = currentTask.type === 'delegation'
+      ? delegationClaimHook.error
+      : coinbaseClaimHook.error
+
+    if (isSuccess) {
+      dispatch({ type: 'TASK_COMPLETED' })
+    } else if (isError && hookError) {
+      dispatch({ type: 'TASK_FAILED', error: hookError as Error })
+    }
+  }, [
+    state.phase, currentTask,
+    delegationClaimHook.isSuccess, delegationClaimHook.isError,
+    delegationClaimHook.error, delegationClaimHook.claimStep,
+    coinbaseClaimHook.isSuccess, coinbaseClaimHook.isError, coinbaseClaimHook.error,
+  ])
+
+  // ── Effect 3: ADVANCE — delay, reset hooks, move to next task ────
+  useEffect(() => {
+    if (state.phase !== 'advancing') return
+
+    const timeout = setTimeout(() => {
+      delegationRef.current.reset()
+      coinbaseRef.current.reset()
+      dispatch({ type: 'ADVANCED' })
+    }, 500)
+
+    return () => clearTimeout(timeout)
+  }, [state.phase])
+
+  // ── Effect 4: SUBSTEP — update delegation sub-step display ───────
+  useEffect(() => {
+    if (state.phase !== 'waiting_for_result') return
+    if (!currentTask || currentTask.type !== 'delegation') return
+
+    const subStep = delegationClaimHook.claimStep
+    if (subStep !== 'idle') {
+      dispatch({ type: 'UPDATE_SUBSTEP', subStep })
+    }
+  }, [state.phase, currentTask, delegationClaimHook.claimStep])
+
+  // ── Actions ──────────────────────────────────────────────────────
+
   const buildSplitData = useCallback((delegation: DelegationBreakdown, user: Address): SplitData => {
     const totalAllocation = 10000n
     const providerAllocation = BigInt(delegation.providerTakeRate)
-    const userAllocation = totalAllocation - providerAllocation
-
     return {
       recipients: [delegation.providerRewardsRecipient as Address, user],
-      allocations: [providerAllocation, userAllocation],
+      allocations: [providerAllocation, totalAllocation - providerAllocation],
       totalAllocation,
       distributionIncentive: 0
     }
   }, [])
 
-  /**
-   * Start claiming all rewards
-   */
+  const resetHooks = useCallback(() => {
+    delegationRef.current.reset()
+    coinbaseRef.current.reset()
+  }, [])
+
   const startClaiming = useCallback((delegations: DelegationBreakdown[], coinbases: CoinbaseBreakdown[]) => {
     if (!userAddress || (!delegations.length && !coinbases.length)) return
 
-    cancelledRef.current = false
-
-    // Build task list: delegations first, then coinbases
     const newTasks: ClaimTask[] = [
-      ...delegations.map((delegation): ClaimTask => ({
-        id: `delegation-${delegation.splitContract}`,
+      ...delegations.map((d): ClaimTask => ({
+        id: `delegation-${d.splitContract}`,
         type: 'delegation',
-        displayName: delegation.providerName || `Provider ${delegation.providerId}`,
-        estimatedRewards: delegation.rewards,
+        displayName: d.providerName || `Provider ${d.providerId}`,
+        estimatedRewards: d.rewards,
         status: 'pending',
-        splitContract: delegation.splitContract as Address,
-        splitData: buildSplitData(delegation, userAddress),
-        providerTakeRate: delegation.providerTakeRate
+        splitContract: d.splitContract as Address,
+        splitData: buildSplitData(d, userAddress),
+        providerTakeRate: d.providerTakeRate
       })),
-      ...coinbases.map((coinbase): ClaimTask => ({
-        id: `coinbase-${coinbase.address}-${coinbase.rollupAddress}`,
+      ...coinbases.map((c): ClaimTask => ({
+        id: `coinbase-${c.address}-${c.rollupAddress}`,
         type: 'coinbase',
-        displayName: coinbase.rollupVersion !== undefined
-          ? `${coinbase.address.slice(0, 6)}...${coinbase.address.slice(-4)} (rollup v${coinbase.rollupVersion})`
-          : `${coinbase.address.slice(0, 6)}...${coinbase.address.slice(-4)}`,
-        estimatedRewards: coinbase.rewards,
+        displayName: c.rollupVersion !== undefined
+          ? `${c.address.slice(0, 6)}...${c.address.slice(-4)} (rollup v${c.rollupVersion})`
+          : `${c.address.slice(0, 6)}...${c.address.slice(-4)}`,
+        estimatedRewards: c.rewards,
         status: 'pending',
-        coinbaseAddress: coinbase.address,
-        rollupAddress: coinbase.rollupAddress,
-        rollupVersion: coinbase.rollupVersion,
+        coinbaseAddress: c.address,
+        rollupAddress: c.rollupAddress,
+        rollupVersion: c.rollupVersion,
       }))
-    ]
+    ].filter(t => t.estimatedRewards > 0n)
 
-    // Filter out tasks with no rewards
-    const tasksWithRewards = newTasks.filter(task => task.estimatedRewards > 0n)
+    if (newTasks.length === 0) return
 
-    if (tasksWithRewards.length === 0) {
-      setError(new Error('No rewards to claim'))
-      return
-    }
+    resetHooks()
+    dispatch({ type: 'START', tasks: newTasks })
+  }, [userAddress, buildSplitData, resetHooks])
 
-    setTasks(tasksWithRewards)
-    setCurrentTaskIndex(0)
-    setIsProcessing(true)
-    setError(null)
-    setHasTriggeredClaim(false)
-    handledCompletionRef.current = null
-
-    // Reset hooks
-    delegationClaimHook.reset()
-    coinbaseClaimHook.reset()
-  }, [userAddress, buildSplitData, delegationClaimHook, coinbaseClaimHook])
-
-  /**
-   * Cancel claiming - stops processing but keeps completed
-   */
   const cancelClaiming = useCallback(() => {
-    cancelledRef.current = true
-    if (advanceTimeoutRef.current) { clearTimeout(advanceTimeoutRef.current); advanceTimeoutRef.current = null }
-    handledCompletionRef.current = null
-    setIsProcessing(false)
-    setCurrentTaskIndex(null)
-    setHasTriggeredClaim(false)
-    delegationClaimHook.reset()
-    coinbaseClaimHook.reset()
-  }, [delegationClaimHook, coinbaseClaimHook])
+    resetHooks()
+    dispatch({ type: 'CANCEL' })
+  }, [resetHooks])
 
-  /**
-   * Retry failed tasks
-   */
   const retryFailed = useCallback(() => {
-    const failedTasks = tasks.filter(t => t.status === 'error')
-    if (failedTasks.length === 0) return
+    resetHooks()
+    dispatch({ type: 'RETRY' })
+  }, [resetHooks])
 
-    // Reset failed tasks to pending
-    setTasks(prev => prev.map(t =>
-      t.status === 'error' ? { ...t, status: 'pending' as const, error: undefined } : t
-    ))
-
-    // Find first pending task
-    const firstPendingIndex = tasks.findIndex(t => t.status === 'pending' || t.status === 'error')
-    if (firstPendingIndex !== -1) {
-      cancelledRef.current = false
-      setCurrentTaskIndex(firstPendingIndex)
-      setIsProcessing(true)
-      setError(null)
-      setHasTriggeredClaim(false)
-    }
-  }, [tasks])
-
-  /**
-   * Reset all state
-   */
   const reset = useCallback(() => {
-    cancelledRef.current = false
-    if (advanceTimeoutRef.current) { clearTimeout(advanceTimeoutRef.current); advanceTimeoutRef.current = null }
-    handledCompletionRef.current = null
-    setTasks([])
-    setCurrentTaskIndex(null)
-    setIsProcessing(false)
-    setError(null)
-    setHasTriggeredClaim(false)
-    delegationClaimHook.reset()
-    coinbaseClaimHook.reset()
-  }, [delegationClaimHook, coinbaseClaimHook])
+    resetHooks()
+    dispatch({ type: 'RESET' })
+  }, [resetHooks])
 
-  const delegationClaimRef = useRef(delegationClaimHook)
-  delegationClaimRef.current = delegationClaimHook
-  const coinbaseClaimRef = useRef(coinbaseClaimHook)
-  coinbaseClaimRef.current = coinbaseClaimHook
+  // ── Derived state ────────────────────────────────────────────────
 
-  /**
-   * Start claim for current task when ready
-   */
-  useEffect(() => {
-    if (!isProcessing || currentTaskIndex === null || hasTriggeredClaim || cancelledRef.current) return
-
-    const task = tasks[currentTaskIndex]
-    if (!task || task.status !== 'pending') return
-
-    // Wait for balances to load for delegations
-    if (task.type === 'delegation' && isLoadingBalances) return
-
-    // Mark task as processing
-    setTasks(prev => prev.map((t, i) =>
-      i === currentTaskIndex ? { ...t, status: 'processing' as const } : t
-    ))
-    setHasTriggeredClaim(true)
-
-    if (task.type === 'delegation') {
-      delegationClaimRef.current.claim()
-    } else if (task.type === 'coinbase' && task.coinbaseAddress) {
-      coinbaseClaimRef.current.claimRewards(task.coinbaseAddress, task.rollupAddress)
-    }
-  }, [isProcessing, currentTaskIndex, tasks, hasTriggeredClaim, isLoadingBalances])
-
-  /**
-   * Update sub-step for delegation tasks
-   */
-  useEffect(() => {
-    if (!currentTask || currentTask.type !== 'delegation' || !isProcessing) return
-
-    const subStep = delegationClaimHook.claimStep
-    if (subStep !== 'idle') {
-      setTasks(prev => prev.map((t, i) =>
-        i === currentTaskIndex ? { ...t, currentSubStep: subStep as 'claiming' | 'distributing' | 'withdrawing' } : t
-      ))
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- currentTask derived from currentTaskIndex
-  }, [delegationClaimHook.claimStep, currentTaskIndex, currentTask?.type, isProcessing])
-
-  // Track whether we've already handled the current task's completion to avoid
-  // re-processing when hook state oscillates during reset.
-  const handledCompletionRef = useRef<number | null>(null)
-
-  /**
-   * Handle task completion and move to next
-   */
-  useEffect(() => {
-    if (!isProcessing || currentTaskIndex === null || !hasTriggeredClaim || cancelledRef.current) return
-    if (handledCompletionRef.current === currentTaskIndex) return
-
-    const task = tasks[currentTaskIndex]
-    if (!task || task.status !== 'processing') return
-
-    let isComplete = false
-
-    // Check completion based on task type
-    if (task.type === 'delegation') {
-      isComplete = delegationClaimHook.isSuccess && delegationClaimHook.claimStep === 'idle'
-    } else if (task.type === 'coinbase') {
-      isComplete = coinbaseClaimHook.isSuccess
-    }
-
-    if (isComplete) {
-      // Guard against re-entry
-      handledCompletionRef.current = currentTaskIndex
-
-      // Mark task as completed
-      setTasks(prev => prev.map((t, i) =>
-        i === currentTaskIndex ? { ...t, status: 'completed' as const } : t
-      ))
-
-      // Delay so setTasks() doesn't re-trigger this effect before the timeout fires.
-      if (advanceTimeoutRef.current) clearTimeout(advanceTimeoutRef.current)
-      advanceTimeoutRef.current = setTimeout(() => {
-        advanceTimeoutRef.current = null
-        if (cancelledRef.current) return
-
-        delegationClaimRef.current.reset()
-        coinbaseClaimRef.current.reset()
-
-        const nextIndex = currentTaskIndex + 1
-        if (nextIndex < tasks.length) {
-          setCurrentTaskIndex(nextIndex)
-          setHasTriggeredClaim(false)
-          handledCompletionRef.current = null
-        } else {
-          setIsProcessing(false)
-          setCurrentTaskIndex(null)
-          handledCompletionRef.current = null
-        }
-      }, 500)
-    }
-  }, [
-    isProcessing,
-    currentTaskIndex,
-    tasks,
-    hasTriggeredClaim,
-    delegationClaimHook.isSuccess,
-    delegationClaimHook.claimStep,
-    coinbaseClaimHook.isSuccess,
-  ])
-
-  /**
-   * Handle errors
-   */
-  useEffect(() => {
-    if (!isProcessing || currentTaskIndex === null) return
-
-    const task = tasks[currentTaskIndex]
-    if (!task || task.status !== 'processing') return
-
-    let taskError: Error | null = null
-
-    if (task.type === 'delegation' && delegationClaimHook.isError) {
-      taskError = delegationClaimHook.error as Error
-    } else if (task.type === 'coinbase' && coinbaseClaimHook.isError) {
-      taskError = coinbaseClaimHook.error as Error
-    }
-
-    if (taskError) {
-      // Skip failed task and continue
-      setTasks(prev => prev.map((t, i) =>
-        i === currentTaskIndex ? { ...t, status: 'error' as const, error: taskError } : t
-      ))
-      setError(taskError)
-
-      if (advanceTimeoutRef.current) clearTimeout(advanceTimeoutRef.current)
-      advanceTimeoutRef.current = setTimeout(() => {
-        advanceTimeoutRef.current = null
-        if (cancelledRef.current) return
-
-        delegationClaimRef.current.reset()
-        coinbaseClaimRef.current.reset()
-
-        const nextIndex = currentTaskIndex + 1
-        if (nextIndex < tasks.length) {
-          setCurrentTaskIndex(nextIndex)
-          setHasTriggeredClaim(false)
-          handledCompletionRef.current = null
-        } else {
-          setIsProcessing(false)
-          setCurrentTaskIndex(null)
-          handledCompletionRef.current = null
-        }
-      }, 500)
-    }
-  }, [
-    isProcessing,
-    currentTaskIndex,
-    tasks,
-    delegationClaimHook.isError,
-    delegationClaimHook.error,
-    coinbaseClaimHook.isError,
-    coinbaseClaimHook.error,
-  ])
-
-  const completedTasks = tasks.filter(t => t.status === 'completed')
-  const failedTasks = tasks.filter(t => t.status === 'error')
+  const completedTasks = state.tasks.filter(t => t.status === 'completed')
+  const failedTasks = state.tasks.filter(t => t.status === 'error')
   const doneTasks = completedTasks.length + failedTasks.length
-  const progressPercent = tasks.length > 0
-    ? Math.round((doneTasks / tasks.length) * 100)
-    : 0
-
-  const isSuccess = tasks.length > 0 && !isProcessing && doneTasks === tasks.length && completedTasks.length > 0
-  const isError = !isProcessing && failedTasks.length > 0
+  const isProcessing = state.phase !== 'idle'
+  const isAllDone = state.tasks.length > 0 && !isProcessing && doneTasks === state.tasks.length
 
   return {
     startClaiming,
     cancelClaiming,
     retryFailed,
     reset,
-    tasks,
+    tasks: state.tasks,
     currentTask,
-    currentTaskIndex,
+    currentTaskIndex: state.currentIndex,
     isProcessing,
-    progressPercent,
-    isSuccess,
-    isError,
-    error,
+    progressPercent: state.tasks.length > 0 ? Math.round((doneTasks / state.tasks.length) * 100) : 0,
+    isSuccess: isAllDone && completedTasks.length > 0,
+    isError: isAllDone && failedTasks.length > 0,
+    error: state.error,
     completedTasks,
-    failedTasks
+    failedTasks,
   }
 }

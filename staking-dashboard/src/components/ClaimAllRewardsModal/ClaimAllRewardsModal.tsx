@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { createPortal } from "react-dom"
 import { Icon } from "@/components/Icon"
 import { useClaimAllRewards } from "@/hooks/rewards"
@@ -44,14 +44,15 @@ export const ClaimAllRewardsModal = ({
   // Claim hook
   const claimAllRewards = useClaimAllRewards()
 
-  // Reset phase when modal opens
-  const { reset: resetClaims } = claimAllRewards
+  // Reset phase when modal opens — use ref to avoid re-firing when reset identity changes
+  const resetRef = useRef(claimAllRewards.reset)
+  resetRef.current = claimAllRewards.reset
   useEffect(() => {
     if (isOpen) {
       setPhase('summary')
-      resetClaims()
+      resetRef.current()
     }
-  }, [isOpen, resetClaims])
+  }, [isOpen])
 
   // Transition to progress when claiming starts
   useEffect(() => {
