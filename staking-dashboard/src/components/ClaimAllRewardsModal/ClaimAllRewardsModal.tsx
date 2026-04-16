@@ -59,13 +59,15 @@ export const ClaimAllRewardsModal = ({
     }
   }, [claimAllRewards.isProcessing, phase])
 
-  // Transition to success when all done
+  // Transition to success when all done — only if no tasks failed.
+  // Mixed results (some succeeded, some failed) stay on the progress phase
+  // where the error/retry UI is visible.
   useEffect(() => {
-    if (claimAllRewards.isSuccess && phase === 'progress') {
+    if (claimAllRewards.isSuccess && !claimAllRewards.isError && phase === 'progress') {
       setPhase('success')
       onSuccess?.()
     }
-  }, [claimAllRewards.isSuccess, phase, onSuccess])
+  }, [claimAllRewards.isSuccess, claimAllRewards.isError, phase, onSuccess])
 
   const handleClose = () => {
     if (claimAllRewards.isProcessing) {

@@ -109,10 +109,10 @@ export const ClaimSelfStakeRewardsModal = ({
     if (isSuccess) {
       onSuccess?.()
       reset()
-      // Re-trigger the rewards check for the same coinbase so the breakdown refreshes
+      // Re-trigger the rewards check so the breakdown refreshes
       // and the claimed row disappears while remaining rows stay visible.
       if (coinbaseAddress) {
-        debouncedCheckRewards(coinbaseAddress)
+        debouncedCheckRewards()
       }
     }
   }, [isSuccess, onSuccess, reset])

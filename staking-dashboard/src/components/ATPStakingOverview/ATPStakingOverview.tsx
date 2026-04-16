@@ -27,7 +27,7 @@ interface ATPStakingOverviewProps {
  * Shows staked positions, stakeable amounts, and claimable rewards
  */
 export const ATPStakingOverview = ({ atpData, walletBalance = 0n }: ATPStakingOverviewProps) => {
-  const { symbol, decimals, isLoading: isLoadingTokenDetails } = useStakingAssetTokenDetails()
+  const { symbol, decimals } = useStakingAssetTokenDetails()
 
   const {
     totalStaked,
@@ -42,7 +42,6 @@ export const ATPStakingOverview = ({ atpData, walletBalance = 0n }: ATPStakingOv
     delegationBreakdown,
     erc20DelegationBreakdown,
     erc20DirectStakeBreakdown,
-    isLoading: isLoadingAggregated,
     refetch: refetchAggregatedData,
   } = useAggregatedStakingData()
 
@@ -55,7 +54,6 @@ export const ATPStakingOverview = ({ atpData, walletBalance = 0n }: ATPStakingOv
     totalValidatorCount,
     totalStakeableAmount,
     activationThreshold,
-    isLoading: isLoadingStakeable,
   } = useMultipleStakeableAmounts(atpData)
 
   // Check if rewards are claimable
@@ -125,15 +123,18 @@ export const ATPStakingOverview = ({ atpData, walletBalance = 0n }: ATPStakingOv
     }
   }, [])
 
-  // Only show skeleton on initial load — during refetches keep the existing tree
-  // mounted so modals (like ClaimAllRewardsModal) aren't destroyed mid-flow.
-  const hasLoadedOnce = useRef(false)
-  if (!isLoadingAggregated && !isLoadingStakeable && !isLoadingTokenDetails) {
-    hasLoadedOnce.current = true
+  // Cache required values once loaded. During refetches tanstack-query preserves
+  // previous data, but TypeScript can't prove these are never undefined after first
+  // load. A ref captures the last known values, provides type narrowing, AND prevents
+  // the skeleton from flashing during refetches (which would unmount modals mid-flow).
+  const resolvedRef = useRef<{ decimals: number; symbol: string; activationThreshold: bigint } | null>(null)
+  if (decimals !== undefined && symbol !== undefined && activationThreshold !== undefined) {
+    resolvedRef.current = { decimals, symbol, activationThreshold }
   }
-  if (!hasLoadedOnce.current && (isLoadingAggregated || isLoadingStakeable || isLoadingTokenDetails || decimals === undefined || symbol === undefined || activationThreshold === undefined)) {
+  if (!resolvedRef.current) {
     return <ATPStakingOverviewSkeleton />
   }
+  const { decimals: resolvedDecimals, symbol: resolvedSymbol, activationThreshold: resolvedActivationThreshold } = resolvedRef.current
 
   return (
     <ClaimAllProvider>
@@ -149,8 +150,8 @@ export const ATPStakingOverview = ({ atpData, walletBalance = 0n }: ATPStakingOv
               totalClaimable={totalClaimable}
               isExpanded={isTotalAllocationExpanded}
               onToggle={() => setIsTotalAllocationExpanded(!isTotalAllocationExpanded)}
-              decimals={decimals}
-              symbol={symbol}
+              decimals={resolvedDecimals}
+              symbol={resolvedSymbol}
             />
 
             {/* Total Staked Section */}
@@ -161,21 +162,21 @@ export const ATPStakingOverview = ({ atpData, walletBalance = 0n }: ATPStakingOv
               totalDelegated={combinedTotalDelegated}
               isExpanded={isTotalStakedExpanded}
               onToggle={() => setIsTotalStakedExpanded(!isTotalStakedExpanded)}
-              decimals={decimals}
-              symbol={symbol}
+              decimals={resolvedDecimals}
+              symbol={resolvedSymbol}
             />
 
             {/* Stakeable Amount Section - includes ATP stakeable + ERC20 wallet balance (rounded) */}
             <ATPStakingOverviewStakeableAmount
               ref={stakeableRef}
-              totalStakeableAmount={totalStakeableAmount + calculateStakeableAmount(walletBalance, activationThreshold)}
+              totalStakeableAmount={totalStakeableAmount + calculateStakeableAmount(walletBalance, resolvedActivationThreshold)}
               totalStaked={totalStaked}
-              totalValidatorCount={totalValidatorCount + (activationThreshold ? Number(walletBalance / activationThreshold) : 0)}
-              activationThreshold={activationThreshold}
+              totalValidatorCount={totalValidatorCount + (resolvedActivationThreshold ? Number(walletBalance / resolvedActivationThreshold) : 0)}
+              activationThreshold={resolvedActivationThreshold}
               isExpanded={isStakeableExpanded}
               onToggle={() => setIsStakeableExpanded(!isStakeableExpanded)}
-              decimals={decimals}
-              symbol={symbol}
+              decimals={resolvedDecimals}
+              symbol={resolvedSymbol}
             />
 
             {/* Total Rewards Section */}
@@ -187,8 +188,8 @@ export const ATPStakingOverview = ({ atpData, walletBalance = 0n }: ATPStakingOv
               isRewardsClaimable={isRewardsClaimable}
               isExpanded={isTotalRewardsExpanded}
               onToggle={() => setIsTotalRewardsExpanded(!isTotalRewardsExpanded)}
-              decimals={decimals}
-              symbol={symbol}
+              decimals={resolvedDecimals}
+              symbol={resolvedSymbol}
               delegationBreakdown={delegationBreakdown}
               coinbaseBreakdown={coinbaseBreakdown}
               onClaimSuccess={() => {
@@ -207,8 +208,8 @@ export const ATPStakingOverview = ({ atpData, walletBalance = 0n }: ATPStakingOv
             erc20DelegationBreakdown={erc20DelegationBreakdown}
             erc20DirectStakeBreakdown={erc20DirectStakeBreakdown}
             atpData={atpData}
-            decimals={decimals}
-            symbol={symbol}
+            decimals={resolvedDecimals}
+            symbol={resolvedSymbol}
             onATPClick={(atp) => setSelectedATP(atp)}
           />
         )}
