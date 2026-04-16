@@ -190,6 +190,7 @@ export const useClaimAllRewards = (): UseClaimAllRewardsReturn => {
     setIsProcessing(true)
     setError(null)
     setHasTriggeredClaim(false)
+    handledCompletionRef.current = null
 
     // Reset hooks
     delegationClaimHook.reset()
@@ -202,6 +203,7 @@ export const useClaimAllRewards = (): UseClaimAllRewardsReturn => {
   const cancelClaiming = useCallback(() => {
     cancelledRef.current = true
     if (advanceTimeoutRef.current) { clearTimeout(advanceTimeoutRef.current); advanceTimeoutRef.current = null }
+    handledCompletionRef.current = null
     setIsProcessing(false)
     setCurrentTaskIndex(null)
     setHasTriggeredClaim(false)
@@ -238,6 +240,7 @@ export const useClaimAllRewards = (): UseClaimAllRewardsReturn => {
   const reset = useCallback(() => {
     cancelledRef.current = false
     if (advanceTimeoutRef.current) { clearTimeout(advanceTimeoutRef.current); advanceTimeoutRef.current = null }
+    handledCompletionRef.current = null
     setTasks([])
     setCurrentTaskIndex(null)
     setIsProcessing(false)
@@ -348,6 +351,7 @@ export const useClaimAllRewards = (): UseClaimAllRewardsReturn => {
         } else {
           setIsProcessing(false)
           setCurrentTaskIndex(null)
+          handledCompletionRef.current = null
         }
       }, 500)
     }

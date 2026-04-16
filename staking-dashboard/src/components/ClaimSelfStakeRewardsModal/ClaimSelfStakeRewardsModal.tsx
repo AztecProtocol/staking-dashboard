@@ -103,16 +103,19 @@ export const ClaimSelfStakeRewardsModal = ({
     claimRewards(coinbaseAddress as Address, rollupAddress)
   }
 
-  // Handle success
+  // Handle success — reset the claim hook so the user can claim remaining rollups
+  // without closing the modal. The rewards breakdown refetches automatically.
   useEffect(() => {
     if (isSuccess) {
       onSuccess?.()
-      onClose()
-      setCoinbaseAddress("")
-      setHasCheckedRewards(false)
       reset()
+      // Re-trigger the rewards check for the same coinbase so the breakdown refreshes
+      // and the claimed row disappears while remaining rows stay visible.
+      if (coinbaseAddress) {
+        debouncedCheckRewards(coinbaseAddress)
+      }
     }
-  }, [isSuccess, onSuccess, onClose, reset])
+  }, [isSuccess, onSuccess, reset])
 
   // Handle errors
   useEffect(() => {
