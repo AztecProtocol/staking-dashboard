@@ -115,7 +115,8 @@ export const ClaimSelfStakeRewardsModal = ({
         debouncedCheckRewards()
       }
     }
-  }, [isSuccess, onSuccess, reset])
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- coinbaseAddress is read but not a reactive trigger
+  }, [isSuccess, onSuccess, reset, debouncedCheckRewards])
 
   // Handle errors
   useEffect(() => {

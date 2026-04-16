@@ -297,6 +297,7 @@ export const useClaimAllRewards = (): UseClaimAllRewardsReturn => {
         i === currentTaskIndex ? { ...t, currentSubStep: subStep as 'claiming' | 'distributing' | 'withdrawing' } : t
       ))
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- currentTask derived from currentTaskIndex
   }, [delegationClaimHook.claimStep, currentTaskIndex, currentTask?.type, isProcessing])
 
   // Track whether we've already handled the current task's completion to avoid

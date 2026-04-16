@@ -45,12 +45,13 @@ export const ClaimAllRewardsModal = ({
   const claimAllRewards = useClaimAllRewards()
 
   // Reset phase when modal opens
+  const { reset: resetClaims } = claimAllRewards
   useEffect(() => {
     if (isOpen) {
       setPhase('summary')
-      claimAllRewards.reset()
+      resetClaims()
     }
-  }, [isOpen])
+  }, [isOpen, resetClaims])
 
   // Transition to progress when claiming starts
   useEffect(() => {
