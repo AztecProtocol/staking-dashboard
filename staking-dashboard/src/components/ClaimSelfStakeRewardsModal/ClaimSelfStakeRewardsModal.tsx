@@ -3,6 +3,7 @@ import { createPortal } from "react-dom"
 import { Icon } from "@/components/Icon"
 import { CopyButton } from "@/components/CopyButton"
 import { formatTokenAmount } from "@/utils/atpFormatters"
+import { validateAddress } from "@/utils/validateAddress"
 import { debounce } from "@/utils/debounce"
 import { useStakingAssetTokenDetails } from "@/hooks/stakingRegistry"
 import { useClaimSequencerRewards } from "@/hooks/rollup/useClaimSequencerRewards"
@@ -43,7 +44,7 @@ export const ClaimSelfStakeRewardsModal = ({
   const [hasCheckedRewards, setHasCheckedRewards] = useState(false)
   const [isDebouncing, setIsDebouncing] = useState(false)
 
-  const isValidAddress = coinbaseAddress.length === 42 && coinbaseAddress.startsWith('0x')
+  const isValidAddress = validateAddress(coinbaseAddress)
   // Empty array while typing prevents firing reads against an invalid coinbase.
   const coinbasesForQuery = useMemo<Address[]>(
     () => (isValidAddress ? [coinbaseAddress as Address] : []),
@@ -88,7 +89,7 @@ export const ClaimSelfStakeRewardsModal = ({
 
   // Auto-check rewards when valid address is entered (debounced)
   useEffect(() => {
-    if (coinbaseAddress.length === 42 && coinbaseAddress.startsWith('0x')) {
+    if (validateAddress(coinbaseAddress)) {
       setIsDebouncing(true)
       debouncedCheckRewards()
     } else {
