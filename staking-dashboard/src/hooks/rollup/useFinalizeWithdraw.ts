@@ -9,8 +9,7 @@ import type { Address } from "viem"
  * The staker contract has a bug where it calls `finaliseWithdraw` (British spelling) but
  * the actual Rollup contract uses `finalizeWithdraw` (American spelling).
  *
- * @param rollupAddress - Optional rollup contract to finalize on. Defaults to the configured
- *                        rollup. For stranded stakes, pass the specific rollup the exit lives on.
+ * @param rollupAddress - Optional rollup contract to finalize on. Defaults to the configured rollup.
  *
  * @returns Hook with finalizeWithdraw function and transaction status
  */

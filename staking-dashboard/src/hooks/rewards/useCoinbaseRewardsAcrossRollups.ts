@@ -6,32 +6,17 @@ import { useRollupRegistry } from "@/hooks/rollup/useRollupRegistry"
 import type { CoinbaseBreakdown } from "./rewardsTypes"
 
 /**
- * Fans `getSequencerRewards(coinbase)` out across every rollup discovered via the Aztec
- * governance Registry, in a single multicall roundtrip.
- *
- * This is the multi-rollup-aware reader behind the rewards UI. The Registry enumeration
- * happens via {@link useRollupRegistry} (cached forever); only when that returns rollups
- * does this hook issue the actual `getSequencerRewards` reads.
- *
- * Returns one `CoinbaseBreakdown` entry per `(coinbase × rollup)` pair that has a non-zero
- * balance, plus the running total. Callers display these as separate rows so operators can
- * see exactly which rollup each balance lives on, and the claim engine routes per-row claims
- * to the correct rollup contract.
- *
- * Falls back to the configured rollup only when registry discovery fails (so the dashboard
- * keeps working in single-rollup deployments and during the registry-loading window).
+ * Multicalls `getSequencerRewards(coinbase)` across every registry-discovered rollup.
+ * Returns one `CoinbaseBreakdown` per `(coinbase, rollup)` pair with a non-zero balance.
  */
 export function useCoinbaseRewardsAcrossRollups(coinbaseAddresses: Address[]) {
   const { rollups, isLoading: isLoadingRegistry, error: registryError } = useRollupRegistry()
 
-  // Fall back to the configured rollup if registry discovery hasn't produced anything yet.
-  // This keeps single-rollup deployments and the initial-load window working.
   const effectiveRollups = useMemo(() => {
     if (rollups.length > 0) return rollups
     return [{ version: undefined as bigint | undefined, address: contracts.rollup.address }]
   }, [rollups])
 
-  // Build a flat list of (rollup, coinbase) pairs and the matching multicall contracts.
   const pairs = useMemo(() => {
     const out: Array<{ rollupAddress: Address; rollupVersion: bigint | undefined; coinbase: Address }> = []
     for (const rollup of effectiveRollups) {
@@ -56,13 +41,10 @@ export function useCoinbaseRewardsAcrossRollups(coinbaseAddresses: Address[]) {
       : undefined,
     query: {
       enabled: pairs.length > 0,
-      // Auto-refresh every 30 seconds to match the legacy single-rollup hook's cadence.
       refetchInterval: 30 * 1000,
     },
   })
 
-  // Expand the results into one CoinbaseBreakdown per (coinbase, rollup) pair.
-  // Includes zero-balance rows so saved addresses remain visible in the management UI.
   const allCoinbaseBreakdown = useMemo<CoinbaseBreakdown[]>(() => {
     if (!data || pairs.length === 0) return []
     const out: CoinbaseBreakdown[] = []
@@ -82,7 +64,6 @@ export function useCoinbaseRewardsAcrossRollups(coinbaseAddresses: Address[]) {
     return out
   }, [data, pairs])
 
-  // Filtered to non-zero for claim UIs (Claim All, per-rollup claim buttons)
   const coinbaseBreakdown = useMemo(
     () => allCoinbaseBreakdown.filter((item) => item.rewards > 0n),
     [allCoinbaseBreakdown],
@@ -94,9 +75,7 @@ export function useCoinbaseRewardsAcrossRollups(coinbaseAddresses: Address[]) {
   )
 
   return {
-    /** All (coinbase, rollup) pairs including zero-balance — for management UI */
     allCoinbaseBreakdown,
-    /** Only non-zero balances — for claim UIs */
     coinbaseBreakdown,
     totalCoinbaseRewards,
     isLoading: isLoading || isLoadingRegistry,

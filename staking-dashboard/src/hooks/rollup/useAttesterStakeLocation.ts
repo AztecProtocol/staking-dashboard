@@ -5,19 +5,8 @@ import { contracts } from "@/contracts"
 import { useRollupRegistry } from "./useRollupRegistry"
 
 /**
- * Locates the rollup where a given attester's stake actually lives.
- *
- * In the multi-rollup world, an attester can be stranded on an older rollup if they originally
- * deposited with `_moveWithLatestRollup=false`. In that case, calling `getAttesterView` on the
- * canonical rollup returns `Status.NONE`, even though the stake is real and recoverable.
- *
- * This hook fans `getAttesterView(attester)` across every rollup discovered via the Aztec
- * governance Registry, picks the one returning a non-NONE status, and returns that rollup's
- * address + version. The withdrawal flow uses this to target the correct rollup contract for
- * `initiateWithdraw` / `finalizeWithdraw`.
- *
- * Tie-break order if the attester appears on multiple rollups (rare): prefer the canonical
- * rollup, then the latest non-canonical.
+ * Locates the rollup where a given attester's stake actually lives by multicalling
+ * `getAttesterView` across all registry-discovered rollups. Prefers the canonical rollup.
  */
 
 const STATUS_NONE = 0

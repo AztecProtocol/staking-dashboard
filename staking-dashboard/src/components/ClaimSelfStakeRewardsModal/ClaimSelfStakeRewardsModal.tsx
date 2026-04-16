@@ -46,14 +46,12 @@ export const ClaimSelfStakeRewardsModal = ({
   const [isDebouncing, setIsDebouncing] = useState(false)
 
   const isValidAddress = validateAddress(coinbaseAddress)
-  // Empty array while typing prevents firing reads against an invalid coinbase.
   const coinbasesForQuery = useMemo<Address[]>(
     () => (isValidAddress ? [coinbaseAddress as Address] : []),
     [coinbaseAddress, isValidAddress],
   )
 
-  // Fan the read out across every rollup discovered via the Aztec governance Registry, so a
-  // sequencer with stranded balances on older rollups sees them all listed (one row per rollup).
+  // Per-rollup reward reads
   const {
     coinbaseBreakdown,
     totalCoinbaseRewards,
@@ -61,8 +59,7 @@ export const ClaimSelfStakeRewardsModal = ({
     refetch: checkRewards,
   } = useCoinbaseRewardsAcrossRollups(coinbasesForQuery)
 
-  // Multicall isRewardsClaimable() across the same rollups so the per-row claim button reflects
-  // the right rollup's gating, not the configured rollup's.
+  // Per-rollup claimability check
   const rollupAddressesInBreakdown = useMemo(
     () => coinbaseBreakdown.map((row) => row.rollupAddress),
     [coinbaseBreakdown],
@@ -99,20 +96,15 @@ export const ClaimSelfStakeRewardsModal = ({
     }
   }, [coinbaseAddress, debouncedCheckRewards])
 
-  // Per-rollup claim helper — passes the rollup the row's balance lives on so the
-  // `claimSequencerRewards` tx is sent to the correct contract.
   const handleClaim = (rollupAddress: Address) => {
     claimRewards(coinbaseAddress as Address, rollupAddress)
   }
 
-  // Handle success — reset the claim hook so the user can claim remaining rollups
-  // without closing the modal. The rewards breakdown refetches automatically.
+  // On success: reset and refresh breakdown
   useEffect(() => {
     if (isSuccess) {
       onSuccess?.()
       reset()
-      // Re-trigger the rewards check so the breakdown refreshes
-      // and the claimed row disappears while remaining rows stay visible.
       if (coinbaseAddress) {
         debouncedCheckRewards()
       }

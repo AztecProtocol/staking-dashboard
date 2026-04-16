@@ -6,8 +6,6 @@ import { contracts } from "../../contracts";
  * Hook to get rollup data including version and activation threshold.
  *
  * @param rollupAddress - Optional rollup contract to query. Defaults to the configured rollup.
- *                        Pass an explicit address to read version/threshold from a non-canonical
- *                        rollup (e.g. for stranded-stake withdrawal flows).
  */
 export function useRollupData(rollupAddress?: Address) {
   const targetRollup = rollupAddress ?? contracts.rollup.address;

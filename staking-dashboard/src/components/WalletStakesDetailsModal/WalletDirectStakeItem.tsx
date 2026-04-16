@@ -34,9 +34,7 @@ export const WalletDirectStakeItem = ({
   const { symbol, decimals } = useStakingAssetTokenDetails()
   const { date, time } = formatBlockTimestamp(stake.timestamp)
 
-  // Discover which rollup the attester's stake actually lives on. For non-stranded stakes this
-  // returns the configured/canonical rollup; for stranded stakes it returns the specific old
-  // rollup so that withdraw/finalize calls target the correct contract.
+  // Find which rollup this stake lives on
   const { location: stakeLocation } = useAttesterStakeLocation(stake.attesterAddress as Address)
   const resolvedRollup = stakeLocation?.rollupAddress
 

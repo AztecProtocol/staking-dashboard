@@ -9,10 +9,7 @@ import type { Address } from "viem"
  * directly on the Rollup contract. This is different from ATP staking where
  * withdrawals are initiated through the staker contract.
  *
- * @param rollupAddress - Optional rollup contract to withdraw from. Defaults to the configured
- *                        rollup. For stranded stakes (originally deposited with
- *                        `_moveWithRollup=false`) callers must pass the rollup the stake actually
- *                        lives on, not the canonical rollup.
+ * @param rollupAddress - Optional rollup contract to withdraw from. Defaults to the configured rollup.
  *
  * @returns Hook with initiateWithdraw function and transaction status
  */

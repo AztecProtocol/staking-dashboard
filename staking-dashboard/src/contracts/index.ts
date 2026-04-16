@@ -76,8 +76,6 @@ const contracts = {
     address: env.VITE_GSE_ADDRESS,
     abi: GSEAbi,
   },
-  // The rollup registry's address is not configured statically — it is discovered at runtime via
-  // stakingRegistry.ROLLUP_REGISTRY(). Only the ABI is exported here so callers can pass it to wagmi.
   rollupRegistry: {
     abi: RollupRegistryAbi,
   },

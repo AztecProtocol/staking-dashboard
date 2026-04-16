@@ -42,9 +42,7 @@ export const WalletDirectStakingFlow = ({
   onComplete,
 }: WalletDirectStakingFlowProps) => {
   const { address } = useAccount()
-  // Discover the canonical rollup so registrations target whichever rollup is currently
-  // canonical, even if the dashboard was deployed against an older `VITE_ROLLUP_ADDRESS`.
-  // Falls back to the configured rollup while the registry is loading or if discovery fails.
+  // Target canonical rollup for deposits
   const { canonical: canonicalRollup, isLoading: isLoadingRegistry } = useRollupRegistry()
   const targetRollupAddress = canonicalRollup?.address ?? contracts.rollup.address
   const { activationThreshold, isLoading: isLoadingRollup } = useRollupData(targetRollupAddress)
@@ -76,8 +74,6 @@ export const WalletDirectStakingFlow = ({
     return activationThreshold * BigInt(stakeCount)
   }, [activationThreshold, stakeCount])
 
-  // Check current allowance against the *canonical* rollup, since that's where the deposit
-  // will be sent. The approval and the deposit must agree on the spender address.
   const { allowance, isLoading: isLoadingAllowance, refetch: refetchAllowance } = useAllowance({
     tokenAddress: stakingAssetAddress,
     owner: address,
@@ -86,8 +82,6 @@ export const WalletDirectStakingFlow = ({
 
   const hasEnoughAllowance = allowance !== undefined && allowance >= totalAmount
 
-  // Hooks for building transactions — both bound to the canonical rollup so the approval and
-  // deposit land on the same contract.
   const approveHook = useApproveRollup(stakingAssetAddress, targetRollupAddress)
   const depositHook = useWalletDirectStake(targetRollupAddress)
 

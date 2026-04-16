@@ -43,10 +43,6 @@ export default function MyPositionPage() {
   const { totalErc20Staked, directStakeBreakdown, delegationBreakdown, erc20DelegationBreakdown, erc20DirectStakeBreakdown, refetch } = useAggregatedStakingData()
   const { coinbaseAddresses } = useCoinbaseAddresses()
 
-  // Check if user has any staked positions (ATP vaults or ERC20 wallet stakes)
-  // or saved coinbase addresses (for self-stake rewards tracking).
-  // Once true, stay true for the session — prevents unmounting the Positions
-  // Overview (and its claim modal) when a successful claim zeros out rewards.
   const hasPositionsNow =
     directStakeBreakdown.length > 0 ||
     delegationBreakdown.length > 0 ||

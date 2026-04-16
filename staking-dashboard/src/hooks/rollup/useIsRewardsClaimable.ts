@@ -6,8 +6,6 @@ import type { Address } from "viem"
  * Hook to check if rewards are claimable from a specific rollup contract.
  *
  * @param rollupAddress - Optional rollup contract to query. Defaults to the configured rollup.
- *                        Each rollup has its own `isRewardsClaimable` flag, so callers iterating
- *                        across multiple rollups must check each one independently.
  */
 export function useIsRewardsClaimable(rollupAddress?: Address) {
   const targetRollup = rollupAddress ?? contracts.rollup.address

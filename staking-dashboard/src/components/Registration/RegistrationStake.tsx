@@ -30,9 +30,7 @@ interface RegistrationStakeProps {
 export const RegistrationStake = ({ onComplete }: RegistrationStakeProps) => {
   const { formData, handlePrevStep } = useATPStakingStepsContext<ValidatorRegistrationForm>()
   const { selectedAtp, uploadedKeystores, transactionType } = formData
-  // Resolve the canonical rollup so registrations target the latest one even if the dashboard
-  // was deployed against an older `VITE_ROLLUP_ADDRESS`. The activation threshold and version
-  // both come from the canonical rollup so the staked amount and `_rollupVersion` arg agree.
+  // Use canonical rollup for registration
   const { canonical: canonicalRollup, isLoading: isLoadingRegistry } = useRollupRegistry()
   const { activationThreshold, version: rollupVersion, isLoading: isLoadingRollup } = useRollupData(canonicalRollup?.address)
   const { symbol, decimals, isLoading: isLoadingToken } = useERC20TokenDetails(selectedAtp?.token!)

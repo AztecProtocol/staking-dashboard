@@ -50,9 +50,6 @@ export const ManageRewardsAddressesModal = ({
 
   const addCoinbaseAddress = useAddCoinbaseAddress()
 
-  // Get rewards for all coinbase addresses.
-  // Use allCoinbaseBreakdown for the management UI so zero-balance addresses
-  // remain visible and removable.
   const {
     allCoinbaseBreakdown,
     isLoading: isLoadingCoinbaseRewards,

@@ -28,13 +28,7 @@ export interface ClaimTask {
   providerTakeRate?: number
   // Coinbase-specific data
   coinbaseAddress?: Address
-  /**
-   * The rollup contract this task targets. Coinbase tasks pulled from a multi-rollup
-   * breakdown carry the rollup the balance lives on so the engine routes the
-   * `claimSequencerRewards` call to the correct contract. Delegation tasks default to
-   * the configured rollup (delegation rewards are split-contract scoped, but the
-   * underlying balance still flows from a specific rollup).
-   */
+  /** Rollup contract this task targets for claiming. */
   rollupAddress?: Address
   rollupVersion?: bigint
   // Sub-step tracking for delegations
@@ -89,9 +83,6 @@ export const useClaimAllRewards = (): UseClaimAllRewardsReturn => {
   // Get current task's addresses
   const currentSplitContract = currentTask?.type === 'delegation' ? currentTask.splitContract : undefined
   const currentCoinbase = currentTask?.type === 'coinbase' ? currentTask.coinbaseAddress : undefined
-  // Each task carries the rollup the balance lives on. For delegation tasks (which have not
-  // been multi-rollup-expanded yet) and legacy callers that omit the field, fall back to the
-  // configured rollup so existing behavior is preserved.
   const currentTaskRollup = currentTask?.rollupAddress
 
   // Fetch balances for current task (for delegations) - extract refetch functions
@@ -162,8 +153,6 @@ export const useClaimAllRewards = (): UseClaimAllRewardsReturn => {
         providerTakeRate: delegation.providerTakeRate
       })),
       ...coinbases.map((coinbase): ClaimTask => ({
-        // Include the rollup in the task id so the same coinbase address claimed across
-        // multiple rollups produces distinct tasks instead of collapsing into one.
         id: `coinbase-${coinbase.address}-${coinbase.rollupAddress}`,
         type: 'coinbase',
         displayName: coinbase.rollupVersion !== undefined
@@ -250,8 +239,6 @@ export const useClaimAllRewards = (): UseClaimAllRewardsReturn => {
     coinbaseClaimHook.reset()
   }, [delegationClaimHook, coinbaseClaimHook])
 
-  // Keep stable refs to claim functions so the trigger effect doesn't re-fire
-  // when the hook objects change identity (e.g. after reset()).
   const delegationClaimRef = useRef(delegationClaimHook)
   delegationClaimRef.current = delegationClaimHook
   const coinbaseClaimRef = useRef(coinbaseClaimHook)
@@ -275,12 +262,9 @@ export const useClaimAllRewards = (): UseClaimAllRewardsReturn => {
     ))
     setHasTriggeredClaim(true)
 
-    // Start the appropriate claim (read from refs to avoid stale closures)
     if (task.type === 'delegation') {
       delegationClaimRef.current.claim()
     } else if (task.type === 'coinbase' && task.coinbaseAddress) {
-      // Pass the per-task rollup address so the claim lands on the correct rollup contract
-      // (the hook itself defaults to the configured rollup when no override is given).
       coinbaseClaimRef.current.claimRewards(task.coinbaseAddress, task.rollupAddress)
     }
   }, [isProcessing, currentTaskIndex, tasks, hasTriggeredClaim, isLoadingBalances])
@@ -332,10 +316,7 @@ export const useClaimAllRewards = (): UseClaimAllRewardsReturn => {
         i === currentTaskIndex ? { ...t, status: 'completed' as const } : t
       ))
 
-      // Reset hooks and advance to next task after a small delay.
-      // Use a ref-based timeout so it survives effect re-runs — the setTasks()
-      // above changes `tasks`, which re-triggers this effect. A cleanup return
-      // would kill the timeout before it fires.
+      // Delay so setTasks() doesn't re-trigger this effect before the timeout fires.
       if (advanceTimeoutRef.current) clearTimeout(advanceTimeoutRef.current)
       advanceTimeoutRef.current = setTimeout(() => {
         advanceTimeoutRef.current = null
@@ -384,16 +365,12 @@ export const useClaimAllRewards = (): UseClaimAllRewardsReturn => {
     }
 
     if (taskError) {
-      // Mark task as failed and continue to next task instead of stopping.
-      // In a multi-rollup setup, some rollups may have locked rewards while
-      // others are claimable — stopping on the first failure would strand
-      // the claimable ones.
+      // Skip failed task and continue
       setTasks(prev => prev.map((t, i) =>
         i === currentTaskIndex ? { ...t, status: 'error' as const, error: taskError } : t
       ))
       setError(taskError)
 
-      // Reset hooks and advance to next task
       if (advanceTimeoutRef.current) clearTimeout(advanceTimeoutRef.current)
       advanceTimeoutRef.current = setTimeout(() => {
         advanceTimeoutRef.current = null
@@ -424,7 +401,6 @@ export const useClaimAllRewards = (): UseClaimAllRewardsReturn => {
     coinbaseClaimHook.error,
   ])
 
-  // Calculate progress (both completed and failed count as "done")
   const completedTasks = tasks.filter(t => t.status === 'completed')
   const failedTasks = tasks.filter(t => t.status === 'error')
   const doneTasks = completedTasks.length + failedTasks.length
@@ -432,8 +408,6 @@ export const useClaimAllRewards = (): UseClaimAllRewardsReturn => {
     ? Math.round((doneTasks / tasks.length) * 100)
     : 0
 
-  // Determine overall success/error state — isSuccess means all tasks processed
-  // (some may have failed). isError means at least one failed.
   const isSuccess = tasks.length > 0 && !isProcessing && doneTasks === tasks.length && completedTasks.length > 0
   const isError = !isProcessing && failedTasks.length > 0
 

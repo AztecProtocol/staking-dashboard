@@ -8,7 +8,6 @@ import { contracts } from "../../contracts"
  * below this threshold, validators are ejected from the active set.
  *
  * @param rollupAddress - Optional rollup contract to query. Defaults to the configured rollup.
- *                        Each rollup version may have its own ejection threshold.
  */
 export function useEjectionThreshold(rollupAddress?: Address) {
   const targetRollup = rollupAddress ?? contracts.rollup.address

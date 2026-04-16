@@ -9,9 +9,7 @@ import type { G1Point, G2Point } from "@/hooks/staker/types"
  * This is for wallet-based direct staking (own validator registration).
  * User calls Rollup.deposit() directly with their BLS keys.
  *
- * @param rollupAddress - Optional rollup contract to deposit into. Defaults to the configured
- *                        rollup. Registration flows should pass the *canonical* rollup so the
- *                        deposit lands on the active rollup, not on a pinned/stale one.
+ * @param rollupAddress - Optional rollup contract to deposit into. Defaults to the configured rollup.
  */
 export function useWalletDirectStake(rollupAddress?: Address) {
   const targetRollup = rollupAddress ?? contracts.rollup.address

@@ -27,13 +27,6 @@ interface CoinbaseAddressListProps {
   onRefetch?: () => void
 }
 
-/**
- * Display list of coinbase addresses with their rewards.
- *
- * Renders one row per (coinbase, rollup) pair with rewards > 0, so operators can see
- * stranded balances on older rollups and claim them individually. Each claim button issues
- * a `claimSequencerRewards` tx against the specific rollup the row's balance lives on.
- */
 export const CoinbaseAddressList = ({
   coinbaseBreakdown,
   decimals,
@@ -43,16 +36,10 @@ export const CoinbaseAddressList = ({
   onRefetch
 }: CoinbaseAddressListProps) => {
   const { removeCoinbaseAddress, isPending: isRemoving } = useRemoveCoinbaseAddress()
-  // Hook is instantiated once and the per-row rollup is passed as the `claimRewards` override.
   const claimRewards = useClaimCoinbaseRewards()
-  // Track which row initiated the claim. Combined with the hook's reactive state
-  // (isPending/isConfirming) to show the spinner only on the active row.
-  // Not cleared explicitly — stale value is harmless because it's AND-ed with isClaiming.
   const [claimingRowKey, setClaimingRowKey] = useState<string | null>(null)
   const isClaiming = claimRewards.isPending || claimRewards.isConfirming
 
-  // Multicall isRewardsClaimable() across every rollup represented in the breakdown so each
-  // row's claim button reflects its own rollup's state, not just the configured rollup.
   const rollupAddressesInBreakdown = useMemo(
     () => coinbaseBreakdown.map((item) => item.rollupAddress),
     [coinbaseBreakdown],
@@ -92,7 +79,6 @@ export const CoinbaseAddressList = ({
   return (
     <div className="space-y-3">
       {coinbaseBreakdown.map((item) => {
-        // Per-rollup claimability flag; fall back to the prop while the multicall is still loading.
         const perRollupClaimable = isClaimableForRollup(item.rollupAddress)
         const rowIsClaimable = perRollupClaimable ?? isRewardsClaimable
 

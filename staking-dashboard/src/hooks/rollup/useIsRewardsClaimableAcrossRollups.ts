@@ -4,15 +4,8 @@ import type { Address } from "viem"
 import { contracts } from "@/contracts"
 
 /**
- * Reads `isRewardsClaimable()` from a list of rollup contracts in a single multicall.
- *
- * Each rollup has its own `isRewardsClaimable` storage flag (toggled by the rollup owner),
- * so a row showing rewards on rollup v2 may be claimable while a row on v3 is locked, or
- * vice versa. This hook returns a Map keyed by the lowercased rollup address so callers can
- * cheaply look up the right flag per row.
- *
- * Returns `undefined` for rollups that haven't loaded yet; consumers should treat
- * `undefined` as "still loading" and not as "unclaimable".
+ * Multicalls `isRewardsClaimable()` across a list of rollup contracts.
+ * Returns a Map keyed by lowercased rollup address; `undefined` means still loading.
  */
 export function useIsRewardsClaimableAcrossRollups(rollupAddresses: Address[]) {
   const uniqueAddresses = useMemo(() => {
@@ -55,7 +48,6 @@ export function useIsRewardsClaimableAcrossRollups(rollupAddresses: Address[]) {
     return map
   }, [data, uniqueAddresses])
 
-  /** Convenience lookup that returns `undefined` while loading, then `true`/`false`. */
   const isClaimable = (rollupAddress: Address): boolean | undefined => {
     return claimableByRollup.get(rollupAddress.toLowerCase())
   }

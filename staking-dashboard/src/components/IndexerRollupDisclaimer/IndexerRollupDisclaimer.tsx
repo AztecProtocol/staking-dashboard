@@ -1,17 +1,10 @@
 import { Icon } from "@/components/Icon"
 import { useRollupRegistry } from "@/hooks/rollup/useRollupRegistry"
 
-/**
- * Small inline disclaimer shown on pages that surface historical aggregates from the indexer
- * (providers list, provider details, StakePortal summaries). It only renders when the
- * dashboard detects more than one rollup in the governance Registry so operators aren't
- * confused by a missing disclaimer on single-rollup deployments.
- */
+/** Disclaimer shown on provider pages when multiple rollups exist. */
 export const IndexerRollupDisclaimer = () => {
   const { rollups, isLoading } = useRollupRegistry()
 
-  // Only show when there's more than one known rollup; single-rollup deployments have
-  // complete data so the disclaimer would be misleading.
   if (isLoading || rollups.length <= 1) return null
 
   return (

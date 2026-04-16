@@ -123,10 +123,7 @@ export const ATPStakingOverview = ({ atpData, walletBalance = 0n }: ATPStakingOv
     }
   }, [])
 
-  // Cache required values once loaded. During refetches tanstack-query preserves
-  // previous data, but TypeScript can't prove these are never undefined after first
-  // load. A ref captures the last known values, provides type narrowing, AND prevents
-  // the skeleton from flashing during refetches (which would unmount modals mid-flow).
+  // Ref-cached to survive refetches without unmounting modals or losing type narrowing.
   const resolvedRef = useRef<{ decimals: number; symbol: string; activationThreshold: bigint } | null>(null)
   if (decimals !== undefined && symbol !== undefined && activationThreshold !== undefined) {
     resolvedRef.current = { decimals, symbol, activationThreshold }

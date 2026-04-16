@@ -1,6 +1,3 @@
-// Aztec governance Registry (IRegistry).
-// Source: aztec-packages next branch @ commit 9f7257e619 — l1-contracts/src/governance/interfaces/IRegistry.sol
-// Discovered at runtime via stakingRegistry.ROLLUP_REGISTRY(); no env var required.
 export const RollupRegistryAbi = [
   {
     "type": "function",
