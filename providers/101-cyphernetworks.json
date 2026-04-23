@@ -1,0 +1,12 @@
+{
+  "providerId": 101,
+  "providerName": "Cypher Networks",
+  "providerDescription": "Founded in 2024, Cypher Networks LLC is a blockchain infrastructure company focused on staking, validation, and sequencer operations. Our mission is to provide dependable infrastructure that helps secure decentralized networks and supports their long term growth.",
+  "providerEmail": "info@cyphernetworks.xyz",
+  "providerWebsite": "https://cyphernetworks.xyz",
+  "providerLogoUrl": "https://cyphernetworks.xyz/assets/logo.png",
+  "discordUsername": "culpercypher",
+  "providerSelfStake": [
+    "0x74314b0e75c47cC793fd82f987598B5F4Dc38aB7"
+  ]
+}
