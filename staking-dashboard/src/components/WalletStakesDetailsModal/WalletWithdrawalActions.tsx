@@ -151,7 +151,7 @@ export const WalletWithdrawalActions = ({
 
   const handleInitiateWithdraw = async () => {
     try {
-      await initiateWithdraw(attesterAddress, recipientAddress)
+      await initiateWithdraw(attesterAddress, recipientAddress, rollupAddress)
     } catch (error) {
       console.error("Failed to initiate withdraw:", error)
     }

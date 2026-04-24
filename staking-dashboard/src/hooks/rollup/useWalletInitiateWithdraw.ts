@@ -18,10 +18,10 @@ export function useWalletInitiateWithdraw() {
     hash,
   })
 
-  const initiateWithdraw = (attesterAddress: Address, recipientAddress: Address) => {
+  const initiateWithdraw = (attesterAddress: Address, recipientAddress: Address, rollupAddress?: Address) => {
     return writeContract({
       abi: contracts.rollup.abi,
-      address: contracts.rollup.address,
+      address: rollupAddress ?? contracts.rollup.address,
       functionName: "initiateWithdraw",
       args: [attesterAddress, recipientAddress],
     })
