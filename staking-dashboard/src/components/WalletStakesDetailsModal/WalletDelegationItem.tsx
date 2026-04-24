@@ -58,7 +58,7 @@ export const WalletDelegationItem = ({
     isAtRisk,
     isCritical,
     isLoading: isLoadingHealth
-  } = useStakeHealth(delegation.attesterAddress as Address)
+  } = useStakeHealth(delegation.attesterAddress as Address, delegationRollupAddress)
 
   const splitStatus = getSplitStatus(delegation.splitContract as Address)
   const isInBatch = splitStatus !== 'idle'

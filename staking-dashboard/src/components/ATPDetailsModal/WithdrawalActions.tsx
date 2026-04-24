@@ -75,7 +75,7 @@ interface WithdrawalActionsProps {
   stakerAddress: Address;
   attesterAddress: Address;
   rollupVersion: bigint;
-  rollupAddress?: Address;
+  rollupAddress: Address;
   status: number | undefined;
   canFinalize: boolean;
   actualUnlockTime?: bigint;

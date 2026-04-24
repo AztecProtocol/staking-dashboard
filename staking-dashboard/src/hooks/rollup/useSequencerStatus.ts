@@ -44,7 +44,7 @@ export function getStatusLabel(status: number | undefined): string {
  */
 export function useSequencerStatus(
   sequencerAddress: Address | undefined,
-  rollupAddress?: Address,
+  rollupAddress: Address | undefined,
 ) {
   const { status, effectiveBalance, exit, isLoading, error, refetch } =
     useAttesterView(sequencerAddress, rollupAddress);

@@ -73,7 +73,7 @@ export const ATPDetailsDelegationItem = ({
     isAtRisk,
     isCritical,
     isLoading: isLoadingHealth
-  } = useStakeHealth(delegation.operatorAddress as Address)
+  } = useStakeHealth(delegation.operatorAddress as Address, delegationRollupAddress)
 
   const splitStatus = getSplitStatus(delegation.splitContract as Address)
   const isInBatch = splitStatus !== 'idle'

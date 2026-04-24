@@ -64,7 +64,7 @@ function parseContractError(error: Error): string {
 interface WalletWithdrawalActionsProps {
   attesterAddress: Address
   recipientAddress: Address
-  rollupAddress?: Address
+  rollupAddress: Address
   status: number | undefined
   canFinalize: boolean
   actualUnlockTime?: bigint

@@ -47,7 +47,7 @@ export const WalletDirectStakeItem = ({
     isAtRisk,
     isCritical,
     isLoading: isLoadingHealth
-  } = useStakeHealth(stake.attesterAddress as Address)
+  } = useStakeHealth(stake.attesterAddress as Address, stakeRollupAddress)
 
   const isUnstaked = stake.status === 'UNSTAKED'
   const isInQueue = status === SequencerStatus.NONE && !stake.hasFailedDeposit && !isUnstaked
