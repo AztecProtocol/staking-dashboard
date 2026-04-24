@@ -20,6 +20,7 @@ import {
 export interface DirectStakeBreakdown {
   atpAddress: Address
   attesterAddress: Address
+  rollupAddress: Address
   stakedAmount: bigint
   hasFailedDeposit: boolean
   failedDepositTxHash: string | null
@@ -41,6 +42,7 @@ export interface DelegationBreakdown {
   providerName?: string
   providerLogo?: string
   attesterAddress: Address
+  rollupAddress: Address
   stakedAmount: bigint
   rewards: bigint
   splitContract: Address
@@ -60,6 +62,7 @@ export interface Erc20DelegationBreakdown {
   providerName?: string
   providerLogo?: string
   attesterAddress: Address
+  rollupAddress: Address
   stakedAmount: bigint
   rewards: bigint
   splitContract: Address
@@ -77,6 +80,7 @@ export interface Erc20DelegationBreakdown {
 export interface Erc20DirectStakeBreakdown {
   attesterAddress: Address
   withdrawerAddress: Address
+  rollupAddress: Address
   stakedAmount: bigint
   hasFailedDeposit: boolean
   failedDepositTxHash: string | null
@@ -109,6 +113,7 @@ export interface AggregatedStakingData {
 interface ApiDirectStake {
   atpAddress: string
   attesterAddress: string
+  rollupAddress: string
   stakedAmount: string
   hasFailedDeposit: boolean
   failedDepositTxHash: string | null
@@ -130,6 +135,7 @@ interface ApiDelegation {
   providerName?: string
   providerLogo?: string
   attesterAddress: string
+  rollupAddress: string
   stakedAmount: string
   splitContract: string
   providerTakeRate: number
@@ -148,6 +154,7 @@ interface ApiErc20Delegation {
   providerName?: string
   providerLogo?: string
   attesterAddress: string
+  rollupAddress: string
   stakedAmount: string
   splitContract: string
   providerTakeRate: number
@@ -164,6 +171,7 @@ interface ApiErc20Delegation {
 interface ApiErc20DirectStake {
   attesterAddress: string
   withdrawerAddress: string
+  rollupAddress: string
   stakedAmount: string
   hasFailedDeposit: boolean
   failedDepositTxHash: string | null
@@ -207,6 +215,7 @@ function parseDirectStake(stake: ApiDirectStake): DirectStakeBreakdown {
   return {
     atpAddress: stake.atpAddress as Address,
     attesterAddress: stake.attesterAddress as Address,
+    rollupAddress: stake.rollupAddress as Address,
     stakedAmount: stringToBigInt(stake.stakedAmount),
     hasFailedDeposit: stake.hasFailedDeposit,
     failedDepositTxHash: stake.failedDepositTxHash,
@@ -267,6 +276,7 @@ function parseDelegation(
     providerName: delegation.providerName,
     providerLogo: delegation.providerLogo,
     attesterAddress: delegation.attesterAddress as Address,
+    rollupAddress: delegation.rollupAddress as Address,
     stakedAmount: stringToBigInt(delegation.stakedAmount),
     rewards: delegation.hasFailedDeposit ? 0n : userRewards,
     splitContract: delegation.splitContract as Address,
@@ -324,6 +334,7 @@ function parseErc20Delegation(
     providerName: delegation.providerName,
     providerLogo: delegation.providerLogo,
     attesterAddress: delegation.attesterAddress as Address,
+    rollupAddress: delegation.rollupAddress as Address,
     stakedAmount: stringToBigInt(delegation.stakedAmount),
     rewards: delegation.hasFailedDeposit ? 0n : userRewards,
     splitContract: delegation.splitContract as Address,
@@ -346,6 +357,7 @@ function parseErc20DirectStake(stake: ApiErc20DirectStake): Erc20DirectStakeBrea
   return {
     attesterAddress: stake.attesterAddress as Address,
     withdrawerAddress: stake.withdrawerAddress as Address,
+    rollupAddress: stake.rollupAddress as Address,
     stakedAmount: stringToBigInt(stake.stakedAmount),
     hasFailedDeposit: stake.hasFailedDeposit,
     failedDepositTxHash: stake.failedDepositTxHash,
@@ -502,6 +514,7 @@ export const useAggregatedStakingData = (): AggregatedStakingData => {
       .map(stake => ({
         attesterAddress: stake.attesterAddress,
         withdrawerAddress: stake.withdrawerAddress,
+        rollupAddress: contracts.rollup.address,
         stakedAmount: BigInt(stake.stakedAmount),
         hasFailedDeposit: false,
         failedDepositTxHash: null,

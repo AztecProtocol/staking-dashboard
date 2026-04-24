@@ -45,7 +45,8 @@ export const WalletDelegationItem = ({
   const { getSplitStatus, claimAllHook } = useClaimAllContext()
   const { isRewardsClaimable } = useIsRewardsClaimable()
 
-  const { status, statusLabel, isLoading: isLoadingStatus, canFinalize, actualUnlockTime, refetch: refetchStatus } = useSequencerStatus(delegation.attesterAddress as Address)
+  const delegationRollupAddress = delegation.rollupAddress as Address
+  const { status, statusLabel, isLoading: isLoadingStatus, canFinalize, actualUnlockTime, refetch: refetchStatus } = useSequencerStatus(delegation.attesterAddress as Address, delegationRollupAddress)
   const { withdrawalDelayDays } = useGovernanceConfig()
 
   const {
@@ -380,6 +381,7 @@ export const WalletDelegationItem = ({
                   <WalletWithdrawalActions
                     attesterAddress={delegation.attesterAddress as Address}
                     recipientAddress={address}
+                    rollupAddress={delegationRollupAddress}
                     status={status}
                     canFinalize={canFinalize}
                     actualUnlockTime={actualUnlockTime}

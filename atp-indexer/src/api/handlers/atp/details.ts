@@ -29,6 +29,7 @@ function formatDirectStakes(
     return {
       attesterAddress: checksumAddress(stake.attesterAddress),
       operatorAddress: checksumAddress(stake.operatorAddress),
+      rollupAddress: checksumAddress(stake.rollupAddress),
       stakedAmount: activationThreshold,
       totalSlashed: totalSlashed.toString(),
       txHash: stake.txHash,

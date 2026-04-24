@@ -129,6 +129,7 @@ export async function handleBeneficiaryStakingOverview(c: Context): Promise<Resp
     const directStakeBreakdown = markedDirectStakes.map(stake => ({
       atpAddress: checksumAddress(atpByStaker.get(stake.stakerAddress.toLowerCase()) || stake.atpAddress),
       attesterAddress: checksumAddress(stake.attesterAddress),
+      rollupAddress: checksumAddress(stake.rollupAddress),
       stakedAmount: stake.stakedAmount.toString(),
       hasFailedDeposit: stake.hasFailedDeposit,
       failedDepositTxHash: stake.failedDepositTxHash,
@@ -150,6 +151,7 @@ export async function handleBeneficiaryStakingOverview(c: Context): Promise<Resp
         providerName: metadata?.providerName || `Provider ${providerId}`,
         providerLogo: metadata?.providerLogoUrl || '',
         attesterAddress: checksumAddress(delegation.attesterAddress),
+        rollupAddress: checksumAddress(delegation.rollupAddress),
         stakedAmount: delegation.stakedAmount.toString(),
         splitContract: checksumAddress(delegation.splitContractAddress),
         providerTakeRate: delegation.providerTakeRate,
@@ -174,6 +176,7 @@ export async function handleBeneficiaryStakingOverview(c: Context): Promise<Resp
         providerName: metadata?.providerName || `Provider ${providerId}`,
         providerLogo: metadata?.providerLogoUrl || '',
         attesterAddress: checksumAddress(delegation.attesterAddress),
+        rollupAddress: checksumAddress(delegation.rollupAddress),
         stakedAmount: delegation.stakedAmount.toString(),
         splitContract: checksumAddress(delegation.splitContractAddress),
         providerTakeRate: delegation.providerTakeRate,
@@ -192,6 +195,7 @@ export async function handleBeneficiaryStakingOverview(c: Context): Promise<Resp
     const erc20DirectStakeBreakdown = markedErc20DirectDeposits.map(dep => ({
       attesterAddress: checksumAddress(dep.attesterAddress),
       withdrawerAddress: checksumAddress(dep.withdrawerAddress),
+      rollupAddress: checksumAddress(dep.rollupAddress),
       stakedAmount: dep.amount.toString(),
       txHash: dep.txHash,
       timestamp: Number(dep.timestamp),

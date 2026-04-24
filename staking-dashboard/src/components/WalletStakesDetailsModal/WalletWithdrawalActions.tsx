@@ -64,6 +64,7 @@ function parseContractError(error: Error): string {
 interface WalletWithdrawalActionsProps {
   attesterAddress: Address
   recipientAddress: Address
+  rollupAddress?: Address
   status: number | undefined
   canFinalize: boolean
   actualUnlockTime?: bigint
@@ -78,6 +79,7 @@ interface WalletWithdrawalActionsProps {
 export const WalletWithdrawalActions = ({
   attesterAddress,
   recipientAddress,
+  rollupAddress,
   status,
   canFinalize,
   actualUnlockTime,
@@ -157,7 +159,7 @@ export const WalletWithdrawalActions = ({
 
   const handleFinalizeWithdraw = async () => {
     try {
-      await finalizeWithdraw(attesterAddress)
+      await finalizeWithdraw(attesterAddress, rollupAddress)
     } catch (error) {
       console.error("Failed to finalize withdraw:", error)
     }
