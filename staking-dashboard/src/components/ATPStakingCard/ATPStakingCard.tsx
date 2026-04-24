@@ -15,6 +15,8 @@ import { useRollupData } from "@/hooks/rollup/useRollupData";
 import { useStakerBalance } from "@/hooks/staker/useStakerBalance";
 import { useNCStakerStatus } from "@/hooks/staker/useNCStakerStatus";
 import { useBlockTimestamp } from "@/hooks/useBlockTimestamp";
+import { usePendingWithdrawals } from "@/hooks/governance";
+import { EXTERNAL_GOVERNANCE_FRONTENDS } from "@/config/externalGovernance";
 import { useTransactionCart } from "@/contexts/TransactionCartContext";
 import {
   ATPStakingStepsWithTransaction,
@@ -188,6 +190,20 @@ export const ATPStakingCard = ({
   } = useATPClaim(data);
   // Get cached block timestamp for withdrawal eligibility check (refreshes every 60s)
   const { blockTimestamp } = useBlockTimestamp();
+
+  // Pending governance withdrawals for this vault. Tokens initiated for
+  // withdrawal from Governance stay with the Governance contract until
+  // finalize() is called — they are NOT in the vault, so a vault withdrawal
+  // (vault → wallet) cannot release them. Users often miss this step.
+  const { pendingWithdrawals: governancePendingWithdrawals } =
+    usePendingWithdrawals({ userAddress: data.atpAddress as Address });
+  const pendingGovernanceAmount = governancePendingWithdrawals.reduce(
+    (sum, w) => sum + w.amount,
+    0n
+  );
+  const governanceDashboardUrl = EXTERNAL_GOVERNANCE_FRONTENDS.find(
+    (f) => f.url
+  )?.url;
 
   const globalLockTimeDisplay = getTimeToClaimForATP(data, blockTimestamp);
   const { activationThreshold } = useRollupData();
@@ -705,7 +721,7 @@ export const ATPStakingCard = ({
               Available to Withdraw
             </div>
             <TooltipIcon
-              content="Amount of vested tokens currently available to withdraw from your Token Vault. These tokens have completed their lock period and can be withdrawn."
+              content="Vested tokens in your Token Vault, ready to withdraw to your wallet. Tokens in Governance don't count — finalize any pending governance withdrawals first to bring them back to the vault."
               size="sm"
               maxWidth="max-w-xs"
             />
@@ -766,6 +782,31 @@ export const ATPStakingCard = ({
               </button>
             )}
           </div>
+          {!isFullyWithdrawn && pendingGovernanceAmount > 0n && (
+            <Tooltip
+              content="These tokens are in the Governance contract. Finalize them to return them to your Token Vault before you can withdraw to your wallet."
+              position="top"
+              maxWidth="max-w-xs"
+            >
+              <div className="text-xs text-amber-400 mt-1">
+                +{formatTokenAmount(pendingGovernanceAmount, decimals, symbol)}{" "}
+                in governance
+                {governanceDashboardUrl && (
+                  <>
+                    {" — "}
+                    <a
+                      href={governanceDashboardUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline hover:text-amber-300"
+                    >
+                      finalize in dashboard
+                    </a>
+                  </>
+                )}
+              </div>
+            </Tooltip>
+          )}
         </div>
 
         {/* Withdrawn */}
