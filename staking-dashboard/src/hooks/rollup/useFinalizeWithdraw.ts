@@ -19,10 +19,10 @@ export function useFinalizeWithdraw() {
   })
 
   return {
-    finalizeWithdraw: (attesterAddress: Address) => {
+    finalizeWithdraw: (attesterAddress: Address, rollupAddress?: Address) => {
       return write.writeContract({
         abi: contracts.rollup.abi,
-        address: contracts.rollup.address,
+        address: rollupAddress ?? contracts.rollup.address,
         functionName: "finalizeWithdraw",
         args: [attesterAddress]
       })

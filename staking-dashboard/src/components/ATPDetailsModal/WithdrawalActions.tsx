@@ -75,6 +75,7 @@ interface WithdrawalActionsProps {
   stakerAddress: Address;
   attesterAddress: Address;
   rollupVersion: bigint;
+  rollupAddress?: Address;
   status: number | undefined;
   canFinalize: boolean;
   actualUnlockTime?: bigint;
@@ -94,6 +95,7 @@ export const WithdrawalActions = ({
   stakerAddress,
   attesterAddress,
   rollupVersion,
+  rollupAddress,
   status,
   canFinalize,
   actualUnlockTime,
@@ -186,7 +188,7 @@ export const WithdrawalActions = ({
 
   const handleFinalizeWithdraw = async () => {
     try {
-      await finalizeWithdraw(attesterAddress);
+      await finalizeWithdraw(attesterAddress, rollupAddress);
     } catch (error) {
       console.error("Failed to finalize withdraw:", error);
     }

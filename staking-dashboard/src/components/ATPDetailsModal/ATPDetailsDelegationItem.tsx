@@ -60,7 +60,8 @@ export const ATPDetailsDelegationItem = ({
   const { getSplitStatus, claimAllHook } = useClaimAllContext()
   const { isRewardsClaimable } = useIsRewardsClaimable()
 
-  const { status, statusLabel, isLoading: isLoadingStatus, canFinalize, actualUnlockTime, refetch: refetchStatus } = useSequencerStatus(delegation.operatorAddress as Address)
+  const delegationRollupAddress = delegation.rollupAddress as Address
+  const { status, statusLabel, isLoading: isLoadingStatus, canFinalize, actualUnlockTime, refetch: refetchStatus } = useSequencerStatus(delegation.operatorAddress as Address, delegationRollupAddress)
   const { withdrawalDelayDays } = useGovernanceConfig()
 
   const {
@@ -487,6 +488,7 @@ export const ATPDetailsDelegationItem = ({
                     stakerAddress={stakerAddress}
                     attesterAddress={delegation.operatorAddress as Address}
                     rollupVersion={rollupVersion}
+                    rollupAddress={delegationRollupAddress}
                     status={status}
                     canFinalize={canFinalize}
                     actualUnlockTime={actualUnlockTime}

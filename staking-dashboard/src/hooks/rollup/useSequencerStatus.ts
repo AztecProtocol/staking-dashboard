@@ -42,9 +42,12 @@ export function getStatusLabel(status: number | undefined): string {
  * @param sequencerAddress - The address of the sequencer
  * @returns Sequencer status, label, and related information
  */
-export function useSequencerStatus(sequencerAddress: Address | undefined) {
+export function useSequencerStatus(
+  sequencerAddress: Address | undefined,
+  rollupAddress?: Address,
+) {
   const { status, effectiveBalance, exit, isLoading, error, refetch } =
-    useAttesterView(sequencerAddress);
+    useAttesterView(sequencerAddress, rollupAddress);
 
   // Query the governance withdrawal to get the REAL unlock time
   const { withdrawal, isLoading: isLoadingWithdrawal } = useGovernanceWithdrawal(exit?.withdrawalId);

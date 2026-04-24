@@ -63,6 +63,7 @@ function formatDelegations(
         providerName: metadata?.providerName || `Provider ${providerId}`,
         providerLogo: metadata?.providerLogoUrl || '',
         operatorAddress: checksumAddress(op.attesterAddress),
+        rollupAddress: checksumAddress(op.rollupAddress),
         stakedAmount: activationThreshold,
         totalSlashed: totalSlashed.toString(),
         splitContract: checksumAddress(op.splitContractAddress),

@@ -21,6 +21,7 @@ export interface Delegation {
   providerName?: string
   providerLogo?: string
   operatorAddress: string
+  rollupAddress: string
   splitContract: string
   providerTakeRate: number
   providerRewardsRecipient: string
