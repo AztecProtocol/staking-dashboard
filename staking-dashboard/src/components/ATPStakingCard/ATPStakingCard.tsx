@@ -16,7 +16,7 @@ import { useStakerBalance } from "@/hooks/staker/useStakerBalance";
 import { useNCStakerStatus } from "@/hooks/staker/useNCStakerStatus";
 import { useBlockTimestamp } from "@/hooks/useBlockTimestamp";
 import { usePendingWithdrawals } from "@/hooks/governance";
-import { EXTERNAL_GOVERNANCE_FRONTENDS } from "@/config/externalGovernance";
+import { ExternalGovernanceModal } from "@/components/ExternalGovernanceModal";
 import { useTransactionCart } from "@/contexts/TransactionCartContext";
 import {
   ATPStakingStepsWithTransaction,
@@ -201,9 +201,7 @@ export const ATPStakingCard = ({
     (sum, w) => sum + w.amount,
     0n
   );
-  const governanceDashboardUrl = EXTERNAL_GOVERNANCE_FRONTENDS.find(
-    (f) => f.url
-  )?.url;
+  const [isGovernanceModalOpen, setIsGovernanceModalOpen] = useState(false);
 
   const globalLockTimeDisplay = getTimeToClaimForATP(data, blockTimestamp);
   const { activationThreshold } = useRollupData();
@@ -790,20 +788,14 @@ export const ATPStakingCard = ({
             >
               <div className="text-xs text-amber-400 mt-1">
                 +{formatTokenAmount(pendingGovernanceAmount, decimals, symbol)}{" "}
-                in governance
-                {governanceDashboardUrl && (
-                  <>
-                    {" — "}
-                    <a
-                      href={governanceDashboardUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="underline hover:text-amber-300"
-                    >
-                      finalize in dashboard
-                    </a>
-                  </>
-                )}
+                in governance{" — "}
+                <button
+                  type="button"
+                  onClick={() => setIsGovernanceModalOpen(true)}
+                  className="underline hover:text-amber-300"
+                >
+                  finalize in dashboard
+                </button>
               </div>
             </Tooltip>
           )}
@@ -837,6 +829,11 @@ export const ATPStakingCard = ({
         onWithdrawSuccess={onClaimSuccess}
         onRefetchAllowance={refetchAllowance}
         onUpgradeSuccess={refetchNCStatus}
+      />
+
+      <ExternalGovernanceModal
+        isOpen={isGovernanceModalOpen}
+        onClose={() => setIsGovernanceModalOpen(false)}
       />
     </div>
   );
