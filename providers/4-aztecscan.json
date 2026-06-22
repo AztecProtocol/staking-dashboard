@@ -5,5 +5,6 @@
   "providerEmail": "provider@aztecscan.xyz",
   "providerWebsite": "https://aztecscan.xyz",
   "providerLogoUrl": "https://avatars.githubusercontent.com/u/199737740",
-  "discordUsername": "quiq"
+  "discordUsername": "quiq",
+  "manualPayoutAuditUrl": "https://github.com/aztec-scan/aztec-payout-audit"
 }
