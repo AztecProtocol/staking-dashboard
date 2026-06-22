@@ -6,5 +6,5 @@
   "providerWebsite": "https://mcf.rocks",
   "providerLogoUrl": "https://mcf.rocks/images/assets/mcf-text-blue.png",
   "discordUsername": "smithmcf",
-  "auditRepo": "https://github.com/mcf-rocks/mcf-aztec-payout-audits"
+  "manualPayoutAuditUrl": "https://github.com/mcf-rocks/mcf-aztec-payout-audits"
 }
