@@ -26,6 +26,25 @@ for prod — one stable, branded API endpoint. The dashboard's `VITE_API_HOST` p
 instead of a raw `*.cloudfront.net` URL, so swapping the infra behind it (fleet → box, or
 anything later) never requires a frontend change again.
 
+## Pre-flight (new box standups)
+
+- **EIP headroom**: the stack allocates one Elastic IP; `AddressLimitExceeded` has bitten two
+  standups. Check `aws ec2 describe-addresses` against the account quota first (an increase
+  to 30 was requested).
+- **Runtime env**: put the 21-var env in SSM as a SecureString at
+  `/staking-dashboard-atp/<env>/atp-indexer.env` (same values the deploy workflow holds as
+  GitHub environment vars). The box fetches it at boot via `fetch-env.sh`; it never starts on
+  an unpopulated env file.
+- **Image**: build with `yarn bootstrap` run first — the Dockerfile refuses to build without
+  the generated `providers.json`.
+
+## Deploys
+
+Use the **Deploy ATP Indexer** workflow (single-instance is the default): it builds + pushes
+the image and invokes `scripts/box-deploy.sh` on the box via SSM. Metadata-only changes
+restart in place (seconds); pass `new_schema` for indexing-code changes and the script runs
+the A/B rebuild-from-cache + parity check + flip automatically.
+
 ## Deploy
 ```sh
 cd atp-indexer/single-instance

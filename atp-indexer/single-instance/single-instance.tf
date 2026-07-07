@@ -125,6 +125,13 @@ resource "aws_iam_role_policy" "ecr_read" {
           "ecr:GetDownloadUrlForLayer"
         ]
         Resource = "arn:aws:ecr:${var.region}:${data.aws_caller_identity.current.account_id}:repository/*"
+      },
+      {
+        # Runtime env for the indexer (fetch-env.sh); the parameter is created out-of-band so
+        # its values stay out of Terraform state.
+        Effect   = "Allow"
+        Action   = ["ssm:GetParameter"]
+        Resource = "arn:aws:ssm:${var.region}:${data.aws_caller_identity.current.account_id}:parameter/staking-dashboard-atp/${var.env}/*"
       }
     ]
   })
@@ -168,6 +175,7 @@ resource "aws_instance" "this" {
   }
 
   user_data = templatefile("${path.module}/templates/user_data.sh.tftpl", {
+    env               = var.env
     region            = var.region
     account_id        = data.aws_caller_identity.current.account_id
     volume_id_no_dash = replace(aws_ebs_volume.data.id, "-", "")

@@ -54,6 +54,25 @@ aws ecr get-login-password --region ${region} | docker login --username AWS --pa
 SCRIPT
 chmod +x "$APP_DIR/refresh-ecr-login.sh"
 
+# fetch-env.sh pulls the runtime env from SSM Parameter Store — the durable machine-readable
+# source (mirrors the GitHub environment vars the deploy workflow holds). Run it any time the
+# parameter changes; boot runs it automatically.
+cat > "$APP_DIR/fetch-env.sh" <<'SCRIPT'
+#!/bin/bash
+set -euo pipefail
+PARAM="/staking-dashboard-atp/${env}/atp-indexer.env"
+if aws ssm get-parameter --region ${region} --name "$PARAM" --with-decryption --query 'Parameter.Value' --output text > /opt/staking-dashboard-atp/env/atp-indexer.env.tmp 2>/dev/null \
+   && grep -q '^RPC_URL=' /opt/staking-dashboard-atp/env/atp-indexer.env.tmp; then
+  mv /opt/staking-dashboard-atp/env/atp-indexer.env.tmp /opt/staking-dashboard-atp/env/atp-indexer.env
+  echo "env refreshed from $PARAM"
+else
+  rm -f /opt/staking-dashboard-atp/env/atp-indexer.env.tmp
+  echo "SSM parameter $PARAM missing or lacks RPC_URL; kept existing env file" >&2
+fi
+SCRIPT
+chmod +x "$APP_DIR/fetch-env.sh"
+"$APP_DIR/fetch-env.sh" || true
+
 env_file="$APP_DIR/env/atp-indexer.env"
 if [ ! -f "$env_file" ]; then
   cat > "$env_file" <<'EOF'
@@ -75,6 +94,12 @@ chown -R ec2-user:ec2-user "$APP_DIR" /data
 "$APP_DIR/refresh-ecr-login.sh" || true
 
 if [ "${start_services_on_boot}" = "true" ]; then
-  cd "$APP_DIR"
-  docker compose up -d
+  # Never start on a placeholder env — a missing RPC_URL surfaces only as a crash-looping
+  # container otherwise.
+  if grep -q '^RPC_URL=' "$env_file"; then
+    cd "$APP_DIR"
+    docker compose up -d
+  else
+    echo "env/atp-indexer.env is not populated (no RPC_URL); skipping service start" >&2
+  fi
 fi
