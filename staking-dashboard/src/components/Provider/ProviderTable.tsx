@@ -12,7 +12,6 @@ import { CopyButton } from "@/components/CopyButton"
 import { AvatarImage } from "@/components/AvatarImage"
 import { TooltipIcon } from "@/components/Tooltip"
 import { type ProviderListItem, type SortField, type SortDirection, type NotAssociatedStake } from "@/hooks/providers/useProviderTable"
-import { ManualPayoutNotice } from "@/components/Provider/ManualPayoutNotice"
 import { useStakingAssetTokenDetails } from "@/hooks/stakingRegistry"
 import { formatBipsToPercentage } from "@/utils/formatNumber"
 import { formatTokenAmount, stringToBigInt } from "@/utils/atpFormatters"
@@ -92,21 +91,12 @@ function ProviderRow({
             size="md"
           />
           <div>
-            <div className="flex items-center gap-2 flex-wrap">
-              <button
-                onClick={() => navigate(`/providers/${provider.id}`)}
-                className="font-oracle-triple-book font-medium text-parchment hover:text-chartreuse transition-colors text-left"
-              >
-                {provider.name}
-              </button>
-              {provider.manualPayoutAuditUrl && (
-                <ManualPayoutNotice
-                  auditUrl={provider.manualPayoutAuditUrl}
-                  variant="badge"
-                  providerName={provider.name}
-                />
-              )}
-            </div>
+            <button
+              onClick={() => navigate(`/providers/${provider.id}`)}
+              className="font-oracle-triple-book font-medium text-parchment hover:text-chartreuse transition-colors text-left"
+            >
+              {provider.name}
+            </button>
             <div className="flex items-center gap-2">
               <span className="text-xs text-parchment/60 font-mono">
                 {displayAddress?.slice(0, 8)}...{displayAddress?.slice(-6)}
