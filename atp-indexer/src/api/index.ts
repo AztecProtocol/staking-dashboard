@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
 import { globalLimiter } from './middleware/rate-limit';
+import { responseCache } from './middleware/response-cache';
 import { healthRoutes } from './routes/health.routes';
 import { providerRoutes } from './routes/provider.routes';
 import { stakingRoutes } from './routes/staking.routes';
@@ -30,6 +31,17 @@ if (config.RATE_LIMIT_ENABLED) {
 }
 
 app.route('/api/health', healthRoutes);
+
+// Response cache on the data routes only — health stays live for probes. Registered after
+// the health route so it never intercepts it.
+if (config.API_CACHE_TTL_MS > 0) {
+  const cached = responseCache(config.API_CACHE_TTL_MS);
+  app.use('/api/providers/*', cached);
+  app.use('/api/staking/*', cached);
+  app.use('/api/atp/*', cached);
+  app.use('/api/rollups/*', cached);
+}
+
 app.route('/api/providers', providerRoutes);
 app.route('/api/staking', stakingRoutes);
 app.route('/api/atp', atpRoutes);

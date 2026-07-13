@@ -1,0 +1,23 @@
+{
+	email ${acme_email}
+%{ if cloudfront_front ~}
+	# CloudFront terminates viewer TLS; the box serves plain HTTP to CloudFront only.
+	auto_https off
+%{ endif ~}
+}
+
+%{ if cloudfront_front ~}
+# Only accept requests carrying CloudFront's secret header, so the origin EIP isn't usable
+# directly (mirrors the old ALB listener gate).
+(cfgate) {
+	@nocf not header ${cf_secret_header_name} "${cf_secret_header_value}"
+	abort @nocf
+}
+%{ endif ~}
+
+%{ if cloudfront_front ~}http://${atp_indexer_domain}%{ else ~}${atp_indexer_domain}%{ endif } {
+%{ if cloudfront_front ~}
+	import cfgate
+%{ endif ~}
+	reverse_proxy atp-indexer:42068
+}

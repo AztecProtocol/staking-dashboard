@@ -17,10 +17,20 @@ on:
         default: false
         type: boolean
       green:
-        description: "Whether to deploy green instance"
+        description: "Whether to deploy green instance (fleet only)"
         required: false
         default: false
         type: boolean
+      single_instance:
+        description: "Deploy to the single-instance box (default) instead of the ECS fleet"
+        required: false
+        default: true
+        type: boolean
+      new_schema:
+        description: "Single-instance: new DATABASE_SCHEMA for indexing-code changes (A/B rebuild + flip); leave empty for metadata-only updates"
+        required: false
+        default: ""
+        type: string
 
   push:
     tags:
@@ -35,7 +45,59 @@ permissions:
   actions: read
 
 jobs:
+  deploy-single-instance:
+    if: ${{ inputs.single_instance != false }}
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment || (contains(github.ref, '-prod') && 'prod') || 'testnet' }}
+    env:
+      ENV: ${{ inputs.environment || (contains(github.ref, '-prod') && 'prod') || 'testnet' }}
+      AWS_ACCOUNT: ${{ secrets.AWS_ACCOUNT }}
+      AWS_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'yarn'
+          cache-dependency-path: atp-indexer/yarn.lock
+
+      - name: Configure AWS credentials with GitHub OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_OIDC_ROLE_ARN }}
+          role-session-name: ${{ github.run_id }}
+          aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
+
+      - name: Build image (providers.json is generated pre-build; the Dockerfile enforces it)
+        working-directory: atp-indexer
+        run: |
+          yarn install --frozen-lockfile
+          yarn bootstrap
+          aws ecr get-login-password --region "$AWS_REGION" | docker login --username AWS --password-stdin "$AWS_ACCOUNT.dkr.ecr.$AWS_REGION.amazonaws.com"
+          IMAGE="$AWS_ACCOUNT.dkr.ecr.$AWS_REGION.amazonaws.com/atp-indexer-$ENV-atp-indexer:si-${GITHUB_SHA::7}"
+          docker build -t "$IMAGE" .
+          docker push "$IMAGE"
+          echo "IMAGE=$IMAGE" >> "$GITHUB_ENV"
+
+      - name: Deploy to the box via SSM (box-deploy.sh handles same-app vs A/B schema flip)
+        run: |
+          set -euo pipefail
+          IID=$(aws ec2 describe-instances             --filters "Name=tag:Name,Values=staking-dashboard-atp-single-instance-$ENV" "Name=instance-state-name,Values=running"             --query 'Reservations[0].Instances[0].InstanceId' --output text)
+          [ "$IID" != "None" ] || { echo "no running box for env $ENV"; exit 1; }
+          SCRIPT_B64=$(base64 -w0 atp-indexer/single-instance/scripts/box-deploy.sh)
+          CMD_ID=$(aws ssm send-command --instance-ids "$IID" --document-name AWS-RunShellScript             --timeout-seconds 3600             --parameters "$(jq -nc --arg b "$SCRIPT_B64" --arg img "$IMAGE" --arg schema "${{ inputs.new_schema }}"               '{commands: [("echo "+$b+" | base64 -d > /opt/staking-dashboard-atp/box-deploy.sh"), "chmod +x /opt/staking-dashboard-atp/box-deploy.sh", ("/opt/staking-dashboard-atp/box-deploy.sh "+$img+" "+$schema)], executionTimeout: ["3600"]}')"             --query 'Command.CommandId' --output text)
+          echo "SSM command: $CMD_ID"
+          while :; do
+            ST=$(aws ssm get-command-invocation --command-id "$CMD_ID" --instance-id "$IID" --query Status --output text)
+            case "$ST" in Success) break;; Failed|Cancelled|TimedOut) aws ssm get-command-invocation --command-id "$CMD_ID" --instance-id "$IID" --query '{out:StandardOutputContent,err:StandardErrorContent}' --output text; exit 1;; esac
+            sleep 15
+          done
+          aws ssm get-command-invocation --command-id "$CMD_ID" --instance-id "$IID" --query StandardOutputContent --output text
+
   deploy:
+    if: ${{ inputs.single_instance == false }}
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment || (contains(github.ref, '-prod') && 'prod') || 'testnet' }}
     env:

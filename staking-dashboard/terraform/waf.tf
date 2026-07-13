@@ -19,7 +19,7 @@ module "website_waf" {
   enable_sql_injection_rule_set     = false  # Not needed for static site
   enable_ip_reputation_list         = true
   enable_anon_ip_rule_set           = false
-  enable_bot_control_rule_set       = true
+  enable_bot_control_rule_set      = false
   enable_xss_rule_set               = true
 
   # Block specific Ukrainian regions

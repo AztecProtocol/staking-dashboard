@@ -1,0 +1,69 @@
+services:
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - /data/caddy/data:/data
+      - /data/caddy/config:/config
+    depends_on:
+      - atp-indexer
+
+  # Local Postgres replaces the per-env Aurora cluster. EBS-persistent so a restart
+  # crash-recovers/resumes instead of reindexing.
+  local-postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: "ponder"
+      POSTGRES_USER: "ponder"
+      POSTGRES_PASSWORD: "ponder"
+    command:
+      - "postgres"
+      - "-c"
+      - "shared_buffers=512MB"
+      - "-c"
+      - "effective_cache_size=1536MB"
+      - "-c"
+      - "max_connections=80"
+      - "-c"
+      - "checkpoint_timeout=30min"
+      - "-c"
+      - "max_wal_size=4GB"
+      - "-c"
+      - "synchronous_commit=off"
+      - "-c"
+      - "wal_compression=on"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ponder -d ponder"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+    volumes:
+      - /data/postgres:/var/lib/postgresql/data
+
+  # This repo's atp-indexer image (indexes ATP_FACTORY_MATP/LATP etc.). Contract addresses,
+  # RPC_URL, CHAIN_ID and start blocks come from ./env/atp-indexer.env (kept out of state).
+  atp-indexer:
+    image: ${atp_indexer_image}
+    restart: unless-stopped
+    command: ["yarn", "start"]
+    env_file:
+      - ./env/atp-indexer.env
+    environment:
+      POSTGRES_CONNECTION_STRING: "${atp_postgres_connection_string}"
+      DATABASE_SCHEMA: "${atp_database_schema}"
+      NODE_ENV: "production"
+      # `yarn start` (ponder start) indexes AND serves the API on PORT — it's the all-in-one,
+      # so the separate `yarn serve` API server (and its API_PORT) isn't needed on the box.
+      PORT: "42068"
+      LOG_LEVEL: "info"
+      PONDER_LOG_LEVEL: "info"
+    volumes:
+      - /data/atp-indexer/.ponder:/app/.ponder
+    depends_on:
+      local-postgres:
+        condition: service_healthy

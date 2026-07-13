@@ -1,0 +1,105 @@
+#!/bin/bash
+set -euxo pipefail
+
+dnf update -y
+dnf install -y docker jq xfsprogs
+systemctl enable --now docker
+
+mkdir -p /usr/local/lib/docker/cli-plugins
+curl -SL "https://github.com/docker/compose/releases/download/v2.32.4/docker-compose-linux-x86_64" -o /usr/local/lib/docker/cli-plugins/docker-compose
+chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
+
+usermod -aG docker ec2-user || true
+
+DATA_DEVICE="/dev/disk/by-id/nvme-Amazon_Elastic_Block_Store_${volume_id_no_dash}"
+for attempt in $(seq 1 60); do
+  if [ -b "$DATA_DEVICE" ]; then
+    break
+  fi
+  sleep 2
+done
+
+if [ ! -b "$DATA_DEVICE" ]; then
+  echo "Data volume was not attached at $DATA_DEVICE" >&2
+  exit 1
+fi
+
+DATA_LABEL="atpsidata"
+
+if ! blkid "$DATA_DEVICE"; then
+  mkfs.xfs -L "$DATA_LABEL" "$DATA_DEVICE"
+fi
+
+mkdir -p /data
+if ! grep -q "$DATA_LABEL" /etc/fstab; then
+  echo "LABEL=$DATA_LABEL /data xfs defaults,nofail 0 2" >> /etc/fstab
+fi
+mount -a
+
+APP_DIR="/opt/staking-dashboard-atp"
+mkdir -p \
+  "$APP_DIR/env" \
+  /data/atp-indexer/.ponder \
+  /data/caddy/data \
+  /data/caddy/config \
+  /data/postgres
+
+echo "${compose_b64}" | base64 -d > "$APP_DIR/docker-compose.yml"
+echo "${caddyfile_b64}" | base64 -d > "$APP_DIR/Caddyfile"
+
+cat > "$APP_DIR/refresh-ecr-login.sh" <<'SCRIPT'
+#!/bin/bash
+set -euo pipefail
+aws ecr get-login-password --region ${region} | docker login --username AWS --password-stdin ${account_id}.dkr.ecr.${region}.amazonaws.com
+SCRIPT
+chmod +x "$APP_DIR/refresh-ecr-login.sh"
+
+# fetch-env.sh pulls the runtime env from SSM Parameter Store — the durable machine-readable
+# source (mirrors the GitHub environment vars the deploy workflow holds). Run it any time the
+# parameter changes; boot runs it automatically.
+cat > "$APP_DIR/fetch-env.sh" <<'SCRIPT'
+#!/bin/bash
+set -euo pipefail
+PARAM="/staking-dashboard-atp/${env}/atp-indexer.env"
+if aws ssm get-parameter --region ${region} --name "$PARAM" --with-decryption --query 'Parameter.Value' --output text > /opt/staking-dashboard-atp/env/atp-indexer.env.tmp 2>/dev/null \
+   && grep -q '^RPC_URL=' /opt/staking-dashboard-atp/env/atp-indexer.env.tmp; then
+  mv /opt/staking-dashboard-atp/env/atp-indexer.env.tmp /opt/staking-dashboard-atp/env/atp-indexer.env
+  echo "env refreshed from $PARAM"
+else
+  rm -f /opt/staking-dashboard-atp/env/atp-indexer.env.tmp
+  echo "SSM parameter $PARAM missing or lacks RPC_URL; kept existing env file" >&2
+fi
+SCRIPT
+chmod +x "$APP_DIR/fetch-env.sh"
+"$APP_DIR/fetch-env.sh" || true
+
+env_file="$APP_DIR/env/atp-indexer.env"
+if [ ! -f "$env_file" ]; then
+  cat > "$env_file" <<'EOF'
+# Populate before starting Docker Compose (keep secrets out of Terraform state).
+# Copy the FULL set from the ECS task-def (atp-indexer/terraform/app.tf -> indexer_env_vars,
+# ~25 vars) so behaviour matches exactly.
+# Required: RPC_URL, CHAIN_ID, START_BLOCK,
+#   ATP_FACTORY_ADDRESS, ATP_FACTORY_AUCTION_ADDRESS, ATP_FACTORY_MATP_ADDRESS,
+#   ATP_FACTORY_LATP_ADDRESS, STAKING_REGISTRY_ADDRESS, REGISTRY_ADDRESS,
+#   REGISTRY_START_BLOCK, MATP_FACTORY_START_BLOCK, LATP_FACTORY_START_BLOCK.
+# Tuning (image defaults if omitted): BLOCK_BATCH_SIZE, POLLING_INTERVAL, MAX_RETRIES,
+#   PARALLEL_BATCHES, CLEANUP_ENABLED, CLEANUP_INTERVAL_BLOCKS, CLEANUP_KEEP_BLOCKS,
+#   TRUST_PROXY, PONDER_TELEMETRY_DISABLED.
+EOF
+fi
+
+chown -R ec2-user:ec2-user "$APP_DIR" /data
+
+"$APP_DIR/refresh-ecr-login.sh" || true
+
+if [ "${start_services_on_boot}" = "true" ]; then
+  # Never start on a placeholder env — a missing RPC_URL surfaces only as a crash-looping
+  # container otherwise.
+  if grep -q '^RPC_URL=' "$env_file"; then
+    cd "$APP_DIR"
+    docker compose up -d
+  else
+    echo "env/atp-indexer.env is not populated (no RPC_URL); skipping service start" >&2
+  fi
+fi

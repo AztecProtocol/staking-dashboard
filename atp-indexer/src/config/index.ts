@@ -78,6 +78,9 @@ const configSchema = z.object({
 
   // Rate limiting (disabled by default)
   RATE_LIMIT_ENABLED: z.string().transform(val => val === 'true').default('false'),
+
+  // Short-TTL response cache for the read-only /api/* GET routes; 0 disables it.
+  API_CACHE_TTL_MS: z.string().transform(Number).pipe(z.number().int().min(0)).default('10000'),
 });
 
 /**

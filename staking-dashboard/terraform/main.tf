@@ -1,5 +1,5 @@
 locals {
-  create_dns_record = var.env == "prod" || var.env == "testnet" ? true : false
+  create_dns_record = contains(["prod", "testnet", "staging"], var.env)
 }
 terraform {
   required_version = ">= 1.5.0"
@@ -132,7 +132,7 @@ resource "aws_cloudfront_response_headers_policy" "security_headers" {
 
   security_headers_config {
     strict_transport_security {
-      access_control_max_age_sec = 63072000  # 2 years
+      access_control_max_age_sec = 63072000 # 2 years
       include_subdomains         = true
       preload                    = true
       override                   = true
@@ -184,9 +184,10 @@ resource "aws_cloudfront_distribution" "staking_dashboard_distribution" {
   enabled             = true
   default_root_object = "index.html"
   web_acl_id          = module.website_waf.web_acl_arn
-  
-  # Use custom domain with certificate
-  aliases = var.env == "prod" ? ["stake.aztec.network"] : var.env == "testnet" ? ["testnet.stake.aztec.network"] : []
+
+  # Custom domain (stake.aztec.network for prod, <env>.stake.aztec.network otherwise) whenever
+  # the env owns a DNS record; matches module.domain so the cert and alias always agree.
+  aliases = local.create_dns_record ? [var.env == "prod" ? "stake.aztec.network" : "${var.env}.stake.aztec.network"] : []
 
   origin {
     domain_name              = aws_s3_bucket.staking_dashboard_bucket.bucket_regional_domain_name
@@ -208,7 +209,7 @@ resource "aws_cloudfront_distribution" "staking_dashboard_distribution" {
         forward = "none"
       }
     }
-    
+
   }
 
   # Redirect to blocked.html for 403 errors
@@ -231,7 +232,7 @@ resource "aws_cloudfront_distribution" "staking_dashboard_distribution" {
   restrictions {
     geo_restriction {
       restriction_type = "blacklist"
-      locations = var.blocked_jurisdictions
+      locations        = var.blocked_jurisdictions
     }
   }
 
@@ -257,20 +258,20 @@ resource "aws_cloudfront_distribution" "staking_dashboard_distribution" {
 #
 module "domain" {
   source = "../../terraform/modules/acm-certificate"
-  
+
   providers = {
     aws.us_east_1 = aws.us_east_1
   }
-  
+
   domain_name               = var.env == "prod" ? "stake.aztec.network" : "${var.env}.stake.aztec.network"
   subject_alternative_names = []
   hosted_zone_name          = "aztec.network"
-  
+
   # DNS record will be created after CloudFront distribution
   create_dns_record      = local.create_dns_record
   cloudfront_domain_name = aws_cloudfront_distribution.staking_dashboard_distribution.domain_name
   cloudfront_zone_id     = aws_cloudfront_distribution.staking_dashboard_distribution.hosted_zone_id
-  
+
   tags = {
     Environment = var.env
     Service     = "staking-dashboard"

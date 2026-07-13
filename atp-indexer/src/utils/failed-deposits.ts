@@ -37,7 +37,7 @@
 
 import { deposit, failedDeposit, withdrawFinalized, atpPosition, withdrawInitiated } from 'ponder:schema';
 import { normalizeAddress } from './address';
-import { and, eq, or, ReadonlyDrizzle } from 'ponder';
+import { eq, inArray, ReadonlyDrizzle } from 'ponder';
 
 export enum FailureReason {
   INVALID_KEY = 'Likely a Invalid Key',
@@ -78,55 +78,56 @@ export async function fetchFailedDeposits(
   }
   const distinctPairs = Array.from(uniquePairs.values());
 
-  const buildPairFilter = (table: any, pairs: any[]) => {
-    return or(
-      ...pairs.map((pair) =>
-        and(
-          eq(table.attesterAddress, normalizeAddress(pair.attesterAddress)),
-          eq(table.withdrawerAddress, normalizeAddress(pair.withdrawerAddress))
-        )
-      )
-    );
+  if (distinctPairs.length === 0) {
+    return new Map();
   }
 
+  // Filter in SQL by attester only (indexed, one IN list instead of an OR branch per pair —
+  // the OR-of-pairs form defeats the planner and sequential-scans every event table), then
+  // match the exact (attester, withdrawer) pairs in memory on the small result.
+  const distinctAttesters = Array.from(
+    new Set(distinctPairs.map((p) => normalizeAddress(p.attesterAddress) as `0x${string}`)),
+  );
+  const pairKeyOf = (attester: string, withdrawer: string) =>
+    `${attester.toLowerCase()}-${withdrawer.toLowerCase()}`;
+  const requestedPairs = new Set(
+    distinctPairs.map((p) => pairKeyOf(normalizeAddress(p.attesterAddress), normalizeAddress(p.withdrawerAddress))),
+  );
+
   // Fetch withdraw events and join with ATP to get staker/withdrawer address
-  const withdrawEvents = await db.select({
-    attesterAddress: withdrawFinalized.attesterAddress,
-    recipientAddress: withdrawFinalized.recipientAddress,
-    timestamp: withdrawFinalized.timestamp,
-    blockNumber: withdrawFinalized.blockNumber,
-    logIndex: withdrawFinalized.logIndex,
-    txHash: withdrawFinalized.txHash,
-    stakerAddress: atpPosition.stakerAddress,
-  })
-    .from(withdrawFinalized)
-    .leftJoin(atpPosition, eq(withdrawFinalized.recipientAddress, atpPosition.address))
-    .where(
-      or(
-        // ATP-based: match via ATP position (staker contract)
-        ...distinctPairs.map((pair) =>
-          and(
-            eq(withdrawFinalized.attesterAddress, normalizeAddress(pair.attesterAddress) as `0x${string}`),
-            eq(atpPosition.stakerAddress, normalizeAddress(pair.withdrawerAddress) as `0x${string}`)
-          )
-        ),
-        // ERC20-based: match directly via recipient address (user's EOA wallet)
-        ...distinctPairs.map((pair) =>
-          and(
-            eq(withdrawFinalized.attesterAddress, normalizeAddress(pair.attesterAddress) as `0x${string}`),
-            eq(withdrawFinalized.recipientAddress, normalizeAddress(pair.withdrawerAddress) as `0x${string}`)
-          )
-        )
-      )
-    );
+  const withdrawEvents = (
+    await db.select({
+      attesterAddress: withdrawFinalized.attesterAddress,
+      recipientAddress: withdrawFinalized.recipientAddress,
+      timestamp: withdrawFinalized.timestamp,
+      blockNumber: withdrawFinalized.blockNumber,
+      logIndex: withdrawFinalized.logIndex,
+      txHash: withdrawFinalized.txHash,
+      stakerAddress: atpPosition.stakerAddress,
+    })
+      .from(withdrawFinalized)
+      .leftJoin(atpPosition, eq(withdrawFinalized.recipientAddress, atpPosition.address))
+      .where(inArray(withdrawFinalized.attesterAddress, distinctAttesters))
+  ).filter(
+    (w) =>
+      // ATP-based: match via ATP position (staker contract)
+      (w.stakerAddress && requestedPairs.has(pairKeyOf(w.attesterAddress, w.stakerAddress))) ||
+      // ERC20-based: match directly via recipient address (user's EOA wallet)
+      requestedPairs.has(pairKeyOf(w.attesterAddress, w.recipientAddress)),
+  );
+
+  const matchesRequestedPair = (row: { attesterAddress: string; withdrawerAddress: string }) =>
+    requestedPairs.has(pairKeyOf(row.attesterAddress, row.withdrawerAddress));
 
   const [successfulDeposits, failedDeposits] = await Promise.all([
     db.select()
       .from(deposit)
-      .where(buildPairFilter(deposit, distinctPairs)),
+      .where(inArray(deposit.attesterAddress, distinctAttesters))
+      .then((rows) => rows.filter(matchesRequestedPair)),
     db.select()
       .from(failedDeposit)
-      .where(buildPairFilter(failedDeposit, distinctPairs))
+      .where(inArray(failedDeposit.attesterAddress, distinctAttesters))
+      .then((rows) => rows.filter(matchesRequestedPair)),
   ]);
 
   // Combine and Sort to create the "God View" timeline
