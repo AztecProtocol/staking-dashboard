@@ -6,7 +6,7 @@ on:
       environment:
         description: "Environment to deploy to"
         required: true
-        default: "staging"
+        default: "testnet"
         type: choice
         options:
           - testnet
@@ -37,9 +37,9 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: ${{ inputs.environment || (contains(github.ref, '-prod') && 'prod') || 'staging' }}
+    environment: ${{ inputs.environment || (contains(github.ref, '-prod') && 'prod') || 'testnet' }}
     env:
-      ENV: ${{ inputs.environment || (contains(github.ref, '-prod') && 'prod') || 'staging' }}
+      ENV: ${{ inputs.environment || (contains(github.ref, '-prod') && 'prod') || 'testnet' }}
       GREEN: ${{ inputs.green || contains(github.ref, '-green') }}
       DRY_RUN: ${{ inputs.dry_run }}
 
