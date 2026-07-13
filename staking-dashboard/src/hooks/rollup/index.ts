@@ -1,6 +1,7 @@
 export { useRollupData } from "./useRollupData";
 export { useActivationThresholdFormatted } from "./useActivationThresholdFormatted";
 export { useSequencerRewards } from "./useSequencerRewards";
+export { useFeeAssetTokenDetails } from "./useFeeAssetTokenDetails";
 export { useIsRewardsClaimable } from "./useIsRewardsClaimable";
 export { useIsRewardsClaimableAcrossRollups } from "./useIsRewardsClaimableAcrossRollups";
 export { useEjectionThreshold } from "./useEjectionThreshold";

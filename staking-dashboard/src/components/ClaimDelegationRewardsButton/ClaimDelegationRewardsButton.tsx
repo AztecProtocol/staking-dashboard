@@ -1,5 +1,5 @@
 import { useAccount } from "wagmi"
-import { useStakingAssetTokenDetails } from "@/hooks/stakingRegistry"
+import { useFeeAssetTokenDetails } from "@/hooks/rollup"
 import { useERC20Balance } from "@/hooks/erc20/useERC20Balance"
 import { useWarehouseBalance } from "@/hooks/splits/useWarehouseBalance"
 import { useSplitsWarehouse } from "@/hooks/splits/useSplitsWarehouse"
@@ -50,7 +50,7 @@ export const ClaimDelegationRewardsButton = ({
   variant = 'default'
 }: ClaimDelegationRewardsButtonProps) => {
   const { address: beneficiary } = useAccount()
-  const { stakingAssetAddress: tokenAddress, decimals, symbol } = useStakingAssetTokenDetails()
+  const { feeAssetAddress: tokenAddress, decimals, symbol } = useFeeAssetTokenDetails()
 
   const { warehouseAddress } = useSplitsWarehouse(splitContract)
   const { balance: splitContractBalance } = useERC20Balance(tokenAddress!, splitContract)

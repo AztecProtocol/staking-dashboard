@@ -1,7 +1,7 @@
 import { createPortal } from "react-dom"
 import { useAccount } from "wagmi"
 import { Icon } from "@/components/Icon"
-import { useStakingAssetTokenDetails } from "@/hooks/stakingRegistry"
+import { useFeeAssetTokenDetails } from "@/hooks/rollup"
 import { useIsRewardsClaimable } from "@/hooks/rollup/useIsRewardsClaimable"
 import { useSplitsWarehouse } from "@/hooks/splits/useSplitsWarehouse"
 import { ClaimAllRewardsSummary } from "./ClaimAllRewardsSummary"
@@ -41,7 +41,7 @@ export const ClaimAllRewardsModal = ({
   onSuccess,
 }: ClaimAllRewardsModalProps) => {
   const { address: beneficiary } = useAccount()
-  const { symbol, decimals, stakingAssetAddress: tokenAddress } = useStakingAssetTokenDetails()
+  const { symbol, decimals, feeAssetAddress: tokenAddress } = useFeeAssetTokenDetails()
   const { isRewardsClaimable } = useIsRewardsClaimable()
   const { addTransaction, openCart, replaceTransactionByTx } = useTransactionCart()
   const { showAlert } = useAlert()

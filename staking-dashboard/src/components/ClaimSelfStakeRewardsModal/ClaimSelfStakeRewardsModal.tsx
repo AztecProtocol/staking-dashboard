@@ -6,7 +6,7 @@ import { formatTokenAmount, formatTokenAmountFull } from "@/utils/atpFormatters"
 import { validateAddress } from "@/utils/validateAddress"
 import { RollupRewardRow } from "./RollupRewardRow"
 import { debounce } from "@/utils/debounce"
-import { useStakingAssetTokenDetails } from "@/hooks/stakingRegistry"
+import { useFeeAssetTokenDetails } from "@/hooks/rollup"
 import { buildClaimSequencerRewardsTx } from "@/utils/claimCart"
 import { useIsRewardsClaimableAcrossRollups } from "@/hooks/rollup/useIsRewardsClaimableAcrossRollups"
 import { useCoinbaseRewardsAcrossRollups } from "@/hooks/rewards/useCoinbaseRewardsAcrossRollups"
@@ -42,7 +42,7 @@ export const ClaimSelfStakeRewardsModal = ({
   atp,
   onSuccess,
 }: ClaimSelfStakeRewardsModalProps) => {
-  const { symbol, decimals } = useStakingAssetTokenDetails()
+  const { symbol, decimals } = useFeeAssetTokenDetails()
   const [coinbaseAddress, setCoinbaseAddress] = useState("")
   const [hasCheckedRewards, setHasCheckedRewards] = useState(false)
   const [isDebouncing, setIsDebouncing] = useState(false)

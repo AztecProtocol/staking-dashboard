@@ -5,7 +5,7 @@ import { Icon } from "@/components/Icon"
 import { CopyButton } from "@/components/CopyButton"
 import { Tooltip } from "@/components/Tooltip"
 import { formatTokenAmount } from "@/utils/atpFormatters"
-import { useStakingAssetTokenDetails } from "@/hooks/stakingRegistry"
+import { useFeeAssetTokenDetails } from "@/hooks/rollup"
 import { ClaimDelegationRewardsButton } from "@/components/ClaimDelegationRewardsButton"
 import { useWarehouseBalance } from "@/hooks/splits/useWarehouseBalance"
 import { useCoinbaseRewardsAcrossRollups } from "@/hooks/rewards/useCoinbaseRewardsAcrossRollups"
@@ -46,7 +46,7 @@ export const ClaimDelegationRewardsModal = ({
   onSuccess
 }: ClaimDelegationRewardsModalProps) => {
   const { address: beneficiary } = useAccount()
-  const { symbol, decimals, stakingAssetAddress: tokenAddress } = useStakingAssetTokenDetails()
+  const { symbol, decimals, feeAssetAddress: tokenAddress } = useFeeAssetTokenDetails()
 
   // Get warehouse address from split contract
   const { warehouseAddress } = useSplitsWarehouse(delegation.splitContract)

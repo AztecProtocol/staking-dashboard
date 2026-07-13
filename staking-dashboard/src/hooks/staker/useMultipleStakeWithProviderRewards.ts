@@ -3,7 +3,7 @@ import { useReadContracts } from 'wagmi'
 import type { Address } from 'viem'
 import { ERC20Abi } from '@/contracts/abis/ERC20'
 import { calculateTotalUserShareFromSplitRewards } from '@/utils/rewardCalculations'
-import { useStakingAssetTokenDetails } from '@/hooks/stakingRegistry'
+import { useFeeAssetTokenDetails } from '@/hooks/rollup'
 import { contracts, getRollupVersions, type RollupVersion } from '@/contracts'
 import type { Delegation } from '@/hooks/atp'
 import type { StakeWithProviderReward } from './types'
@@ -28,7 +28,7 @@ export const useMultipleStakeWithProviderRewards = ({
   delegations,
   enabled = true
 }: MultipleStakeWithProviderRewardsParams) => {
-  const { stakingAssetAddress: tokenAddress } = useStakingAssetTokenDetails()
+  const { feeAssetAddress: tokenAddress } = useFeeAssetTokenDetails()
 
   // Rollups enumerated oldest first. Raw version ids are uint256s; we replace
   // them with 1-based ordinals ("v1", "v2", …) for display.
