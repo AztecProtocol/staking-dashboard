@@ -2,7 +2,7 @@ import { useSequencerRewards } from "@/hooks/rollup/useSequencerRewards"
 import { useERC20Balance } from "@/hooks/erc20/useERC20Balance"
 import { useWarehouseBalance } from "./useWarehouseBalance"
 import { useSplitsWarehouse } from "./useSplitsWarehouse"
-import { useStakingAssetTokenDetails } from "@/hooks/stakingRegistry"
+import { useFeeAssetTokenDetails } from "@/hooks/rollup"
 import { calculateTotalUserShareFromSplitRewards, calculateUserShareFromTakeRate } from "@/utils/rewardCalculations"
 import type { Address } from "viem"
 
@@ -16,7 +16,7 @@ export const useTotalSplitRewards = (
   beneficiary: Address | undefined,
   providerTakeRate: number
 ) => {
-  const { stakingAssetAddress: tokenAddress } = useStakingAssetTokenDetails()
+  const { feeAssetAddress: tokenAddress } = useFeeAssetTokenDetails()
 
   // Get warehouse address from split contract
   const { warehouseAddress } = useSplitsWarehouse(splitContractAddress)

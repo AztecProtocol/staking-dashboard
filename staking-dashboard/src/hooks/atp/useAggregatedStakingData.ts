@@ -6,7 +6,7 @@ import { ERC20Abi } from '@/contracts/abis/ERC20'
 import { SplitAbi } from '@/contracts/abis/Split'
 import { SplitWarehouseAbi } from '@/contracts/abis/SplitWarehouse'
 import { calculateTotalUserShareFromSplitRewards } from '@/utils/rewardCalculations'
-import { useStakingAssetTokenDetails } from '@/hooks/stakingRegistry'
+import { useFeeAssetTokenDetails } from '@/hooks/rollup'
 import { contracts, getRollupVersions, type RollupVersion } from '@/contracts'
 import type { Address } from 'viem'
 import { stringToBigInt } from '@/utils/atpFormatters'
@@ -478,7 +478,7 @@ function parseErc20DirectStake(stake: ApiErc20DirectStake): Erc20DirectStakeBrea
  */
 export const useAggregatedStakingData = (): AggregatedStakingData => {
   const { address } = useAccount()
-  const { stakingAssetAddress: tokenAddress } = useStakingAssetTokenDetails()
+  const { feeAssetAddress: tokenAddress } = useFeeAssetTokenDetails()
 
   // Fetch staking data from API
   const {

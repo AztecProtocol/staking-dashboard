@@ -1,6 +1,19 @@
 export const RollupAbi = [
   {
     "type": "function",
+    "name": "getFeeAsset",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "contract IERC20"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
     "name": "getExitDelay",
     "inputs": [],
     "outputs": [

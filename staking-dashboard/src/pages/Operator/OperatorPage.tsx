@@ -5,7 +5,7 @@ import { PageHeader } from "@/components/PageHeader"
 import { Icon } from "@/components/Icon"
 import { CopyButton } from "@/components/CopyButton"
 import { TooltipIcon } from "@/components/Tooltip"
-import { useStakingAssetTokenDetails } from "@/hooks/stakingRegistry"
+import { useFeeAssetTokenDetails } from "@/hooks/rollup"
 import { useIsRewardsClaimable } from "@/hooks/rollup/useIsRewardsClaimable"
 import {
   useConnectedOperatorIdentities,
@@ -56,7 +56,7 @@ export default function OperatorPage() {
     hasError: identitiesError,
     refetch: refetchIdentities,
   } = useConnectedOperatorIdentities()
-  const { symbol, decimals, stakingAssetAddress: tokenAddress } = useStakingAssetTokenDetails()
+  const { symbol, decimals, feeAssetAddress: tokenAddress } = useFeeAssetTokenDetails()
   const { isRewardsClaimable } = useIsRewardsClaimable()
   // Cosmetic filter — historical delegations are kept in the underlying data
   // (a now-exited delegator might still have unclaimed rollup rewards on the

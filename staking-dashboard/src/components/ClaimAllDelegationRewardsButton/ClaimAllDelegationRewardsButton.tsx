@@ -1,6 +1,6 @@
 import { useMemo } from "react"
 import { useAccount } from "wagmi"
-import { useStakingAssetTokenDetails } from "@/hooks/stakingRegistry"
+import { useFeeAssetTokenDetails } from "@/hooks/rollup"
 import { useIsRewardsClaimable } from "@/hooks/rollup/useIsRewardsClaimable"
 import { useSplitsWarehouse } from "@/hooks/splits/useSplitsWarehouse"
 import { useTransactionCart } from "@/contexts/TransactionCartContext"
@@ -59,7 +59,7 @@ export const ClaimAllDelegationRewardsButton = ({
   onSuccess,
 }: ClaimAllDelegationRewardsButtonProps) => {
   const { address: beneficiary } = useAccount()
-  const { stakingAssetAddress: tokenAddress, decimals, symbol } = useStakingAssetTokenDetails()
+  const { feeAssetAddress: tokenAddress, decimals, symbol } = useFeeAssetTokenDetails()
   const { isRewardsClaimable } = useIsRewardsClaimable()
   const { addTransaction, checkTransactionInQueue, openCart, replaceTransactionByTx } = useTransactionCart()
 
