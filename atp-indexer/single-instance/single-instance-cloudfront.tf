@@ -119,9 +119,8 @@ output "cloudfront_domain_name" {
   value       = one(aws_cloudfront_distribution.front[*].domain_name)
 }
 
-# The staking-dashboard frontend reads `cf_domain_name` from the atp-indexer remote state
-# (staking-dashboard/terraform/data.tf) to build the indexer URL. Expose the same name in
-# BOTH modes so the frontend can be repointed at this stack's state with no output rename:
+# Retain the legacy `cf_domain_name` output name for compatibility with state consumers in
+# environments that have not moved to the stable branded endpoint convention:
 # - CloudFront-front (prod): the CloudFront distribution domain.
 # - Caddy-direct (testnet): the indexer hostname (resolves to the EIP, Caddy serves TLS).
 output "cf_domain_name" {

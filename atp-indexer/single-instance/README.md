@@ -98,22 +98,11 @@ pull + restart adopts the existing schema and is back at head in seconds.
 ## Cutover (decommission the old fleet)
 1. Stand up this box; seed/let it reach head (the indexer is RPC-bound — see ignition's
    ROAD-TO-PROD notes; restore a `pg_dump` if you have one to skip the reindex).
-2. Repoint the **frontend's** indexer URL to this box's endpoint:
-   - **2a. Terraform state.** The frontend reads the URL from the atp-indexer's remote state
-     (`staking-dashboard/terraform/data.tf` →
-     `data.terraform_remote_state.atp-indexer.outputs.cf_domain_name`). Change that data
-     source's `key` from the old atp-indexer state (`.../backends/atp-indexer/terraform.tfstate`)
-     to this stack's state (`<env>/staking-dashboard/atp-indexer-single-instance/terraform.tfstate`).
-     This stack exposes a **`cf_domain_name`** output **in both modes** (same name as the old
-     stack), so no frontend code change beyond the state `key`:
-       - prod (CloudFront-front): `cf_domain_name` = the box's CloudFront domain.
-       - testnet (Caddy-direct): `cf_domain_name` = the indexer hostname (`si_atp_indexer_domain`,
-         which resolves to the EIP with Caddy serving Let's Encrypt TLS).
-   - **2b. Rebuild + redeploy the frontend.** The indexer URL is baked into the static build at
-     build time (`staking-dashboard/bootstrap.sh` reads `ATP_INDEXER_URL` from the terraform
-     output). So after 2a you must **rebuild and redeploy** the frontend to S3+CloudFront for it
-     to point at the new indexer — a terraform change alone is not enough. Do this only **after**
-     the box has reached parity, so the live frontend never points at an empty indexer.
+2. Rebuild + redeploy the frontend. Prod and testnet frontend deploys use the stable branded
+   endpoints directly (`api.stake.aztec.network` and `api.testnet.stake.aztec.network`), so they
+   are deliberately independent from both the retired fleet state and this stack's state. The
+   indexer URL is baked into the static build at build time; deploy only after the box has reached
+   parity so the live frontend never points at an empty indexer.
 3. After parity, tear down the old `atp-indexer/terraform` ECS service / Aurora / ALB
    (e.g. scale the service to 0, then `terraform destroy` those resources). **Snapshot the
    Aurora data first.** Keep the existing CloudFront if you prefer to repoint its origin
