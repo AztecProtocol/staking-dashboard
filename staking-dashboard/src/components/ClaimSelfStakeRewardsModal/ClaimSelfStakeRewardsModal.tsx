@@ -233,7 +233,7 @@ export const ClaimSelfStakeRewardsModal = ({
                         rewards={row.rewards}
                         decimals={decimals ?? 18}
                         symbol={symbol ?? ""}
-                        isClaimable={isClaimableForRollup(row.rollupAddress) === true}
+                        isClaimable={isClaimableForRollup(row.rollupAddress)}
                         isInBatch={isInBatch}
                         onAddToBatch={() => handleAddToBatch(row.rollupAddress, row.rollupVersion, row.rewards)}
                         onOpenCart={openCart}

@@ -5,8 +5,14 @@ import { contracts } from "@/contracts"
 
 /**
  * Multicalls `isRewardsClaimable()` across a list of rollup contracts.
- * Returns a map keyed by lowercased rollup address; `undefined` means the
- * value is still loading (or the call reverted).
+ *
+ * `isRewardsClaimable()` was a network-wide reward lock on older rollups; a
+ * `false` return means the protocol has frozen claims on that rollup. The V5
+ * rollup removed the function entirely, so the call reverts there — but claims
+ * on V5 are always live. We therefore fail OPEN: a rollup is treated as locked
+ * only when it explicitly returns `false`. A revert (function absent, e.g. V5)
+ * or a still-loading read is treated as claimable, so a removed view can't
+ * silently disable claims. See issue #111.
  */
 export function useIsRewardsClaimableAcrossRollups(rollupAddresses: Address[]) {
   const uniqueAddresses = useMemo(() => {
@@ -50,8 +56,11 @@ export function useIsRewardsClaimableAcrossRollups(rollupAddresses: Address[]) {
     return map
   }, [data, uniqueAddresses])
 
-  const isClaimable = (rollupAddress: Address): boolean | undefined => {
-    return claimableByRollup.get(rollupAddress.toLowerCase())
+  // Fail open: locked only when the rollup explicitly returned `false`. A
+  // missing entry (revert on V5 where the function no longer exists, or the
+  // read hasn't resolved) is treated as claimable.
+  const isClaimable = (rollupAddress: Address): boolean => {
+    return claimableByRollup.get(rollupAddress.toLowerCase()) !== false
   }
 
   return {
