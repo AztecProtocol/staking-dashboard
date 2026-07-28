@@ -104,11 +104,12 @@ export const CoinbaseAddressList = ({
   return (
     <div className="space-y-3">
       {coinbaseBreakdown.map((item) => {
-        // Only enable the claim button when the rollup's claimability has been
-        // explicitly confirmed `true`. `undefined` (still loading, or the
-        // multicall reverted) is treated as not-claimable so the user doesn't
-        // sign a tx that's guaranteed to revert and waste gas.
-        const rowIsClaimable = isClaimableForRollup(item.rollupAddress) === true
+        // Lock a row only when its rollup explicitly reports rewards as not
+        // claimable (`isRewardsClaimable() === false`, the network-wide freeze on
+        // older rollups). A revert — e.g. the V5 rollup, which removed the
+        // function — or a still-loading read is treated as claimable, since
+        // claims on those rollups are live. See issue #111.
+        const rowIsClaimable = isClaimableForRollup(item.rollupAddress)
         const rowKey = `${item.address}-${item.rollupAddress}`
         const tx = buildClaimSequencerRewardsTx(item.address, item.rollupAddress)
         const isInBatch = checkTransactionInQueue(tx)
