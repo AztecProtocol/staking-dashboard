@@ -1,0 +1,10 @@
+{
+  "providerId": 4,
+  "providerName": "Olla",
+  "providerDescription": "Liquid staking for Aztec",
+  "providerEmail": "filip@olla.finance",
+  "providerWebsite": "https://olla.finance",
+  "providerLogoUrl": "https://avatars.githubusercontent.com/u/241961793",
+  "discordUsername": "quiq",
+  "manualPayoutAuditUrl": "https://github.com/ollafinance/aztec-payout-audit"
+}
