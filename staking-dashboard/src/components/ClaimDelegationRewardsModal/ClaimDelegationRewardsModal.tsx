@@ -12,6 +12,7 @@ import { useCoinbaseRewardsAcrossRollups } from "@/hooks/rewards/useCoinbaseRewa
 import { useERC20Balance } from "@/hooks/erc20/useERC20Balance"
 import { useSplitsWarehouse } from "@/hooks/splits/useSplitsWarehouse"
 import { calculateTotalUserShareFromSplitRewards, calculateUserShareFromTakeRate } from "@/utils/rewardCalculations"
+import { getRecoveryDustThreshold } from "@/utils/claimCart"
 import type { Address } from "viem"
 
 export interface DelegationModalData {
@@ -75,6 +76,13 @@ export const ClaimDelegationRewardsModal = ({
   } = useWarehouseBalance(warehouseAddress, beneficiary, tokenAddress)
 
   const isLoadingBalances = isLoadingRollup || isLoadingSplitContract || isLoadingWarehouse
+
+  // A PullSplit keeps 1 wei forever once it has distributed, so a fully
+  // withdrawn warehouse still reports a balance. The figure below stays
+  // truthful, but only highlight it when there is enough to actually
+  // withdraw — a highlighted 1 wei reads as "claim me" and cannot be.
+  const hasWithdrawableWarehouseBalance =
+    (warehouseBalance ?? 0n) >= getRecoveryDustThreshold(decimals ?? 18)
 
   const handleSuccess = () => {
     onSuccess?.()
@@ -285,7 +293,7 @@ export const ClaimDelegationRewardsModal = ({
                         <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-chartreuse/20 border border-chartreuse text-[10px] font-bold text-chartreuse mr-1.5">3</span>
                         Warehouse (Shared)
                       </div>
-                      <div className={`font-mono font-bold ${warehouseBalance && warehouseBalance > 0n ? 'text-chartreuse' : 'text-parchment/40'}`}>
+                      <div className={`font-mono font-bold ${hasWithdrawableWarehouseBalance ? 'text-chartreuse' : 'text-parchment/40'}`}>
                         {decimals && symbol ? formatTokenAmount(warehouseBalance || 0n, decimals, symbol, 2) : '-'}
                       </div>
                     </div>

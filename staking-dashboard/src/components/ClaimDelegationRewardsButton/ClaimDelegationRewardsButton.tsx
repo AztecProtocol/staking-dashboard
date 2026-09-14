@@ -8,6 +8,7 @@ import { Icon } from "@/components/Icon"
 import {
   buildDelegationClaimEntries,
   buildWarehouseWithdrawEntry,
+  getRecoveryDustThreshold,
   type ClaimCartEntry,
 } from "@/utils/claimCart"
 import type { Address } from "viem"
@@ -64,10 +65,16 @@ export const ClaimDelegationRewardsButton = ({
   const currentWarehouseBalance = warehouseBalance ?? 0n
   const totalRollupRewards = rollupRewardsByRollup.reduce((sum, r) => sum + r.rewards, 0n)
 
+  // A PullSplit permanently holds 1 wei once it has distributed, so a fully
+  // withdrawn warehouse still reports a balance. Only treat a balance above
+  // the shared dust threshold as something worth claiming, otherwise the
+  // button stays enabled forever and every click burns gas for no tokens.
+  const hasWarehouseBalance = currentWarehouseBalance >= getRecoveryDustThreshold(decimals ?? 18)
+
   const hasRewards =
     totalRollupRewards > 0n ||
     currentSplitBalance > 0n ||
-    currentWarehouseBalance > 0n
+    hasWarehouseBalance
 
   const isReady = !!warehouseAddress && !!tokenAddress && !!beneficiary
   const isDisabled = !isReady || !hasRewards
@@ -99,7 +106,7 @@ export const ClaimDelegationRewardsButton = ({
       symbol: symbol ?? "",
       splitContractBalance: currentSplitBalance,
     })
-    const withdraw = entries.length > 0 || currentWarehouseBalance > 0n
+    const withdraw = entries.length > 0 || hasWarehouseBalance
       ? buildWarehouseWithdrawEntry({
           warehouseAddress,
           beneficiary,

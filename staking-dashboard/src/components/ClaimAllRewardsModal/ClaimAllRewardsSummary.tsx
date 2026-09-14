@@ -1,5 +1,6 @@
 import { Icon } from "@/components/Icon"
 import { formatTokenAmountFull } from "@/utils/atpFormatters"
+import { getRecoveryDustThreshold } from "@/utils/claimCart"
 import type { DelegationBreakdown } from "@/hooks/atp/useAggregatedStakingData"
 import type { CoinbaseBreakdown } from "@/hooks/rewards/rewardsTypes"
 
@@ -40,11 +41,18 @@ export const ClaimAllRewardsSummary = ({
   )
   const coinbasesWithRewards = coinbases.filter(c => c.rewards > 0n)
 
+  // Every PullSplit keeps 1 wei after a distribute, so a drained warehouse
+  // still reports a non-zero balance. Treat anything under the shared dust
+  // threshold as nothing to withdraw, otherwise the summary advertises a
+  // "ready to withdraw" row that costs gas and moves no tokens.
+  const warehouseWithdrawal =
+    pendingWarehouseWithdrawal >= getRecoveryDustThreshold(decimals) ? pendingWarehouseWithdrawal : 0n
+
   // Calculate totals
   const totalDelegationRewards = delegationsWithRewards.reduce((sum, d) => sum + d.rewards, 0n)
   const totalCoinbaseRewards = coinbasesWithRewards.reduce((sum, c) => sum + c.rewards, 0n)
   // Include pending warehouse withdrawal in total
-  const totalRewards = totalDelegationRewards + totalCoinbaseRewards + pendingWarehouseWithdrawal
+  const totalRewards = totalDelegationRewards + totalCoinbaseRewards + warehouseWithdrawal
 
   const hasRewards = totalRewards > 0n
 
@@ -242,7 +250,7 @@ export const ClaimAllRewardsSummary = ({
       )}
 
       {/* Pending Warehouse Withdrawal */}
-      {pendingWarehouseWithdrawal > 0n && (
+      {warehouseWithdrawal > 0n && (
         <div>
           <div className="text-xs text-parchment/40 uppercase tracking-wide mb-3">
             Pending Withdrawal
@@ -256,7 +264,7 @@ export const ClaimAllRewardsSummary = ({
                 </span>
               </div>
               <div className="font-mono text-sm font-bold text-chartreuse">
-                {formatTokenAmountFull(pendingWarehouseWithdrawal, decimals, symbol)}
+                {formatTokenAmountFull(warehouseWithdrawal, decimals, symbol)}
               </div>
             </div>
             <div className="mt-2 text-xs text-parchment/40">
