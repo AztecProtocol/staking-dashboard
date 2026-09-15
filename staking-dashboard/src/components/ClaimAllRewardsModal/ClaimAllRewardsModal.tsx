@@ -11,6 +11,7 @@ import {
   buildDelegationClaimEntries,
   buildCoinbaseClaimEntry,
   buildWarehouseWithdrawEntry,
+  getRecoveryDustThreshold,
   type ClaimCartEntry,
 } from "@/utils/claimCart"
 import type { DelegationBreakdown } from "@/hooks/atp/useAggregatedStakingData"
@@ -117,7 +118,13 @@ export const ClaimAllRewardsModal = ({
     // share in the warehouse. Route it through `replaceTransactionByTx` so
     // the fresh entry (wired to the LATEST distribute group) supersedes any
     // prior withdraw.
-    const needsWithdraw = lastDistributeGroup !== null || pendingWarehouseWithdrawal > 0n
+    // A distribute in this batch always needs a withdraw to follow it. A
+    // pre-existing warehouse balance only does when it is above the dust
+    // threshold: every PullSplit leaves 1 wei behind after a distribute, so a
+    // drained warehouse still reads non-zero and would queue a withdraw that
+    // burns gas and moves nothing.
+    const needsWithdraw =
+      lastDistributeGroup !== null || pendingWarehouseWithdrawal >= getRecoveryDustThreshold(decimals ?? 18)
     if (needsWithdraw && warehouseAddress) {
       const withdrawEntry = buildWarehouseWithdrawEntry({
         warehouseAddress,
