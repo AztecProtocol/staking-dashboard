@@ -639,7 +639,7 @@ export const ATPStakingCard = ({
                   ? withdrawalTimestamp === undefined
                     ? "Set your Staker version to view unlock date. It is recommended that every Token Vault upgrades to the latest version."
                     : "Unlock requires staking tokens first. Then, your Token Vault unlock countdown will be displayed."
-                  : "Time remaining until the next batch of tokens completes vesting and becomes claimable from your Token Vault."
+                  : "Time remaining until tokens in your Token Vault start unlocking. From then on, tokens unlock linearly with every Ethereum block."
               }
               size="sm"
               maxWidth="max-w-xs"

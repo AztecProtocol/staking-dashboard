@@ -4,6 +4,7 @@ import styles from "./ATPCard.module.css";
 import { formatAddress } from "../../utils/formatAddress";
 import { IconCopy, IconCheck } from "@tabler/icons-react";
 import type { ATPData } from "../../hooks/atp/atpTypes";
+import { getTimeToClaimForATP } from "../../utils/atpFormatters";
 
 interface CopyButtonProps {
   address: string;
@@ -110,27 +111,6 @@ export default function ATPCard({
       return Number(formatEther(atp.allocation)).toLocaleString();
     }
     return "0";
-  };
-
-  // Calculate time left to claim for each ATP
-  const getTimeToClaimForATP = (atp: ATPData) => {
-    // Use globalLock data if available
-    if (atp.globalLock?.endTime) {
-      const now = Math.floor(Date.now() / 1000);
-      const endTime = Number(atp.globalLock.endTime);
-      const timeLeft = endTime - now;
-
-      if (timeLeft <= 0) {
-        return "Available now";
-      }
-
-      const days = Math.floor(timeLeft / (24 * 60 * 60));
-
-      return `${days} days`;
-    }
-
-    // Fallback for ATPs without lock data
-    return "Available now";
   };
 
   return (
