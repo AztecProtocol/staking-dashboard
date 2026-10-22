@@ -44,18 +44,24 @@ export function getStakeableAmount(atp: ATPData): bigint {
 }
 
 /**
- * Calculate time until claimable
+ * Calculate time until tokens start unlocking
+ *
+ * Counts down to the cliff, the first moment any tokens become claimable, not to endTime: past the
+ * cliff the lock releases tokens linearly every block, so counting to endTime reports the whole
+ * vesting duration (e.g. "751 days" for a vault whose unlock starts in three weeks).
+ * The cliff is never before startTime, and equals it when the schedule has no cliff.
+ *
  * @param atp - ATP data with globalLock info
  * @param blockTimestamp - Optional blockchain timestamp to use instead of Date.now()
  *                         This ensures consistency with anvil time warps during testing
  */
 export function getTimeToClaimForATP(atp: ATPData, blockTimestamp?: bigint): string {
-  if (atp.globalLock?.endTime) {
+  if (atp.globalLock) {
     const now = blockTimestamp
       ? Number(blockTimestamp)
       : Math.floor(Date.now() / 1000)
-    const endTime = Number(atp.globalLock.endTime)
-    const timeLeft = endTime - now
+    const unlockStart = Number(atp.globalLock.cliff || atp.globalLock.startTime)
+    const timeLeft = unlockStart - now
 
     if (timeLeft <= 0) {
       return "Available now"
