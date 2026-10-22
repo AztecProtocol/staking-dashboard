@@ -9,6 +9,7 @@ import {
   useATPClaim,
   useUpgradeStaker,
   useUpdateStakerOperator,
+  useVestingCalculation,
 } from "@/hooks/atp";
 import { useTokenVaultSetupStatus } from "@/hooks/atp/useTokenVaultSetupStatus";
 import { useRollupData } from "@/hooks/rollup/useRollupData";
@@ -34,6 +35,9 @@ import { isMATPData } from "@/hooks/atp/matp/matpTypes";
 import { useMilestoneStatus, MilestoneStatus } from "@/hooks/atpRegistry/useMilestoneStatus";
 import { MilestoneStatusBadge } from "@/components/MilestoneStatusBadge";
 import { ERC20Abi } from "@/contracts/abis/ERC20";
+
+// useVestingCalculation needs a lock on every render; vaults without one never show its result.
+const NO_GLOBAL_LOCK = { startTime: 0n, cliff: 0n, endTime: 0n, allocation: 0n };
 
 interface ATPStakingCardProps {
   data: ATPData;
@@ -220,6 +224,11 @@ export const ATPStakingCard = ({
   const [isGovernanceModalOpen, setIsGovernanceModalOpen] = useState(false);
 
   const globalLockTimeDisplay = getTimeToClaimForATP(data, blockTimestamp);
+  // Same schedule maths as the vesting chart, so the card and the chart agree on how much has unlocked
+  const { currentVestedAmount } = useVestingCalculation(
+    data.globalLock ?? NO_GLOBAL_LOCK,
+    blockTimestamp
+  );
   const { activationThreshold } = useRollupData();
 
   const {
@@ -346,13 +355,33 @@ export const ATPStakingCard = ({
       ? getMATPlockDisplay()
       : globalLockTimeDisplay;
 
-  // Linear vaults count down to the *start* of the unlock, after which tokens release every block.
-  // "Unlocks In: 21 days" reads as a full unlock in 21 days, so name the countdown for what it is.
-  // NCATPs count down to a full unlock and keep "Unlocks In".
-  const unlockLabel =
-    !isNCATP && globalLockTimeDisplay !== "Available now"
-      ? "Unlocks Start In"
-      : "Unlocks In";
+  // Lock-scheduled vaults count down to the *start* of the unlock, after which tokens release every
+  // block. "Unlocks In: 21 days" reads as a full unlock in 21 days, so before the start the countdown
+  // is labelled for what it is, and after it the card shows how much of the allocation has unlocked.
+  // A milestone vault follows the same schedule but can't release anything until its milestone is
+  // achieved, so it also says so. NCATPs count down to a full unlock and keep "Unlocks In".
+  const hasUnlockSchedule = !isNCATP && !!data.globalLock;
+  const hasUnlockStarted =
+    hasUnlockSchedule && globalLockTimeDisplay === "Available now";
+  const isMilestoneStillLocked =
+    isMATP && hasUnlockStarted && milestoneStatus !== MilestoneStatus.Succeeded;
+
+  // Rounded down to 0.01% so a vault never shows 100% before its last token has unlocked
+  const allocationForPercent = data.globalLock?.allocation ?? 0n;
+  const unlockedBasisPoints =
+    allocationForPercent > 0n
+      ? (currentVestedAmount * 10_000n) / allocationForPercent
+      : 0n;
+  const unlockedPercentDisplay = `${(Number(unlockedBasisPoints) / 100).toLocaleString(undefined, { maximumFractionDigits: 2 })}%`;
+
+  const unlockLabel = !hasUnlockSchedule
+    ? "Unlocks In"
+    : hasUnlockStarted
+      ? "% Unlocked"
+      : "Unlocks Start In";
+  const unlockValue = hasUnlockStarted
+    ? unlockedPercentDisplay
+    : timeToClaimDisplay;
 
   // Calculate remaining allocation after withdrawals and slashing
   // Total Funds = allocation - totalWithdrawn - totalSlashed
@@ -647,7 +676,11 @@ export const ATPStakingCard = ({
                   ? withdrawalTimestamp === undefined
                     ? "Set your Staker version to view unlock date. It is recommended that every Token Vault upgrades to the latest version."
                     : "Unlock requires staking tokens first. Then, your Token Vault unlock countdown will be displayed."
-                  : "Time remaining until tokens in your Token Vault start unlocking. From then on, tokens unlock linearly with every Ethereum block."
+                  : hasUnlockStarted
+                    ? isMilestoneStillLocked
+                      ? "Share of this Token Vault's allocation unlocked by its schedule. Unlocked tokens can't be withdrawn until the vault's milestone is achieved."
+                      : "Share of this Token Vault's allocation unlocked so far. Tokens unlock linearly with every Ethereum block."
+                    : "Time remaining until tokens in your Token Vault start unlocking. From then on, tokens unlock linearly with every Ethereum block."
               }
               size="sm"
               maxWidth="max-w-xs"
@@ -658,8 +691,15 @@ export const ATPStakingCard = ({
           <div className="font-mono text-lg font-bold text-parchment">
             {formatTokenAmountFull(remainingAllocation, decimals, symbol)}
           </div>
-          <div className="font-mono text-lg font-bold text-parchment">
-            {isFullyWithdrawn ? "—" : timeToClaimDisplay}
+          <div className="flex flex-col items-end">
+            <div className="font-mono text-lg font-bold text-parchment">
+              {isFullyWithdrawn ? "—" : unlockValue}
+            </div>
+            {isMilestoneStillLocked && !isFullyWithdrawn && (
+              <div className="text-xs text-parchment/60 font-oracle-standard">
+                Milestone still locked
+              </div>
+            )}
           </div>
         </div>
 
