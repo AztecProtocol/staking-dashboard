@@ -346,6 +346,14 @@ export const ATPStakingCard = ({
       ? getMATPlockDisplay()
       : globalLockTimeDisplay;
 
+  // Linear vaults count down to the *start* of the unlock, after which tokens release every block.
+  // "Unlocks In: 21 days" reads as a full unlock in 21 days, so name the countdown for what it is.
+  // NCATPs count down to a full unlock and keep "Unlocks In".
+  const unlockLabel =
+    !isNCATP && globalLockTimeDisplay !== "Available now"
+      ? "Unlocks Start In"
+      : "Unlocks In";
+
   // Calculate remaining allocation after withdrawals and slashing
   // Total Funds = allocation - totalWithdrawn - totalSlashed
   // Slashed tokens are burned/confiscated and should not appear as remaining funds
@@ -631,7 +639,7 @@ export const ATPStakingCard = ({
           </div>
           <div className="flex items-center gap-1">
             <div className="text-xs text-parchment/60 uppercase tracking-wide font-oracle-standard">
-              Unlocks In
+              {unlockLabel}
             </div>
             <TooltipIcon
               content={
