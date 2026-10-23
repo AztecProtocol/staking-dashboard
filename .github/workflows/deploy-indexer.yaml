@@ -74,7 +74,13 @@ jobs:
         working-directory: atp-indexer
         run: |
           yarn install --frozen-lockfile
-          yarn bootstrap
+          # Provider metadata is per network: testnet reads providers-testnet/, prod reads providers/.
+          # Same switch as bootstrap.sh's ECS deploy path.
+          if [ "$ENV" = "testnet" ]; then
+            yarn bootstrap-testnet
+          else
+            yarn bootstrap
+          fi
           aws ecr get-login-password --region "$AWS_REGION" | docker login --username AWS --password-stdin "$AWS_ACCOUNT.dkr.ecr.$AWS_REGION.amazonaws.com"
           IMAGE="$AWS_ACCOUNT.dkr.ecr.$AWS_REGION.amazonaws.com/atp-indexer-$ENV-atp-indexer:si-${GITHUB_SHA::7}"
           docker build -t "$IMAGE" .
