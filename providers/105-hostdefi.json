@@ -1,0 +1,15 @@
+{
+    "providerId": 105,
+    "providerName": "HostDeFi",
+    "providerDescription": "Independent validator operator. 5% commission.",
+    "providerEmail": "aztec@hostdefi.com",
+    "providerWebsite": "",
+    "providerLogoUrl": "",
+    "discordUsername": "",
+    "providerSelfStake": [
+        "0x23aD75edC5f453208877E00e40E86691df462D12",
+        "0xCE2c1aeCD266d3cE2DEEbC86D4EE9c9c7d19BA48",
+        "0x480e68572bC224e5058fC64Dfb1caB2B5a10b686",
+        "0x587da045ba1116aEaa5b354Cca0F514779209f67"
+    ]
+}
