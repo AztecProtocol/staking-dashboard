@@ -81,8 +81,27 @@ jobs:
           else
             yarn bootstrap
           fi
+          # Resolve the ECR repository. atp-indexer-<env>-atp-indexer is the ECS fleet's repo, which the
+          # fleet's terraform owns (force_delete): prod still has it, but testnet's went with the retired
+          # testnet fleet, so the push failed with "repository does not exist". The single-instance
+          # README names staking-dashboard-<env>-atp-indexer instead. Use whichever exists; failing
+          # that, create the fleet name. The box's role can pull from any repository in the account.
+          REPO=""
+          for candidate in "atp-indexer-$ENV-atp-indexer" "staking-dashboard-$ENV-atp-indexer"; do
+            if aws ecr describe-repositories --region "$AWS_REGION" --repository-names "$candidate" >/dev/null 2>&1; then
+              REPO="$candidate"
+              break
+            fi
+          done
+          if [ -z "$REPO" ]; then
+            REPO="atp-indexer-$ENV-atp-indexer"
+            echo "No indexer ECR repository for $ENV; creating $REPO"
+            aws ecr create-repository --region "$AWS_REGION" --repository-name "$REPO" \
+              --image-tag-mutability MUTABLE --image-scanning-configuration scanOnPush=true >/dev/null
+          fi
+          echo "Using ECR repository $REPO"
           aws ecr get-login-password --region "$AWS_REGION" | docker login --username AWS --password-stdin "$AWS_ACCOUNT.dkr.ecr.$AWS_REGION.amazonaws.com"
-          IMAGE="$AWS_ACCOUNT.dkr.ecr.$AWS_REGION.amazonaws.com/atp-indexer-$ENV-atp-indexer:si-${GITHUB_SHA::7}"
+          IMAGE="$AWS_ACCOUNT.dkr.ecr.$AWS_REGION.amazonaws.com/$REPO:si-${GITHUB_SHA::7}"
           docker build -t "$IMAGE" .
           docker push "$IMAGE"
           echo "IMAGE=$IMAGE" >> "$GITHUB_ENV"
