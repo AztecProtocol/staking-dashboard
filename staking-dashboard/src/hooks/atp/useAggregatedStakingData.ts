@@ -519,8 +519,12 @@ export const useAggregatedStakingData = (): AggregatedStakingData => {
     },
   })
 
-  // Get warehouse address from first split contract (all splits use the same warehouse)
-  const firstSplitContract = delegations[0]?.splitContract as Address | undefined
+  // Get warehouse address from first split contract (all splits use the same warehouse).
+  // Fall back to an ERC20 delegation's split: a delegator who stakes only from a
+  // wallet has no token-vault delegations, and reading just `delegations[0]` left
+  // the warehouse address undefined, so their distributed rewards never loaded.
+  const firstSplitContract = (delegations[0]?.splitContract ??
+    erc20Delegations[0]?.splitContract) as Address | undefined
   const { data: warehouseAddress } = useReadContract({
     address: firstSplitContract,
     abi: SplitAbi,
