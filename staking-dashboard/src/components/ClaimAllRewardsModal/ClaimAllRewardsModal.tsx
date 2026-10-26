@@ -14,13 +14,14 @@ import {
   getRecoveryDustThreshold,
   type ClaimCartEntry,
 } from "@/utils/claimCart"
-import type { DelegationBreakdown } from "@/hooks/atp/useAggregatedStakingData"
+import type { DelegationBreakdown, Erc20DelegationBreakdown } from "@/hooks/atp/useAggregatedStakingData"
 import type { CoinbaseBreakdown } from "@/hooks/rewards/rewardsTypes"
 
 interface ClaimAllRewardsModalProps {
   isOpen: boolean
   onClose: () => void
   delegations: DelegationBreakdown[]
+  erc20Delegations?: Erc20DelegationBreakdown[]
   coinbases: CoinbaseBreakdown[]
   pendingWarehouseWithdrawal?: bigint
   onSuccess?: () => void
@@ -37,6 +38,7 @@ export const ClaimAllRewardsModal = ({
   isOpen,
   onClose,
   delegations,
+  erc20Delegations = [],
   coinbases,
   pendingWarehouseWithdrawal = 0n,
   onSuccess,
@@ -49,7 +51,13 @@ export const ClaimAllRewardsModal = ({
 
   // Resolve warehouse via the first delegation's split contract. All splits
   // funnel into the same SplitsWarehouse for a given token, so any split works.
-  const firstSplit = delegations.find((d) => d.rewards > 0n)?.splitContract ?? delegations[0]?.splitContract
+  // A delegator who stakes only from a wallet has no ATP delegations, so fall
+  // back to an ERC20 delegation's split. Without it the warehouse address is
+  // undefined and the withdraw leg below is skipped, leaving an empty cart.
+  const firstSplit =
+    delegations.find((d) => d.rewards > 0n)?.splitContract
+    ?? delegations[0]?.splitContract
+    ?? erc20Delegations[0]?.splitContract
   const { warehouseAddress } = useSplitsWarehouse(firstSplit)
 
   const handleAddAllToBatch = () => {

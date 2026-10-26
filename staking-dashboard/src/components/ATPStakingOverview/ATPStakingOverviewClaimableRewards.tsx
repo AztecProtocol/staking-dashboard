@@ -4,7 +4,7 @@ import { TooltipIcon } from "@/components/Tooltip"
 import { formatTokenAmount, formatTokenAmountFull } from "@/utils/atpFormatters"
 import { ManageRewardsAddressesModal } from "@/components/RewardsManagement"
 import { ClaimAllRewardsModal } from "@/components/ClaimAllRewardsModal"
-import type { DelegationBreakdown } from "@/hooks/atp/useAggregatedStakingData"
+import type { DelegationBreakdown, Erc20DelegationBreakdown } from "@/hooks/atp/useAggregatedStakingData"
 import type { CoinbaseBreakdown } from "@/hooks/rewards/rewardsTypes"
 
 interface ATPStakingOverviewClaimableRewardsProps {
@@ -17,6 +17,7 @@ interface ATPStakingOverviewClaimableRewardsProps {
   decimals: number
   symbol: string
   delegationBreakdown?: DelegationBreakdown[]
+  erc20DelegationBreakdown?: Erc20DelegationBreakdown[]
   coinbaseBreakdown?: CoinbaseBreakdown[]
   onClaimSuccess?: () => void
 }
@@ -25,7 +26,7 @@ interface ATPStakingOverviewClaimableRewardsProps {
  * Displays claimable delegation rewards and self-stake rewards
  */
 export const ATPStakingOverviewClaimableRewards = forwardRef<HTMLDivElement, ATPStakingOverviewClaimableRewardsProps>(
-  ({ totalRewards, selfStakeRewards = 0n, pendingWarehouseWithdrawal = 0n, isRewardsClaimable = true, isExpanded, onToggle, decimals, symbol, delegationBreakdown = [], coinbaseBreakdown = [], onClaimSuccess }, ref) => {
+  ({ totalRewards, selfStakeRewards = 0n, pendingWarehouseWithdrawal = 0n, isRewardsClaimable = true, isExpanded, onToggle, decimals, symbol, delegationBreakdown = [], erc20DelegationBreakdown = [], coinbaseBreakdown = [], onClaimSuccess }, ref) => {
     const [isManageModalOpen, setIsManageModalOpen] = useState(false)
     const [isClaimAllModalOpen, setIsClaimAllModalOpen] = useState(false)
 
@@ -193,6 +194,7 @@ export const ATPStakingOverviewClaimableRewards = forwardRef<HTMLDivElement, ATP
           isOpen={isClaimAllModalOpen}
           onClose={() => setIsClaimAllModalOpen(false)}
           delegations={delegationBreakdown}
+          erc20Delegations={erc20DelegationBreakdown}
           coinbases={coinbaseBreakdown}
           pendingWarehouseWithdrawal={pendingWarehouseWithdrawal}
           onSuccess={onClaimSuccess}
