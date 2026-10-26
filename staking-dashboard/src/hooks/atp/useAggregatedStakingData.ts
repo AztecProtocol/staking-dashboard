@@ -6,6 +6,7 @@ import { ERC20Abi } from '@/contracts/abis/ERC20'
 import { SplitAbi } from '@/contracts/abis/Split'
 import { SplitWarehouseAbi } from '@/contracts/abis/SplitWarehouse'
 import { calculateTotalUserShareFromSplitRewards } from '@/utils/rewardCalculations'
+import { resolveWarehouseSplit } from '@/utils/claimCart'
 import { useFeeAssetTokenDetails } from '@/hooks/rollup'
 import { contracts, getRollupVersions, type RollupVersion } from '@/contracts'
 import type { Address } from 'viem'
@@ -519,8 +520,8 @@ export const useAggregatedStakingData = (): AggregatedStakingData => {
     },
   })
 
-  // Get warehouse address from first split contract (all splits use the same warehouse)
-  const firstSplitContract = delegations[0]?.splitContract as Address | undefined
+  // Resolve the warehouse from any of the user's splits, ATP or wallet.
+  const firstSplitContract = resolveWarehouseSplit(delegations, erc20Delegations)
   const { data: warehouseAddress } = useReadContract({
     address: firstSplitContract,
     abi: SplitAbi,

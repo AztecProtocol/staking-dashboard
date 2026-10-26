@@ -8,6 +8,7 @@ import {
   buildDelegationClaimEntries,
   buildWarehouseWithdrawEntry,
   getRecoveryDustThreshold,
+  resolveWarehouseSplit,
   type ClaimCartEntry,
 } from "@/utils/claimCart"
 import { Icon } from "@/components/Icon"
@@ -63,8 +64,9 @@ export const ClaimAllDelegationRewardsButton = ({
   const { isRewardsClaimable } = useIsRewardsClaimable()
   const { addTransaction, checkTransactionInQueue, openCart, replaceTransactionByTx } = useTransactionCart()
 
-  // Warehouse is the same per-token across all delegations; resolve from the first one.
-  const firstSplit = delegations[0]?.splitContract
+  // Warehouse is the same per-token across all delegations; resolve from the
+  // first one that has a split contract.
+  const firstSplit = resolveWarehouseSplit(delegations)
   const { warehouseAddress } = useSplitsWarehouse(firstSplit)
 
   // Filter to delegations that have *anything* claimable — canonical, stranded

@@ -183,6 +183,7 @@ export const ATPStakingOverview = ({ atpData, walletBalance = 0n }: ATPStakingOv
               decimals={decimals}
               symbol={symbol}
               delegationBreakdown={delegationBreakdown}
+              erc20DelegationBreakdown={erc20DelegationBreakdown}
               coinbaseBreakdown={coinbaseBreakdown}
               onClaimSuccess={() => {
                 refetchAggregatedData()

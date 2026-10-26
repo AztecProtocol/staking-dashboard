@@ -12,15 +12,17 @@ import {
   buildCoinbaseClaimEntry,
   buildWarehouseWithdrawEntry,
   getRecoveryDustThreshold,
+  resolveWarehouseSplit,
   type ClaimCartEntry,
 } from "@/utils/claimCart"
-import type { DelegationBreakdown } from "@/hooks/atp/useAggregatedStakingData"
+import type { DelegationBreakdown, Erc20DelegationBreakdown } from "@/hooks/atp/useAggregatedStakingData"
 import type { CoinbaseBreakdown } from "@/hooks/rewards/rewardsTypes"
 
 interface ClaimAllRewardsModalProps {
   isOpen: boolean
   onClose: () => void
   delegations: DelegationBreakdown[]
+  erc20Delegations?: Erc20DelegationBreakdown[]
   coinbases: CoinbaseBreakdown[]
   pendingWarehouseWithdrawal?: bigint
   onSuccess?: () => void
@@ -37,6 +39,7 @@ export const ClaimAllRewardsModal = ({
   isOpen,
   onClose,
   delegations,
+  erc20Delegations = [],
   coinbases,
   pendingWarehouseWithdrawal = 0n,
   onSuccess,
@@ -47,9 +50,12 @@ export const ClaimAllRewardsModal = ({
   const { addTransaction, openCart, replaceTransactionByTx } = useTransactionCart()
   const { showAlert } = useAlert()
 
-  // Resolve warehouse via the first delegation's split contract. All splits
-  // funnel into the same SplitsWarehouse for a given token, so any split works.
-  const firstSplit = delegations.find((d) => d.rewards > 0n)?.splitContract ?? delegations[0]?.splitContract
+  // Prefer a split that has rewards, then fall back to any of the user's
+  // splits, ATP or wallet. Without the wallet fallback the warehouse address
+  // is undefined and the withdraw leg below is skipped, leaving an empty cart.
+  const firstSplit =
+    delegations.find((d) => d.rewards > 0n)?.splitContract
+    ?? resolveWarehouseSplit(delegations, erc20Delegations)
   const { warehouseAddress } = useSplitsWarehouse(firstSplit)
 
   const handleAddAllToBatch = () => {
