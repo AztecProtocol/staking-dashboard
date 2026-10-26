@@ -80,6 +80,25 @@ export function getRecoveryDustThreshold(decimals: number): bigint {
   return decimals >= 1 ? RECOVERY_DUST_THRESHOLD_NUMERATOR * 10n ** BigInt(decimals - 1) : 0n
 }
 
+/**
+ * Pick a split contract to resolve the SplitsWarehouse address from.
+ *
+ * Every split funnels into the same warehouse for a given token, so any one of
+ * the user's splits answers the question. The lists are tried in order, which
+ * matters because a delegator who stakes only from a wallet has no ATP
+ * delegations: reading just the first list left the address undefined and
+ * silently disabled every warehouse read and withdraw for them.
+ */
+export function resolveWarehouseSplit(
+  ...delegationLists: Array<ReadonlyArray<{ splitContract?: string }> | undefined>
+): Address | undefined {
+  for (const list of delegationLists) {
+    const found = list?.find((d) => d?.splitContract)?.splitContract
+    if (found) return found as Address
+  }
+  return undefined
+}
+
 export interface DelegationClaimResult {
   entries: ClaimCartEntry[]
   /** `stepGroupIdentifier` of the delegation's distribute step. Pass to
