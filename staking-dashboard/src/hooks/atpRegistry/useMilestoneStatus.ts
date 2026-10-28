@@ -9,7 +9,7 @@ import { AtpRegistryAbi } from "../../contracts/abis/ATPRegistry";
 export enum MilestoneStatus {
   Pending = 0,    // Milestone not yet reached
   Failed = 1,     // Milestone failed
-  Succeeded = 2,  // Milestone achieved - ONLY this allows operations
+  Succeeded = 2,  // Milestone achieved - only this allows claiming tokens out of the MATP
 }
 
 interface UseMilestoneStatusParams {
@@ -47,10 +47,15 @@ export function useMilestoneStatus({
 }
 
 /**
- * Helper to check if milestone allows withdrawal
+ * Whether the beneficiary can unstake (initiate/finalize a rollup withdrawal) from an MATP.
+ *
+ * The milestone gates CLAIMING (MATPCore.getClaimable returns 0 unless Succeeded), not unstaking: the
+ * staker's initiateWithdraw only requires the ATP operator, and the tokens return to the MATP, not the
+ * beneficiary. What a Failed milestone does change is who the operator is: control passes to the revoker,
+ * so the beneficiary can no longer unstake. Pending and Succeeded both allow it.
  */
-export function canWithdrawWithMilestone(status?: MilestoneStatus): boolean {
-  return status === MilestoneStatus.Succeeded;
+export function canUnstakeWithMilestone(status?: MilestoneStatus): boolean {
+  return status !== MilestoneStatus.Failed;
 }
 
 /**
