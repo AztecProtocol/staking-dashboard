@@ -97,7 +97,9 @@ export const WithdrawalActions = ({
     (status === SequencerStatus.VALIDATING || status === SequencerStatus.ZOMBIE) &&
     !isMilestoneGated &&
     !isVersionResolving;
-  const canFinalizeWithdrawNow = canFinalize && !isMilestoneGated;
+  // Finalize is not milestone-gated at all: Rollup.finalizeWithdraw is callable by anyone once the exit
+  // delay has passed, and it only returns the stake to the MATP.
+  const canFinalizeWithdrawNow = canFinalize;
 
   // Pre-build the cart entries used by the click handlers. We do NOT use
   // their raw-calldata signature to detect "already queued" — that flickers
@@ -236,7 +238,6 @@ export const WithdrawalActions = ({
                 ? "bg-chartreuse/20 border border-chartreuse/40 text-chartreuse hover:bg-chartreuse/30"
                 : "bg-chartreuse text-ink hover:bg-chartreuse/90"
             }`}
-            title={isMilestoneGated ? milestoneBlockError || undefined : undefined}
           >
             {isFinalizeQueued ? (
               <span className="flex items-center justify-center gap-1.5">
