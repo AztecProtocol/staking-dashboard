@@ -3,8 +3,7 @@ import type { Address } from "viem"
 import { ATPWithdrawableStakerAbi } from "@/contracts/abis/ATPWithdrawableStaker"
 import {
   useMilestoneStatus,
-  canWithdrawWithMilestone,
-  getMilestoneStatusText,
+  canUnstakeWithMilestone,
 } from "@/hooks/atpRegistry/useMilestoneStatus"
 
 interface UseInitiateWithdrawOptions {
@@ -41,12 +40,12 @@ export function useInitiateWithdraw(
   });
 
   const isMATP = options?.atpType === 'MATP';
-  const canWithdraw = !isMATP || canWithdrawWithMilestone(milestoneStatus);
+  // A pending milestone does NOT block unstaking: it only blocks claiming tokens out of the MATP.
+  // Only a failed milestone does, because the revoker then becomes the operator.
+  const canWithdraw = !isMATP || canUnstakeWithMilestone(milestoneStatus);
 
-  // Build error message if milestone blocks withdrawal
   const milestoneBlockError = isMATP && !canWithdraw
-    ? `Cannot withdraw: milestone status is ${getMilestoneStatusText(milestoneStatus)}. ` +
-      `Withdrawals require milestone to be achieved (Succeeded status).`
+    ? "Cannot unstake: this Token Vault's milestone failed, so control has passed to the revoker."
     : null;
 
   const initiateWithdraw = (version: bigint, attesterAddress: Address) => {
