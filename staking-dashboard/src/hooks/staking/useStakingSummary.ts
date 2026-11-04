@@ -5,9 +5,11 @@ export interface StakingStats {
   totalStakes: number
   /** Currently-validating attesters (authoritative from chain). */
   activeStakes?: number
-  /** Attesters mid-exit (initiate without finalize). Derived indexer-side. */
+  /** Validating on an older rollup (never moved to the canonical one). Read from chain. */
+  legacyActiveStakes?: number
+  /** Attesters mid-exit, across every rollup. Read from chain. */
   exitingStakes?: number
-  /** Registered minus active minus exiting (typically slashed-below-ejection). */
+  /** Slashed below the ejection threshold and not yet withdrawn, across every rollup. Read from chain. */
   zombieStakes?: number
   delegatedStakes: number
   directStakes: number

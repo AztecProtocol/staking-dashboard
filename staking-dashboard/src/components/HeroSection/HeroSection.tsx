@@ -43,18 +43,20 @@ export const HeroSection = () => {
     stakingData?.stats.activeStakes ?? stakingData?.totalStakers;
   const exitingStakesCount = stakingData?.stats.exitingStakes ?? 0;
   const zombieStakesCount = stakingData?.stats.zombieStakes ?? 0;
+  const legacyActiveStakesCount = stakingData?.stats.legacyActiveStakes ?? 0;
 
   const activeSequencers = activeStakesCount !== undefined
     ? new Intl.NumberFormat("en-US").format(activeStakesCount)
     : "---";
 
   // Subline shown beneath the main numbers when there are any non-active
-  // sequencers. Format: "+12 exiting · +4 zombie" — only the non-zero
-  // buckets render.
+  // sequencers. Format: "+12 exiting · +4 zombie · +50 on older rollups"
+  // — only the non-zero buckets render.
   const buildSequencerSubline = () => {
     const parts: string[] = [];
     if (exitingStakesCount > 0) parts.push(`+${exitingStakesCount} exiting`);
     if (zombieStakesCount > 0) parts.push(`+${zombieStakesCount} zombie`);
+    if (legacyActiveStakesCount > 0) parts.push(`+${legacyActiveStakesCount} on older rollups`);
     return parts.length > 0 ? parts.join(" · ") : undefined;
   };
 
@@ -65,7 +67,7 @@ export const HeroSection = () => {
     if (totalVL === undefined || activeVL === undefined) return undefined;
     const inactiveValue = totalVL - activeVL;
     if (inactiveValue <= 0n) return undefined;
-    return `${formatTokenAmount(inactiveValue, decimals, symbol)} exiting or zombie`;
+    return `${formatTokenAmount(inactiveValue, decimals, symbol)} ${legacyActiveStakesCount > 0 ? "exiting, zombie or on older rollups" : "exiting or zombie"}`;
   };
 
   const currentAPR = stakingData?.currentAPR
@@ -149,7 +151,7 @@ export const HeroSection = () => {
                   <TooltipIcon
                     content={
                       stat.title === "Total Value Staked"
-                        ? "Value locked by currently-active sequencers only. Stake from exiting and zombie sequencers is excluded from this number — see the subline for the leftover."
+                        ? "Value locked by currently-active sequencers only. Stake from exiting and zombie sequencers, and from sequencers still on an older rollup, is excluded from this number — see the subline for the leftover."
                         : stat.title === "Estimated APR"
                           ? "Estimated annual return based on current rewards and total sequencers (including queued). Actual returns may vary."
                           : stat.title === "Active Sequencers"

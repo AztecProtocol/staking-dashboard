@@ -89,25 +89,26 @@ export const StakingSummaryCard = () => {
   const activeStakesCount = data?.stats.activeStakes ?? data?.totalStakers ?? 0
   const exitingStakesCount = data?.stats.exitingStakes ?? 0
   const zombieStakesCount = data?.stats.zombieStakes ?? 0
+  const legacyActiveStakesCount = data?.stats.legacyActiveStakes ?? 0
 
-  // Build the "+X exiting · +Y zombie" subline. Only the non-zero
+  // Build the "+X exiting · +Y zombie · +Z on older rollups" subline. Only the non-zero
   // buckets render so the line stays compact in steady state.
   const sequencerSubline = (() => {
     const parts: string[] = []
     if (exitingStakesCount > 0) parts.push(`+${formatNumber(exitingStakesCount)} exiting`)
     if (zombieStakesCount > 0) parts.push(`+${formatNumber(zombieStakesCount)} zombie`)
+    if (legacyActiveStakesCount > 0) parts.push(`+${formatNumber(legacyActiveStakesCount)} on older rollups`)
     return parts.length > 0 ? parts.join(' · ') : undefined
   })()
 
   // For the TVL subline we show the token amount held by inactive
-  // sequencers. Approximate (zombies are below activation threshold,
-  // but we use the API's reported delta so this matches whatever the
-  // indexer's accounting says).
+  // sequencers: exiting, zombie, or still validating on an older rollup.
+  // The indexer reads these balances from chain.
   const stakeSubline = (() => {
     if (totalLockedBig === undefined || activeLockedBig === undefined) return undefined
     const inactive = totalLockedBig - activeLockedBig
     if (inactive <= 0n) return undefined
-    return `${formatTokenAmount(inactive, decimals, symbol)} exiting or zombie`
+    return `${formatTokenAmount(inactive, decimals, symbol)} ${legacyActiveStakesCount > 0 ? 'exiting, zombie or on older rollups' : 'exiting or zombie'}`
   })()
 
   // Error state
