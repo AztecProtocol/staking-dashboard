@@ -21,11 +21,18 @@ const STAKE = 200_000n * 10n ** 18n;
  * The client answers multicalls by looking each call up here.
  */
 function fakeClient(chain: Record<string, Record<string, { status: AttesterStatus; balance?: bigint; exit?: bigint }>>) {
+  // The rollup's own active set: its VALIDATING attesters, in insertion order.
+  const activeSet = (rollup: string) =>
+    Object.entries(chain[rollup] ?? {})
+      .filter(([, v]) => v.status === AttesterStatus.VALIDATING)
+      .map(([a]) => a);
   const multicall = jest.fn(async ({ contracts }: { contracts: any[] }) =>
     contracts.map((c) => {
       switch (c.functionName) {
         case 'getStatus':
           return chain[c.address]?.[c.args[0]]?.status ?? AttesterStatus.NONE;
+        case 'getAttesterAtIndex':
+          return activeSet(c.address)[Number(c.args[0])];
         case 'effectiveBalanceOf':
           expect(c.address).toBe(GSE);
           return chain[c.args[0]]?.[c.args[1]]?.balance ?? 0n;
@@ -36,7 +43,9 @@ function fakeClient(chain: Record<string, Record<string, { status: AttesterStatu
       }
     }),
   );
-  const readContract = jest.fn(async () => GSE);
+  const readContract = jest.fn(async ({ address, functionName }: { address: string; functionName: string }) =>
+    functionName === 'getActiveAttesterCount' ? BigInt(activeSet(address).length) : GSE,
+  );
   return { client: { multicall, readContract } as unknown as PublicClient, multicall, readContract };
 }
 
@@ -68,6 +77,24 @@ describe('readRollupStakeTotals', () => {
         exitingStake: STAKE,
         zombieStake: 0n,
       },
+    ]);
+  });
+
+  it('counts validating attesters the caller never saw deposit, from the rollup\'s own active set', async () => {
+    const { client } = fakeClient({
+      [CANONICAL]: {
+        [A]: { status: AttesterStatus.VALIDATING, balance: STAKE },
+        [B]: { status: AttesterStatus.VALIDATING, balance: STAKE },
+      },
+      [LEGACY]: { [D]: { status: AttesterStatus.VALIDATING, balance: STAKE } },
+    });
+
+    // The indexer only knows A; B on the canonical rollup and D on the legacy one are missing from it.
+    const totals = await readRollupStakeTotals(client, [LEGACY, CANONICAL], [A]);
+
+    expect(totals.map((t) => [t.rollup, t.validating, t.validatingStake])).toEqual([
+      [LEGACY, 1, STAKE],
+      [CANONICAL, 2, 2n * STAKE],
     ]);
   });
 

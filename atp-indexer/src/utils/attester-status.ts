@@ -1,5 +1,5 @@
 import type { Address, PublicClient } from 'viem';
-import { GSE_ABI, ROLLUP_ABI } from '../abis';
+import { GSE_ABI, ROLLUP_ABI, ROLLUP_ACTIVE_SET_ABI } from '../abis';
 
 /**
  * On-chain attester status, read per rollup. The summary endpoint uses this
@@ -52,7 +52,35 @@ async function multicallChunked<T>(
 }
 
 /**
+ * Every VALIDATING attester on a rollup, listed by the rollup itself: `getActiveAttesterCount` then
+ * `getAttesterAtIndex` for each index.
+ */
+async function readActiveSet(client: PublicClient, rollup: Address): Promise<Address[]> {
+  const count = (await client.readContract({
+    address: rollup,
+    abi: ROLLUP_ACTIVE_SET_ABI,
+    functionName: 'getActiveAttesterCount',
+  })) as bigint;
+  const attesters = await multicallChunked<Address>(
+    client,
+    Array.from({ length: Number(count) }, (_, i) => ({
+      address: rollup,
+      abi: ROLLUP_ACTIVE_SET_ABI,
+      functionName: 'getAttesterAtIndex',
+      args: [BigInt(i)],
+    })),
+  );
+  return attesters.map((a) => a.toLowerCase() as Address);
+}
+
+/**
  * Reads the status and stake of each attester on each rollup.
+ *
+ * The attesters asked about are the caller's list (every attester the indexer saw deposit) merged with
+ * each rollup's own active set. The indexer's list alone is not enough: on mainnet it was missing ~670
+ * attesters that were validating, so a summary built only from it put active stake at 507M against the
+ * ~630M the GSE holds. Validating attesters are now complete whatever the indexer holds; exiting and
+ * zombie ones have left the active set, so for those the indexer's list is still the only source.
  *
  * Every rollup version shares one GSE, so the GSE is read once from the first
  * rollup. A VALIDATING attester's stake sits in the GSE; once an attester
@@ -72,11 +100,17 @@ export async function readRollupStakeTotals(
     functionName: 'getGSE',
   })) as Address;
 
+  const known = new Set(attesters.map((a) => a.toLowerCase()));
+  for (const rollup of rollups) {
+    for (const a of await readActiveSet(client, rollup)) known.add(a);
+  }
+  const candidates = [...known] as Address[];
+
   const totals: RollupStakeTotals[] = [];
   for (const rollup of rollups) {
     const statuses = await multicallChunked<number>(
       client,
-      attesters.map((attester) => ({
+      candidates.map((attester) => ({
         address: rollup,
         abi: ROLLUP_ABI,
         functionName: 'getStatus',
@@ -87,9 +121,9 @@ export async function readRollupStakeTotals(
     const validating: Address[] = [];
     const exitingOrZombie: { attester: Address; status: AttesterStatus }[] = [];
     statuses.forEach((status, i) => {
-      if (status === AttesterStatus.VALIDATING) validating.push(attesters[i]);
+      if (status === AttesterStatus.VALIDATING) validating.push(candidates[i]);
       else if (status === AttesterStatus.EXITING || status === AttesterStatus.ZOMBIE) {
-        exitingOrZombie.push({ attester: attesters[i], status });
+        exitingOrZombie.push({ attester: candidates[i], status });
       }
     });
 

@@ -32,6 +32,7 @@ export {
   DepositEventAbi,
   FailedDepositEventAbi,
   ROLLUP_ABI,
+  ROLLUP_ACTIVE_SET_ABI,
 } from './rollup.abi';
 
 // Staker ABIs

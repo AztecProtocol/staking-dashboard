@@ -254,3 +254,25 @@ export const ROLLUP_ABI = [
   WithdrawFinalizedEventAbi,
   SlashedEventAbi,
 ] as const;
+
+/**
+ * Read-only rollup calls used by the API alone. Kept out of ROLLUP_ABI on purpose: ponder.config.ts
+ * hands ROLLUP_ABI to the Rollup contract, so anything added there changes Ponder's build fingerprint
+ * and forces a full schema rebuild on deploy, for a function no indexing handler uses.
+ */
+export const ROLLUP_ACTIVE_SET_ABI = [
+  {
+    inputs: [],
+    name: 'getActiveAttesterCount',
+    outputs: [{ name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{ name: '_index', type: 'uint256' }],
+    name: 'getAttesterAtIndex',
+    outputs: [{ name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+] as const;
