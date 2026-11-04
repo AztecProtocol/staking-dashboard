@@ -47,3 +47,6 @@ export {
   REGISTRY_FUNCTIONS,
   REGISTRY_ABI,
 } from './registry.abi';
+
+// GSE ABIs (stake held for validating attesters)
+export { GSE_ABI } from './gse.abi';

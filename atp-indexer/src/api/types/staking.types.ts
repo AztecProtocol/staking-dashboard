@@ -13,14 +13,16 @@ export interface StakingStats {
    */
   activeStakes: number;
   /**
-   * Attesters whose latest withdraw event is an `initiateWithdraw` (not
-   * yet finalized). Derived from indexer event tables.
+   * VALIDATING attesters on an older rollup: deposited without following
+   * the latest rollup, so they never moved to the canonical one. Read from
+   * chain (`getStatus`).
    */
+  legacyActiveStakes: number;
+  /** EXITING attesters, summed over every rollup. Read from chain (`getStatus`). */
   exitingStakes: number;
   /**
-   * Registered attesters that aren't active or exiting — typically
-   * slashed below ejection threshold. Derived by subtraction
-   * (`totalStakes - activeStakes - exitingStakes`), clamped to 0.
+   * ZOMBIE attesters (slashed below the ejection threshold, stake not yet
+   * withdrawn), summed over every rollup. Read from chain (`getStatus`).
    */
   zombieStakes: number;
   delegatedStakes: number;
@@ -34,19 +36,34 @@ export interface StakingStats {
   activationThreshold: string;
 }
 
+/** Per-rollup attester counts and stake, read from chain. */
+export interface RollupStakeSummary {
+  rollup: string;
+  canonical: boolean;
+  validating: number;
+  exiting: number;
+  zombie: number;
+  /** GSE balance of VALIDATING attesters plus exit amounts of EXITING and ZOMBIE ones. */
+  valueLocked: string;
+}
+
 export interface StakingSummaryResponse {
-  /** Value locked across the full registered set (active + exiting + zombie). */
+  /**
+   * Stake held for every attester on every rollup: GSE balances of
+   * VALIDATING attesters plus exit amounts of EXITING and ZOMBIE ones.
+   */
   totalValueLocked: string;
   /**
    * Value locked by currently-active sequencers only. The dashboard
    * displays this prominently as "Total Value Staked"; the leftover
    * (totalValueLocked - activeValueLocked) is the value held by
-   * exiting/zombie attesters.
+   * exiting and zombie attesters and by attesters on older rollups.
    */
   activeValueLocked: string;
   totalStakers: number;
   currentAPR: number;
   stats: StakingStats;
+  rollups: RollupStakeSummary[];
 }
 
 /**

@@ -77,6 +77,43 @@ export const ROLLUP_FUNCTIONS = [
     ],
     stateMutability: 'view',
     type: 'function',
+  },
+  {
+    // 0 NONE, 1 VALIDATING, 2 ZOMBIE, 3 EXITING. Same shape on every
+    // rollup version deployed so far.
+    inputs: [{ name: '_attester', type: 'address' }],
+    name: 'getStatus',
+    outputs: [{ name: '', type: 'uint8' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    // Holds the stake of EXITING and ZOMBIE attesters once it has left the GSE.
+    inputs: [{ name: '_attester', type: 'address' }],
+    name: 'getExit',
+    outputs: [
+      {
+        components: [
+          { name: 'withdrawalId', type: 'uint256' },
+          { name: 'amount', type: 'uint256' },
+          { name: 'exitableAt', type: 'uint256' },
+          { name: 'recipientOrWithdrawer', type: 'address' },
+          { name: 'isRecipient', type: 'bool' },
+          { name: 'exists', type: 'bool' },
+        ],
+        name: '',
+        type: 'tuple',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'getGSE',
+    outputs: [{ name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function',
   }
 ] as const;
 
