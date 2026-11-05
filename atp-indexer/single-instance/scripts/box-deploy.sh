@@ -20,8 +20,20 @@ cd "$APP_DIR"
 
 compose() { docker compose "$@"; }
 
+# The serving schema and image. The running container is asked first; if it is down (a failed
+# swap leaves it crash-looping) the override this script last wrote is the record of what it
+# was serving. Without that fallback a box whose container is down cannot be redeployed: the
+# A/B parity check runs psql against an empty schema name and set -e kills the script before
+# it flips.
 current_schema() {
-  compose exec -T atp-indexer sh -c 'echo $DATABASE_SCHEMA' 2>/dev/null | tr -d '\r' || true
+  local s
+  s="$(compose exec -T atp-indexer sh -c 'echo $DATABASE_SCHEMA' 2>/dev/null | tr -d '\r' || true)"
+  [ -n "$s" ] || s="$(sed -n 's/^ *DATABASE_SCHEMA: *"\(.*\)"$/\1/p' docker-compose.override.yml 2>/dev/null || true)"
+  echo "$s"
+}
+
+current_image() {
+  sed -n 's/^ *image: *//p' docker-compose.override.yml 2>/dev/null || true
 }
 
 write_override() { # $1=image $2=schema
@@ -49,13 +61,23 @@ grep -q '^RPC_URL=' env/atp-indexer.env || { echo "env/atp-indexer.env not popul
 docker pull "$IMAGE" >/dev/null
 
 CURRENT="$(current_schema)"
+PREVIOUS_IMAGE="$(current_image)"
 echo "current schema: ${CURRENT:-<none>}  requested: ${NEW_SCHEMA:-<same>}"
 
 if [ -z "$NEW_SCHEMA" ] || [ "$NEW_SCHEMA" = "$CURRENT" ]; then
   # Same-app update: swap the image in place.
   write_override "$IMAGE" "${CURRENT:?cannot determine current schema; pass NEW_SCHEMA explicitly}"
   compose up -d atp-indexer
-  wait_ready atp-indexer 42068 120 || { echo "serving container failed /ready after image swap" >&2; exit 1; }
+  if ! wait_ready atp-indexer 42068 120; then
+    # Ponder fingerprints the whole src/ tree, so an image whose indexing code differs refuses to
+    # start on the old schema. Put the previous image back rather than leave the API down.
+    echo "serving container failed /ready after image swap; restoring ${PREVIOUS_IMAGE:-<unknown>}" >&2
+    if [ -n "$PREVIOUS_IMAGE" ]; then
+      write_override "$PREVIOUS_IMAGE" "$CURRENT"
+      compose up -d atp-indexer
+    fi
+    exit 1
+  fi
   echo "deployed $IMAGE on schema $CURRENT"
   exit 0
 fi
@@ -90,7 +112,7 @@ compose -f docker-compose.yml -f docker-compose.override.yml -f docker-compose.a
 
 # Sanity: the new schema must hold at least as much history as the old (staking is live, so
 # strictly-fewer rows means the rebuild is wrong).
-psql_count() { compose exec -T local-postgres psql -U ponder -d ponder -tAc "select count(*) from \"$1\".atp_position" 2>/dev/null | tr -d '\r'; }
+psql_count() { compose exec -T local-postgres psql -U ponder -d ponder -tAc "select count(*) from \"$1\".atp_position" 2>/dev/null | tr -d '\r' || true; }
 OLD_N="$(psql_count "$CURRENT")"; NEW_N="$(psql_count "$NEW_SCHEMA")"
 echo "atp_position: old($CURRENT)=$OLD_N new($NEW_SCHEMA)=$NEW_N"
 [ -n "$NEW_N" ] && [ "$NEW_N" -ge "${OLD_N:-0}" ] || { echo "parity check failed; not flipping" >&2; exit 1; }
