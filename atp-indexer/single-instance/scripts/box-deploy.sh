@@ -101,14 +101,18 @@ EOF
 compose -f docker-compose.yml -f docker-compose.override.yml -f docker-compose.ab.yml up -d atp-indexer-next
 
 echo "waiting for the new schema to rebuild from the ponder_sync cache (timeout 45m)..."
+# Ponder logs 'Completed backfill indexing' only on a fresh build. A builder that resumed an
+# existing schema (a rerun of the same NEW_SCHEMA) never prints it, so its /ready is checked too.
+abc() { compose -f docker-compose.yml -f docker-compose.override.yml -f docker-compose.ab.yml "$@"; }
+next_ready() {
+  abc logs atp-indexer-next 2>/dev/null | grep -q 'Completed backfill indexing' \
+    || abc exec -T atp-indexer-next wget -qO- http://localhost:42069/ready >/dev/null 2>&1
+}
 for _ in $(seq 1 270); do
-  if compose -f docker-compose.yml -f docker-compose.override.yml -f docker-compose.ab.yml logs atp-indexer-next 2>/dev/null | grep -q 'Completed backfill indexing'; then
-    break
-  fi
+  next_ready && break
   sleep 10
 done
-compose -f docker-compose.yml -f docker-compose.override.yml -f docker-compose.ab.yml logs atp-indexer-next 2>/dev/null | grep -q 'Completed backfill indexing' \
-  || { echo "backfill did not complete in time; leaving current container serving" >&2; exit 1; }
+next_ready || { echo "backfill did not complete in time; leaving current container serving" >&2; exit 1; }
 
 # Sanity: the new schema must hold at least as much history as the old (staking is live, so
 # strictly-fewer rows means the rebuild is wrong).
