@@ -29,6 +29,15 @@ const FACTORY_START_BLOCKS = {
   latp: config.LATP_FACTORY_START_BLOCK || config.START_BLOCK || 0,
 };
 
+// One block before the Registry's deployment, which is harmless (the Registry
+// has no events earlier) but changes the Rollup factory's id. Ponder <0.17.2
+// never saved rollups it discovered during live indexing to
+// ponder_sync.factory_addresses when the factory fed several handlers, while
+// still marking the blocks as synced. On mainnet that dropped every Rollup
+// event from v5 and v6. A new factory id makes Ponder refetch the Registry and
+// Rollup logs instead of trusting that cache. Do not "tidy" this back to
+// REGISTRY_START_BLOCK: the old id would pick the incomplete cache up again.
+const ROLLUP_FACTORY_START_BLOCK = Math.max(0, (config.REGISTRY_START_BLOCK || 0) - 1);
 
 let databaseConfig: DatabaseConfig | undefined;
 
@@ -160,7 +169,7 @@ export default createConfig({
         event: CanonicalRollupUpdatedEvent,
         parameter: "instance",
       }),
-      startBlock: config.REGISTRY_START_BLOCK,
+      startBlock: ROLLUP_FACTORY_START_BLOCK,
     },
 
     /**
