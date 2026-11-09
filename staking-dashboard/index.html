@@ -4,7 +4,90 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Aztec Staking Dashboard</title>
+    <meta name="theme-color" content="#141900" />
+    <title>Stake $AZTEC | Aztec Staking Dashboard</title>
+    <meta
+      name="description"
+      content="Stake $AZTEC to earn rewards and help secure Aztec Network. Delegate to a staking provider or run your own sequencer, then track your positions and claim rewards."
+    />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
+    <link rel="canonical" href="https://stake.aztec.network/" />
+
+    <!-- Link previews -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Aztec" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:url" content="https://stake.aztec.network/" />
+    <meta property="og:title" content="Stake $AZTEC | Aztec Staking Dashboard" />
+    <meta
+      property="og:description"
+      content="Stake $AZTEC to earn rewards and help secure Aztec Network. Delegate to a staking provider or run your own sequencer, then track your positions and claim rewards."
+    />
+    <meta property="og:image" content="https://stake.aztec.network/og-image.jpg" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Stake $AZTEC, over a herd of horses running through dust, in blue, pink and yellow" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@aztecnetwork" />
+
+    <!-- A plain-text guide to this site for AI assistants -->
+    <link rel="alternate" type="text/markdown" href="/llms.txt" title="Guide for AI assistants" />
+
+    <!-- What this site is, for search and answer engines. The publisher and network
+         ids are the ones aztec.network uses, so both sites describe the same things. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://stake.aztec.network/#website",
+            "url": "https://stake.aztec.network/",
+            "name": "Aztec Staking Dashboard",
+            "alternateName": "Aztec Staking",
+            "publisher": { "@id": "https://aztec.network/#publisher" },
+            "inLanguage": "en"
+          },
+          {
+            "@type": "Organization",
+            "@id": "https://aztec.network/#publisher",
+            "name": "Aztec Foundation",
+            "url": "https://aztec.network"
+          },
+          {
+            "@type": "Thing",
+            "@id": "https://aztec.network/blockchain#aztec-network",
+            "name": "Aztec Network",
+            "url": "https://aztec.network/blockchain"
+          },
+          {
+            "@type": "WebApplication",
+            "@id": "https://stake.aztec.network/#app",
+            "url": "https://stake.aztec.network/",
+            "name": "Aztec Staking Dashboard",
+            "description": "The official dashboard for staking $AZTEC, the token of Aztec Network. Delegate to a staking provider or register your own sequencer, track your positions and claim rewards.",
+            "applicationCategory": "FinanceApplication",
+            "operatingSystem": "Any",
+            "browserRequirements": "Requires JavaScript and an Ethereum wallet.",
+            "isAccessibleForFree": true,
+            "featureList": [
+              "Compare staking providers by total stake and commission",
+              "Delegate $AZTEC to a staking provider",
+              "Register and stake your own sequencer",
+              "Track staked positions and claimable rewards",
+              "Claim staking rewards",
+              "Stake from a wallet or a Token Vault, with a browser wallet or a Safe multisig"
+            ],
+            "image": "https://stake.aztec.network/og-image.jpg",
+            "isPartOf": { "@id": "https://stake.aztec.network/#website" },
+            "about": { "@id": "https://aztec.network/blockchain#aztec-network" },
+            "publisher": { "@id": "https://aztec.network/#publisher" },
+            "inLanguage": "en"
+          }
+        ]
+      }
+    </script>
 
     <!-- Matomo -->
     <script>
@@ -23,7 +106,106 @@
     <!-- End Matomo Code -->
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!--
+        The page before the app starts. React replaces everything inside #root
+        when it mounts, so this never coexists with the app. Until then, and for
+        readers that do not run scripts (search and AI crawlers among them), this
+        is the page: the same heading and introduction as the app, then a plain
+        account of what the dashboard does. It holds no data and no controls.
+      -->
+      <div class="bg-cream text-ink font-body font-smoothing min-h-screen">
+        <section
+          class="on-dark text-paper pt-24 sm:pt-28 md:pt-32 lg:pt-36 pb-12 sm:pb-16 md:pb-20 lg:min-h-[660px] lg:flex lg:flex-col lg:justify-center relative overflow-hidden"
+          style="background: #141900 url('/assets/herd.webp') center 92% / cover no-repeat"
+        >
+          <div
+            class="absolute inset-0 pointer-events-none"
+            style="
+              background:
+                linear-gradient(180deg, rgba(20, 25, 0, 0.35) 0%, rgba(20, 25, 0, 0) 22%),
+                linear-gradient(90deg, rgba(20, 25, 0, 0.45) 0%, rgba(20, 25, 0, 0.2) 55%, rgba(20, 25, 0, 0.2) 100%);
+            "
+          ></div>
+          <div
+            class="lg:hidden absolute inset-0 pointer-events-none"
+            style="background: linear-gradient(180deg, rgba(20, 25, 0, 0.5) 0%, rgba(20, 25, 0, 0.42) 45%, rgba(20, 25, 0, 0.15) 100%)"
+          ></div>
+          <div class="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-12 items-center">
+              <div class="text-center lg:text-left py-10">
+                <h1
+                  class="font-arizona-serif text-[2.75rem] sm:text-5xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-normal leading-none sm:leading-90 tracking-tight-5 mb-4 sm:mb-6 text-paper"
+                >
+                  Stake $AZTEC
+                </h1>
+                <p
+                  class="font-arizona-text text-base sm:text-lg lg:text-xl xl:text-2xl font-light text-paper/90 leading-relaxed sm:leading-140"
+                >
+                  Stake your $AZTEC tokens to earn rewards and power the leading platform for unstoppable
+                  private apps.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <main class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 font-oracle-standard text-base leading-snug">
+          <h2 class="font-arizona-serif font-light text-3xl sm:text-4xl leading-none tracking-tight-5 mb-5">
+            The Aztec Staking Dashboard
+          </h2>
+          <p class="mb-4">
+            This is the official dashboard for staking $AZTEC, the token of Aztec Network. Staked tokens back the
+            sequencers that run the network, and stakers earn rewards. The dashboard shows the total value staked,
+            the estimated APR, the number of active sequencers and the minimum stake, all read live from the
+            network.
+          </p>
+
+          <h2 class="font-arizona-serif font-light text-2xl sm:text-3xl leading-none tracking-tight-5 mt-10 mb-4">
+            Two ways to stake
+          </h2>
+          <ul class="list-disc pl-5 space-y-2 mb-4">
+            <li>
+              <strong>Delegate to a provider.</strong> Choose a staking provider, delegate your tokens to it and earn
+              rewards without running any infrastructure. The provider list shows each provider's total stake and
+              commission.
+            </li>
+            <li>
+              <strong>Run your own sequencer.</strong> Register your sequencer's keys and stake to your own node. This
+              gives you full control and needs a running sequencer and the experience to operate it.
+            </li>
+          </ul>
+          <p class="mb-4">
+            Each stake position needs the network's minimum stake, currently 200,000 $AZTEC. To stake a smaller
+            amount, use liquid staking with <a class="underline" href="https://olla.finance/">Olla</a>, which has no
+            minimum.
+          </p>
+          <p class="mb-4">
+            After connecting a wallet you can see your positions, follow your rewards and claim them. You can stake
+            from a wallet balance or from a Token Vault, using a browser wallet or a Safe multisig. Staking happens
+            through smart contracts on Ethereum.
+          </p>
+
+          <h2 class="font-arizona-serif font-light text-2xl sm:text-3xl leading-none tracking-tight-5 mt-10 mb-4">
+            More about staking and $AZTEC
+          </h2>
+          <ul class="list-disc pl-5 space-y-2">
+            <li><a class="underline" href="https://aztec.network/token">What $AZTEC does</a>, and how to take part in governance</li>
+            <li><a class="underline" href="https://olla.finance/">Liquid staking with Olla</a>, for stakes under the minimum</li>
+            <li><a class="underline" href="https://docs.aztec.network/operate/operators">Operator documentation</a>, for running a sequencer or becoming a staking provider</li>
+            <li><a class="underline" href="https://aztec.network/">Aztec</a>, the platform for unstoppable private apps</li>
+            <li><a class="underline" href="https://aztec.network/terms-of-service">Terms of service</a> and <a class="underline" href="https://aztec.network/privacy-policy">privacy policy</a></li>
+          </ul>
+
+          <noscript>
+            <p class="mt-10">
+              The dashboard needs JavaScript and an Ethereum wallet to show live data and to stake. Enable JavaScript to
+              continue.
+            </p>
+          </noscript>
+        </main>
+      </div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

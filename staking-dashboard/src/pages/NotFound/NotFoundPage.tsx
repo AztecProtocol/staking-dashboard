@@ -9,6 +9,9 @@ import { applyHeroItalics } from "@/utils/typographyUtils"
 export const NotFoundPage = () => {
   return (
     <div className="min-h-[60vh] flex items-center justify-center px-4 -mt-32">
+      {/* The host answers unknown paths with the app and a 200. React lifts this
+          into <head>, so crawlers that render the page do not index it. */}
+      <meta name="robots" content="noindex" />
       <div className="max-w-2xl w-full text-center">
         {/* 404 Icon */}
         <div className="mb-4">

@@ -10,10 +10,10 @@ export default function SharedLayout() {
       <Navbar />
       <HeroSection />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 lg:pt-20 pb-16 relative isolate flex-1">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 lg:pt-20 pb-16 relative isolate flex-1">
         <div aria-hidden="true" className="page-glow" />
         <MainContent />
-      </div>
+      </main>
 
       <Footer />
       <TransactionCart />
