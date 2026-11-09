@@ -29,7 +29,7 @@ export const StatusBadge = ({
   const getBadgeClasses = () => {
     if (isUnstaked) return 'bg-parchment/10 border-parchment/30'
     if (isInQueue) return 'bg-aqua/10 border-aqua/30'
-    if (status === SequencerStatus.VALIDATING) return 'bg-chartreuse/10 border-chartreuse/30'
+    if (status === SequencerStatus.VALIDATING) return 'bg-parchment/5 border-parchment/20'
     if (status === SequencerStatus.EXITING) return 'bg-orchid/10 border-orchid/30'
     if (status === SequencerStatus.ZOMBIE) return 'bg-yellow-500/10 border-yellow-500/30'
     return 'bg-parchment/10 border-parchment/30'
@@ -38,7 +38,7 @@ export const StatusBadge = ({
   const getTextClasses = () => {
     if (isUnstaked) return 'text-parchment/60'
     if (isInQueue) return 'text-aqua'
-    if (status === SequencerStatus.VALIDATING) return 'text-chartreuse'
+    if (status === SequencerStatus.VALIDATING) return 'text-accent'
     if (status === SequencerStatus.EXITING) return 'text-orchid'
     if (status === SequencerStatus.ZOMBIE) return 'text-yellow-500'
     return 'text-parchment/60'

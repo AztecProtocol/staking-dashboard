@@ -118,13 +118,13 @@ export const Tooltip = ({
 
     switch (actualPosition) {
       case "top":
-        return `${baseClasses} top-full left-1/2 transform -translate-x-1/2 border-l-[6px] border-r-[6px] border-t-[6px] border-l-transparent border-r-transparent border-t-ink`
+        return `${baseClasses} top-full left-1/2 transform -translate-x-1/2 border-l-[6px] border-r-[6px] border-t-[6px] border-l-transparent border-r-transparent border-t-coal`
       case "bottom":
-        return `${baseClasses} bottom-full left-1/2 transform -translate-x-1/2 border-l-[6px] border-r-[6px] border-b-[6px] border-l-transparent border-r-transparent border-b-ink`
+        return `${baseClasses} bottom-full left-1/2 transform -translate-x-1/2 border-l-[6px] border-r-[6px] border-b-[6px] border-l-transparent border-r-transparent border-b-coal`
       case "left":
-        return `${baseClasses} left-full top-1/2 transform -translate-y-1/2 border-t-[6px] border-b-[6px] border-l-[6px] border-t-transparent border-b-transparent border-l-ink`
+        return `${baseClasses} left-full top-1/2 transform -translate-y-1/2 border-t-[6px] border-b-[6px] border-l-[6px] border-t-transparent border-b-transparent border-l-coal`
       case "right":
-        return `${baseClasses} right-full top-1/2 transform -translate-y-1/2 border-t-[6px] border-b-[6px] border-r-[6px] border-t-transparent border-b-transparent border-r-ink`
+        return `${baseClasses} right-full top-1/2 transform -translate-y-1/2 border-t-[6px] border-b-[6px] border-r-[6px] border-t-transparent border-b-transparent border-r-coal`
       default:
         return ""
     }
@@ -153,7 +153,7 @@ export const Tooltip = ({
             opacity: tooltipPosition.x === 0 && tooltipPosition.y === 0 ? 0 : 1
           }}
         >
-          <div className="relative bg-ink border border-parchment/30 p-3 shadow-lg backdrop-blur-sm">
+          <div className="relative card-dark bg-coal rounded-inset p-3">
             <div className="font-oracle-standard text-sm text-parchment leading-relaxed">
               {content}
             </div>

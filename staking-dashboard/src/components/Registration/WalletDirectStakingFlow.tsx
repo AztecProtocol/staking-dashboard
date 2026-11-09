@@ -376,7 +376,7 @@ export const WalletDirectStakingFlow = ({
       </div>
 
       {/* How to generate keys info */}
-      <div className="bg-parchment/5 border border-parchment/20 p-4 mb-6">
+      <div className="glass p-4 mb-6">
         <div className="flex items-center gap-2 mb-3">
           <Icon name="info" size="sm" className="text-parchment/60" />
           <span className="text-xs font-oracle-standard text-parchment/70 uppercase tracking-wide">
@@ -384,7 +384,7 @@ export const WalletDirectStakingFlow = ({
           </span>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          <div className="bg-ink/40 border-l-2 border-aqua/40 p-4 hover:bg-ink/50 hover:border-aqua transition-all">
+          <div className="bg-parchment/5 border-l-2 rounded-r-field border-aqua/40 p-4 hover:bg-parchment/10 hover:border-aqua transition-all">
             <div className="flex items-center gap-2 mb-2">
               <div className="w-5 h-5 rounded bg-aqua/20 flex items-center justify-center flex-shrink-0">
                 <span className="text-xs font-bold text-aqua">1</span>
@@ -397,13 +397,13 @@ export const WalletDirectStakingFlow = ({
               href="https://docs.aztec.network/the_aztec_network/setup/sequencer_management#step-2-move-keystore-to-docker-directory"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-aqua hover:text-chartreuse text-xs inline-flex items-center gap-1 font-medium cursor-pointer transition-colors"
+              className="text-aqua hover:text-accent text-xs inline-flex items-center gap-1 font-medium cursor-pointer transition-colors"
             >
               View guide
               <Icon name="externalLink" size="sm" />
             </a>
           </div>
-          <div className="bg-ink/40 border-l-2 border-aqua/40 p-4 hover:bg-ink/50 hover:border-aqua transition-all">
+          <div className="bg-parchment/5 border-l-2 rounded-r-field border-aqua/40 p-4 hover:bg-parchment/10 hover:border-aqua transition-all">
             <div className="flex items-center gap-2 mb-2">
               <div className="w-5 h-5 rounded bg-aqua/20 flex items-center justify-center flex-shrink-0">
                 <span className="text-xs font-bold text-aqua">2</span>
@@ -416,7 +416,7 @@ export const WalletDirectStakingFlow = ({
               href="https://docs.aztec.network/the_aztec_network/setup/sequencer_management#preparing-bls-keys-for-staking-dashboard"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-aqua hover:text-chartreuse text-xs inline-flex items-center gap-1 font-medium cursor-pointer transition-colors"
+              className="text-aqua hover:text-accent text-xs inline-flex items-center gap-1 font-medium cursor-pointer transition-colors"
             >
               View guide
               <Icon name="externalLink" size="sm" />
@@ -428,10 +428,10 @@ export const WalletDirectStakingFlow = ({
       {/* Upload area */}
       {!uploadedFile && (
         <div
-          className={`relative py-12 px-8 text-center transition-all duration-200 cursor-pointer group border-l-4 ${
+          className={`relative py-12 px-8 text-center transition-all duration-200 cursor-pointer group border-l-4 rounded-r-field ${
             isDragOver
-              ? 'bg-chartreuse/10 border-l-chartreuse'
-              : 'bg-parchment/5 border-l-parchment/30 hover:border-l-chartreuse hover:bg-chartreuse/5'
+              ? 'bg-parchment/5 border-l-accent'
+              : 'bg-parchment/5 border-l-parchment/30 hover:border-l-accent hover:bg-parchment/5'
           }`}
           onClick={handleUploadClick}
           onDragOver={handleDragOver}
@@ -439,13 +439,13 @@ export const WalletDirectStakingFlow = ({
           onDrop={handleDrop}
         >
           <div className="flex flex-col items-center justify-center gap-4">
-            <div className={`w-16 h-16 rounded-full flex items-center justify-center transition-all duration-200 ${isDragOver ? 'bg-chartreuse/20' : 'bg-parchment/10 group-hover:bg-chartreuse/15'}`}>
-              <svg className={`w-8 h-8 transition-colors duration-200 ${isDragOver ? 'text-chartreuse' : 'text-parchment/60 group-hover:text-chartreuse'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className={`w-16 h-16 rounded-full flex items-center justify-center transition-all duration-200 ${isDragOver ? 'bg-parchment/10' : 'bg-parchment/10 group-hover:bg-parchment/10'}`}>
+              <svg className={`w-8 h-8 transition-colors duration-200 ${isDragOver ? 'text-accent' : 'text-parchment/60 group-hover:text-accent'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
               </svg>
             </div>
             <div>
-              <p className={`font-oracle-standard font-bold text-sm uppercase tracking-wide transition-colors duration-200 mb-1 ${isDragOver ? 'text-chartreuse' : 'text-parchment group-hover:text-chartreuse'}`}>
+              <p className={`font-oracle-standard font-bold text-sm uppercase tracking-wide transition-colors duration-200 mb-1 ${isDragOver ? 'text-accent' : 'text-parchment group-hover:text-accent'}`}>
                 {isValidating ? "Validating keystore..." : isDragOver ? "Drop to upload" : "Upload Keystore"}
               </p>
               <p className="text-xs text-parchment/60 font-arizona-text">
@@ -458,8 +458,8 @@ export const WalletDirectStakingFlow = ({
 
       {/* Uploaded file display */}
       {uploadedFile && (
-        <div className="border border-parchment/20 bg-parchment/5 p-4">
-          <div className="flex items-center gap-2 text-chartreuse font-medium mb-1">
+        <div className="glass p-4">
+          <div className="flex items-center gap-2 text-accent font-medium mb-1">
             <Icon name="check" size="lg" />
             <span className="font-oracle-standard text-sm uppercase tracking-wide">File Uploaded Successfully</span>
           </div>
@@ -467,14 +467,14 @@ export const WalletDirectStakingFlow = ({
           <div className="flex gap-3">
             <button
               type="button"
-              className="px-4 py-2 bg-parchment/10 text-parchment border-2 border-parchment/30 font-oracle-standard font-bold text-xs uppercase tracking-wider hover:bg-parchment/20 hover:border-parchment/50 transition-all"
+              className="px-4 py-2 btn-glass text-xs"
               onClick={handleRemoveFile}
             >
               Remove File
             </button>
             <button
               type="button"
-              className="px-4 py-2 bg-parchment/10 text-parchment border-2 border-parchment/30 font-oracle-standard font-bold text-xs uppercase tracking-wider hover:bg-parchment/20 hover:border-parchment/50 transition-all"
+              className="px-4 py-2 btn-glass text-xs"
               onClick={handleUploadClick}
             >
               Change File
@@ -493,7 +493,7 @@ export const WalletDirectStakingFlow = ({
 
       {/* Upload error */}
       {uploadError && (
-        <div className="bg-vermillion/10 border border-vermillion/20 p-3">
+        <div className="bg-vermillion/10 border border-vermillion/20 p-3 rounded-inset">
           <div className="text-sm font-oracle-standard font-bold text-vermillion uppercase tracking-wide">
             {uploadError}
           </div>
@@ -502,14 +502,14 @@ export const WalletDirectStakingFlow = ({
 
       {/* Sequencer addresses and confirmation */}
       {uploadedKeystores.length > 0 && (
-        <div className="bg-parchment/5 border border-parchment/20 p-4 space-y-4">
+        <div className="glass p-4 space-y-4">
           <div>
             <div className="text-xs font-oracle-standard text-parchment/60 uppercase tracking-wide mb-2">
               Sequencer Addresses ({uploadedKeystores.length})
             </div>
             <div className="space-y-2">
               {uploadedKeystores.map((keystore, index) => (
-                <div key={index} className="flex items-center gap-2 py-2 px-3 bg-ink/40 border-l-2 border-chartreuse/40">
+                <div key={index} className="flex items-center gap-2 py-2 px-3 bg-parchment/5 border-l-2 rounded-r-field border-parchment/20">
                   <span className="text-xs font-mono text-parchment/80">
                     {index + 1}. {keystore.attester}
                   </span>
@@ -537,16 +537,16 @@ export const WalletDirectStakingFlow = ({
       <div className="flex gap-4">
         <button
           type="button"
-          className="flex-1 bg-parchment/10 text-parchment border-2 border-parchment/30 py-3 font-oracle-standard font-bold text-sm uppercase tracking-wider hover:bg-parchment/20 hover:border-parchment/50 transition-all"
+          className="flex-1 btn-glass py-3 text-sm"
           onClick={onBack}
         >
           Back
         </button>
         <button
           type="button"
-          className={`flex-1 py-3 font-oracle-standard font-bold text-sm uppercase tracking-wider transition-all border-2 ${
+          className={`flex-1 py-3 font-oracle-standard font-bold text-sm uppercase tracking-wider transition-all border-2 rounded-btn ${
             canProceedToStep2
-              ? "bg-chartreuse text-ink border-chartreuse hover:bg-parchment hover:text-ink hover:border-parchment shadow-lg"
+              ? "btn-lime"
               : "bg-parchment/10 text-parchment/50 border-parchment/30 cursor-not-allowed"
           }`}
           onClick={() => setCurrentStep(2)}
@@ -571,14 +571,14 @@ export const WalletDirectStakingFlow = ({
       </div>
 
       {/* Approval Amount Display */}
-      <div className="bg-parchment/5 border border-parchment/20 p-6">
+      <div className="glass p-6">
         {isLoading ? (
           <div className="text-center text-parchment/60">Loading approval details...</div>
         ) : (
           <div className="space-y-4">
             <div>
               <div className="text-xs font-oracle-standard text-parchment/60 mb-2 uppercase tracking-wide">Amount to Approve</div>
-              <div className="text-2xl font-mono font-bold text-chartreuse">
+              <div className="text-2xl font-mono font-bold text-accent">
                 {formatTokenAmount(totalAmount, decimals, symbol)}
               </div>
               <div className="text-sm text-parchment/50 mt-1">
@@ -589,7 +589,7 @@ export const WalletDirectStakingFlow = ({
             {allowance !== undefined && (
               <div className="pt-4 border-t border-parchment/20">
                 <div className="text-xs font-oracle-standard text-parchment/60 mb-2 uppercase tracking-wide">Current Allowance</div>
-                <div className={`text-lg font-mono font-bold ${hasEnoughAllowance ? 'text-chartreuse' : 'text-parchment/70'}`}>
+                <div className={`text-lg font-mono font-bold ${hasEnoughAllowance ? 'text-accent' : 'text-parchment/70'}`}>
                   {formatTokenAmount(allowance, decimals, symbol)}
                   {hasEnoughAllowance && <span className="ml-2 text-sm">✓</span>}
                 </div>
@@ -600,8 +600,8 @@ export const WalletDirectStakingFlow = ({
       </div>
 
       {hasEnoughAllowance && (
-        <div className="bg-chartreuse/10 border border-chartreuse/20 p-4">
-          <div className="flex items-center gap-2 text-chartreuse font-medium mb-1">
+        <div className="bg-parchment/5 border border-parchment/15 p-4 rounded-inset">
+          <div className="flex items-center gap-2 text-accent font-medium mb-1">
             <Icon name="check" size="lg" />
             <span className="font-oracle-standard text-sm uppercase tracking-wide">Tokens Already Approved</span>
           </div>
@@ -614,7 +614,7 @@ export const WalletDirectStakingFlow = ({
       {!hasEnoughAllowance && (
         <button
           type="button"
-          className="w-full bg-chartreuse text-ink py-3 font-oracle-standard font-bold text-sm uppercase tracking-wider hover:bg-parchment hover:text-ink transition-all duration-300 border-2 border-chartreuse hover:border-parchment shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full btn-lime py-3 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
           onClick={handleAddApprovalToQueue}
           disabled={isLoading || isApprovalInQueue}
         >
@@ -626,16 +626,16 @@ export const WalletDirectStakingFlow = ({
       <div className="flex gap-4">
         <button
           type="button"
-          className="flex-1 bg-parchment/10 text-parchment border-2 border-parchment/30 py-3 font-oracle-standard font-bold text-sm uppercase tracking-wider hover:bg-parchment/20 hover:border-parchment/50 transition-all"
+          className="flex-1 btn-glass py-3 text-sm"
           onClick={() => setCurrentStep(1)}
         >
           Back
         </button>
         <button
           type="button"
-          className={`flex-1 py-3 font-oracle-standard font-bold text-sm uppercase tracking-wider transition-all border-2 ${
+          className={`flex-1 py-3 font-oracle-standard font-bold text-sm uppercase tracking-wider transition-all border-2 rounded-btn ${
             canProceedToStep3
-              ? "bg-chartreuse text-ink border-chartreuse hover:bg-parchment hover:text-ink hover:border-parchment shadow-lg"
+              ? "btn-lime"
               : "bg-parchment/10 text-parchment/50 border-parchment/30 cursor-not-allowed"
           }`}
           onClick={() => setCurrentStep(3)}
@@ -663,13 +663,13 @@ export const WalletDirectStakingFlow = ({
         </div>
 
         {/* Stake summary */}
-        <div className="bg-parchment/5 border border-parchment/20 p-6">
+        <div className="glass p-6">
           {isLoading ? (
             <div className="text-center text-parchment/60">Loading stake details...</div>
           ) : (
             <>
               <div className="text-center">
-                <div className="text-2xl font-mono font-bold text-chartreuse mb-2">
+                <div className="text-2xl font-mono font-bold text-accent mb-2">
                   {formatTokenAmount(totalAmount, decimals, symbol)}
                 </div>
                 <div className="text-sm font-oracle-standard text-parchment/60 mb-2 uppercase tracking-wide">Total Stake Amount</div>
@@ -695,7 +695,7 @@ export const WalletDirectStakingFlow = ({
                         key={index}
                         className={`flex items-center justify-between py-2 px-3 ${
                           isCompleted
-                            ? 'bg-chartreuse/10 border-l-2 border-chartreuse'
+                            ? 'bg-parchment/5 border-l-2 border-accent'
                             : isInQueue
                               ? 'bg-aqua/10 border-l-2 border-aqua'
                               : 'bg-parchment/5'
@@ -705,7 +705,7 @@ export const WalletDirectStakingFlow = ({
                           {keystore.attester.slice(0, 10)}...{keystore.attester.slice(-8)}
                         </span>
                         {isCompleted && (
-                          <span className="text-xs font-oracle-standard text-chartreuse uppercase">Registered</span>
+                          <span className="text-xs font-oracle-standard text-accent uppercase">Registered</span>
                         )}
                         {isInQueue && !isCompleted && (
                           <span className="text-xs font-oracle-standard text-aqua uppercase">In Queue</span>
@@ -721,8 +721,8 @@ export const WalletDirectStakingFlow = ({
 
         {/* Success display */}
         {hasCompletedStaking && (
-          <div className="bg-chartreuse/10 border border-chartreuse/20 p-4 text-center">
-            <div className="text-sm font-oracle-standard font-bold text-chartreuse mb-2 uppercase tracking-wide">
+          <div className="bg-parchment/5 border border-parchment/15 p-4 text-center rounded-inset">
+            <div className="text-sm font-oracle-standard font-bold text-accent mb-2 uppercase tracking-wide">
               Staking Request Successful
             </div>
             <div className="text-sm text-parchment/60">
@@ -737,7 +737,7 @@ export const WalletDirectStakingFlow = ({
         {/* Action Buttons */}
         <button
           type="button"
-          className="w-full bg-chartreuse text-ink py-3 font-oracle-standard font-bold text-sm uppercase tracking-wider hover:bg-parchment hover:text-ink transition-all duration-300 border-2 border-chartreuse hover:border-parchment shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full btn-lime py-3 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
           onClick={handleAddDepositsToQueue}
           disabled={isLoading || !address || hasCompletedStaking || allInQueue}
         >
@@ -754,7 +754,7 @@ export const WalletDirectStakingFlow = ({
         <div className="flex gap-4">
           <button
             type="button"
-            className="flex-1 bg-parchment/10 text-parchment border-2 border-parchment/30 py-3 font-oracle-standard font-bold text-sm uppercase tracking-wider hover:bg-parchment/20 hover:border-parchment/50 transition-all"
+            className="flex-1 btn-glass py-3 text-sm"
             onClick={() => setCurrentStep(2)}
           >
             Back
@@ -776,7 +776,7 @@ export const WalletDirectStakingFlow = ({
               href={getValidatorDashboardQueueUrl()}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-chartreuse underline hover:text-chartreuse/80 font-bold"
+              className="text-accent underline hover:text-accent/80 font-bold"
             >
               queue
             </a>{" "}

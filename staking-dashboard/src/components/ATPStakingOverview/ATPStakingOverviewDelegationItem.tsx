@@ -36,7 +36,7 @@ export const ATPStakingOverviewDelegationItem = ({
   const isWallet = variant === 'wallet'
 
   return (
-    <div className="bg-parchment/5 border border-parchment/10 p-2.5">
+    <div className="glass p-2.5">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-0.5">
@@ -44,14 +44,14 @@ export const ATPStakingOverviewDelegationItem = ({
               {isWallet ? (
                 <span
                   onClick={() => onWalletClick?.()}
-                  className="text-xs text-chartreuse hover:text-chartreuse/80 hover:underline transition-colors font-medium cursor-pointer"
+                  className="text-xs text-accent hover:text-accent/80 hover:underline transition-colors font-medium cursor-pointer"
                 >
                   Wallet Delegation →
                 </span>
               ) : (
                 <span
                   onClick={() => atp && onATPClick?.(atp)}
-                  className="text-xs text-chartreuse hover:text-chartreuse/80 hover:underline transition-colors font-medium cursor-pointer"
+                  className="text-xs text-accent hover:text-accent/80 hover:underline transition-colors font-medium cursor-pointer"
                 >
                   Token Vault #{atp?.sequentialNumber || '?'} →
                 </span>
@@ -89,7 +89,7 @@ export const ATPStakingOverviewDelegationItem = ({
               href={getValidatorDashboardValidatorUrl(delegation.attesterAddress)}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-parchment/60 hover:text-chartreuse transition-colors"
+              className="text-parchment/60 hover:text-accent transition-colors"
               title="View sequencer on dashboard"
             >
               <Icon name="externalLink" size="sm" />
@@ -127,13 +127,13 @@ export const ATPStakingOverviewDelegationItem = ({
               <div className="text-xs text-parchment/40">—</div>
             ) : (
               <div className="flex items-center gap-2">
-                <div className="font-mono text-xs font-bold text-chartreuse">
+                <div className="font-mono text-xs font-bold text-accent">
                   {formatTokenAmount(delegation.rewards, decimals, symbol)}
                 </div>
                 <button
                   onClick={() => onClaimClick(delegation)}
                   disabled={delegation.rewards === 0n || isRewardsClaimable === false}
-                  className="px-2 py-0.5 border font-oracle-standard text-xs font-bold uppercase tracking-wide whitespace-nowrap transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-parchment/10 disabled:border-parchment/30 disabled:text-parchment/60 border-chartreuse bg-chartreuse text-ink hover:bg-chartreuse/90"
+                  className="px-2 py-0.5 text-xs whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-parchment/10 disabled:border-parchment/30 disabled:text-parchment/60 btn-lime"
                   title={
                     isRewardsClaimable === false
                       ? "Rewards are currently locked by the network protocol"

@@ -262,8 +262,8 @@ export function DelegateVotingPowerModal({
   // No eligible ATPs
   if (eligibleATPs.length === 0) {
     return createPortal(
-      <div className="fixed inset-0 backdrop-blur-xs z-50 flex items-center justify-center p-4">
-        <div className="bg-ink border border-parchment/20 max-w-md w-full p-6 relative">
+      <div className="fixed inset-0 modal-scrim z-50 flex items-center justify-center p-4">
+        <div className="card-dark max-w-md w-full p-6 relative">
           <div className="flex items-center justify-between mb-6">
             <h3 className="font-oracle-standard text-xl text-parchment">Delegate Voting Power</h3>
             <button
@@ -274,7 +274,7 @@ export function DelegateVotingPowerModal({
               <Icon name="x" className="w-5 h-5" />
             </button>
           </div>
-          <div className="p-4 bg-parchment/10 border border-parchment/20">
+          <div className="p-4 glass">
             <div className="flex items-start gap-3">
               <Icon name="info" className="w-5 h-5 text-parchment/60 flex-shrink-0 mt-0.5" />
               <p className="text-sm text-parchment/70">
@@ -300,8 +300,8 @@ export function DelegateVotingPowerModal({
   const showSequencerSelection = meetsDelegationVersion && !needsOperatorUpdate;
 
   return createPortal(
-    <div className="fixed inset-0 backdrop-blur-xs z-50 flex items-center justify-center p-4">
-      <div className="bg-ink border border-parchment/20 max-w-md w-full p-6 relative">
+    <div className="fixed inset-0 modal-scrim z-50 flex items-center justify-center p-4">
+      <div className="card-dark max-w-md w-full p-6 relative">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <h3 className="font-oracle-standard text-xl text-parchment">Delegate Voting Power</h3>
@@ -328,7 +328,7 @@ export function DelegateVotingPowerModal({
                 value={selectedAtpIndex}
                 onChange={(e) => setSelectedAtpIndex(Number(e.target.value))}
                 disabled={isPending || isConfirming}
-                className="w-full pl-3 pr-10 py-2 bg-ink border border-parchment/20 text-parchment focus:border-chartreuse outline-none cursor-pointer appearance-none disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full pl-3 pr-10 py-2 field text-parchment cursor-pointer appearance-none disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {eligibleATPs.map((atp, index) => (
                   <option key={atp.holding.address} value={index}>
@@ -350,7 +350,7 @@ export function DelegateVotingPowerModal({
         ) : needsUpgrade ? (
           <>
             {/* Version < 2: Upgrade required */}
-            <div className="p-3 bg-vermillion/10 border border-vermillion/30 mb-4">
+            <div className="p-3 bg-vermillion/10 border border-vermillion/30 mb-4 rounded-inset">
               <div className="flex items-start gap-2">
                 <Icon name="warning" className="w-4 h-4 text-vermillion flex-shrink-0 mt-0.5" />
                 <div className="text-sm text-parchment/80">
@@ -365,7 +365,7 @@ export function DelegateVotingPowerModal({
             <button
               onClick={handleUpgrade}
               disabled={isPending || isConfirming}
-              className="w-full px-4 py-3 bg-chartreuse text-ink font-oracle-standard hover:bg-chartreuse/90 disabled:opacity-30 disabled:cursor-not-allowed"
+              className="w-full px-4 py-3 btn-lime disabled:opacity-30 disabled:cursor-not-allowed"
             >
               {upgradeStaker.isPending || upgradeStaker.isConfirming
                 ? "Upgrading..."
@@ -375,7 +375,7 @@ export function DelegateVotingPowerModal({
         ) : showOperatorRequired ? (
           <>
             {/* Operator not set */}
-            <div className="p-3 bg-vermillion/10 border border-vermillion/30 mb-4">
+            <div className="p-3 bg-vermillion/10 border border-vermillion/30 mb-4 rounded-inset">
               <div className="flex items-start gap-2">
                 <Icon name="warning" className="w-4 h-4 text-vermillion flex-shrink-0 mt-0.5" />
                 <div className="text-sm text-parchment/80">
@@ -392,7 +392,7 @@ export function DelegateVotingPowerModal({
           <>
             {/* Sequencer Selection */}
             {sequencers.length === 0 ? (
-              <div className="p-4 bg-parchment/10 border border-parchment/20 mb-4">
+              <div className="p-4 glass mb-4">
                 <div className="flex items-start gap-3">
                   <Icon name="info" className="w-5 h-5 text-parchment/60 flex-shrink-0 mt-0.5" />
                   <p className="text-sm text-parchment/70">
@@ -409,7 +409,7 @@ export function DelegateVotingPowerModal({
                       value={selectedSequencerIndex}
                       onChange={(e) => setSelectedSequencerIndex(Number(e.target.value))}
                       disabled={isPending || isConfirming}
-                      className="w-full pl-3 pr-10 py-2 bg-ink border border-parchment/20 text-parchment focus:border-chartreuse outline-none cursor-pointer appearance-none disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-full pl-3 pr-10 py-2 field text-parchment cursor-pointer appearance-none disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {sequencers.map((seq, index) => (
                         <option key={`${seq.type}-${seq.attesterAddress}`} value={index}>
@@ -434,7 +434,7 @@ export function DelegateVotingPowerModal({
                     onChange={(e) => setDelegateeAddress(e.target.value)}
                     placeholder="0x..."
                     disabled={isPending || isConfirming}
-                    className="w-full px-3 py-2 bg-ink border border-parchment/20 text-parchment focus:border-chartreuse outline-none disabled:opacity-50 disabled:cursor-not-allowed font-mono text-sm"
+                    className="w-full px-3 py-2 field text-parchment disabled:opacity-50 disabled:cursor-not-allowed font-mono text-sm"
                   />
                   {delegateeAddress && !isValidDelegatee && (
                     <p className="text-xs text-vermillion mt-1">Please enter a valid Ethereum address</p>
@@ -445,7 +445,7 @@ export function DelegateVotingPowerModal({
                 <button
                   onClick={handleDelegate}
                   disabled={isPending || isConfirming || !canDelegate}
-                  className="w-full px-4 py-3 bg-chartreuse text-ink font-oracle-standard hover:bg-chartreuse/90 disabled:opacity-30 disabled:cursor-not-allowed"
+                  className="w-full px-4 py-3 btn-lime disabled:opacity-30 disabled:cursor-not-allowed"
                 >
                   {delegateVotingPower.isPending || delegateVotingPower.isConfirming
                     ? "Delegating..."
@@ -457,7 +457,7 @@ export function DelegateVotingPowerModal({
         ) : (
           <>
             {/* No upgrade available and doesn't meet version requirement */}
-            <div className="p-4 bg-parchment/10 border border-parchment/20">
+            <div className="p-4 glass">
               <div className="flex items-start gap-3">
                 <Icon name="info" className="w-5 h-5 text-parchment/60 flex-shrink-0 mt-0.5" />
                 <p className="text-sm text-parchment/70">

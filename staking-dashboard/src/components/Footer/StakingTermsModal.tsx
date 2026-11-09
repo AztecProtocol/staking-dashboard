@@ -18,8 +18,8 @@ export const StakingTermsModal = ({ isOpen, onClose }: StakingTermsModalProps) =
   if (!isOpen) return null
 
   return createPortal(
-    <div className="fixed inset-0 backdrop-blur-sm bg-ink/50 z-[300] flex items-center justify-center p-4">
-      <div className="bg-ink/95 border border-ink/20 backdrop-blur-sm max-w-4xl w-full max-h-[80vh] flex flex-col relative shadow-2xl">
+    <div className="fixed inset-0 modal-scrim z-[300] flex items-center justify-center p-4">
+      <div className="card-dark max-w-4xl w-full max-h-[80vh] flex flex-col relative">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-parchment/10">
           <h3 className="font-arizona-text text-xl md:text-2xl font-light text-parchment">
@@ -54,7 +54,7 @@ export const StakingTermsModal = ({ isOpen, onClose }: StakingTermsModalProps) =
                     <p
                       key={pIndex}
                       dangerouslySetInnerHTML={{ __html: paragraph }}
-                      className="[&_b]:font-bold [&_a]:text-chartreuse [&_a]:underline hover:[&_a]:text-chartreuse/80"
+                      className="[&_b]:font-bold [&_a]:text-accent [&_a]:underline hover:[&_a]:text-accent/80"
                     />
                   ))}
                 </div>
@@ -69,7 +69,7 @@ export const StakingTermsModal = ({ isOpen, onClose }: StakingTermsModalProps) =
                   href={helpText.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-chartreuse hover:text-chartreuse/80 transition-colors underline"
+                  className="text-accent hover:text-accent/80 transition-colors underline"
                 >
                   {helpText.link}
                 </a>
@@ -82,7 +82,7 @@ export const StakingTermsModal = ({ isOpen, onClose }: StakingTermsModalProps) =
         <div className="flex justify-end p-6 border-t border-parchment/10">
           <button
             onClick={onClose}
-            className="bg-chartreuse text-ink px-6 py-3 font-oracle-standard font-bold text-sm uppercase tracking-wider hover:bg-chartreuse/90 transition-all"
+            className="btn-lime px-6 py-3 text-sm"
           >
             Close
           </button>

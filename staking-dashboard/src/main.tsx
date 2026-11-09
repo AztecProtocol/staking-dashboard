@@ -15,6 +15,7 @@ import { TransactionCartProvider } from "./contexts/TransactionCartContext.tsx";
 import { AlertProvider } from "./contexts/AlertContext.tsx";
 import { TermsModalProvider } from "./contexts/TermsModalContext.tsx";
 import { CustomAvatar } from "./components/CustomAvatar/CustomAvatar.tsx";
+import { rainbowKitTheme } from "./rainbowKitTheme.ts";
 import { Alert } from "./components/Alert";
 import { initRollupVersions } from "./contracts";
 
@@ -31,7 +32,7 @@ createRoot(document.getElementById("root")!).render(
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
         <SafeProvider>
-          <RainbowKitProvider avatar={CustomAvatar}>
+          <RainbowKitProvider avatar={CustomAvatar} theme={rainbowKitTheme}>
             <ATPProvider>
               <ATPSelectionProvider>
                 <AlertProvider>

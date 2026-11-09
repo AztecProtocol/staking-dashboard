@@ -128,10 +128,10 @@ export const ClaimDelegationRewardsButton = ({
     && candidates.every((e) => checkTransactionInQueue(e.transaction))
 
   const buttonClass = variant === 'modal'
-    ? `px-6 py-3 bg-chartreuse text-ink font-oracle-standard font-bold text-sm uppercase tracking-wider hover:bg-chartreuse/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed`
+    ? `px-6 py-3 btn-lime text-sm disabled:opacity-50 disabled:cursor-not-allowed`
     : `px-3 py-1.5 border font-oracle-standard text-xs font-bold uppercase tracking-wide whitespace-nowrap transition-colors ${isDisabled
       ? 'border-parchment/40 text-parchment/40 cursor-not-allowed'
-      : 'border-chartreuse bg-chartreuse text-ink hover:bg-chartreuse/90'
+      : 'btn-lime'
     }`
 
   const handleAddToBatch = () => {
@@ -203,8 +203,8 @@ export const ClaimDelegationRewardsButton = ({
         title={`${providerName ?? "This operator"} pays out rewards out of protocol. View their audit reports.`}
         className={
           variant === 'modal'
-            ? "px-6 py-3 border border-aqua/40 bg-aqua/10 text-aqua font-oracle-standard font-bold text-sm uppercase tracking-wider hover:bg-aqua/20 transition-colors inline-flex items-center justify-center gap-2"
-            : "px-3 py-1.5 border border-aqua/40 bg-aqua/10 text-aqua font-oracle-standard text-xs font-bold uppercase tracking-wide whitespace-nowrap hover:bg-aqua/20 transition-colors inline-flex items-center gap-1.5"
+            ? "px-6 py-3 border border-aqua/40 bg-aqua/10 text-aqua font-oracle-standard font-bold text-sm uppercase tracking-wider hover:bg-aqua/20 transition-colors inline-flex items-center justify-center gap-2 rounded-btn"
+            : "px-3 py-1.5 border border-aqua/40 bg-aqua/10 text-aqua font-oracle-standard text-xs font-bold uppercase tracking-wide whitespace-nowrap hover:bg-aqua/20 transition-colors inline-flex items-center gap-1.5 rounded-btn"
         }
       >
         <Icon name="info" size="sm" />

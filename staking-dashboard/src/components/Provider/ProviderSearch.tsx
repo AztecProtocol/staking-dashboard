@@ -11,9 +11,9 @@ interface ProviderSearchProps {
  */
 export const ProviderSearch = ({ searchQuery, onSearchChange }: ProviderSearchProps) => {
   return (
-    <div className="mb-2">
+    <div className="mb-5">
       <div className="flex items-center gap-2 mb-4">
-        <h4 className="font-oracle-standard text-sm uppercase tracking-wider text-parchment/90 font-medium">
+        <h4 className="eyebrow text-parchment/70">
           Search Provider
         </h4>
         <TooltipIcon
@@ -22,8 +22,8 @@ export const ProviderSearch = ({ searchQuery, onSearchChange }: ProviderSearchPr
           maxWidth="max-w-sm"
         />
       </div>
-      <div className="bg-parchment/5 border border-parchment/20 focus-within:border-chartreuse focus-within:bg-chartreuse/5 transition-colors">
-        <div className="flex items-center p-4">
+      <div className="field">
+        <div className="flex items-center px-4 py-3.5">
           <Icon name="search" size="lg" className="text-parchment/50 mr-3" />
           <input
             type="text"

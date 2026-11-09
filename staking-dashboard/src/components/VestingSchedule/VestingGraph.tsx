@@ -34,16 +34,16 @@ export const VestingGraph = ({ globalLock, registryAddress, className = "", bloc
   // If vesting has completed (end date is before start date in current time context)
   if (hasInvalidTimeRange) {
     return (
-      <div className={`bg-ink/8 border border-chartreuse/20 backdrop-blur-sm p-8 ${className}`}>
+      <div className={`card-dark p-8 ${className}`}>
         <div className="flex items-center gap-4 text-left">
-          <div className="flex-shrink-0 w-12 h-12 flex items-center justify-center rounded border border-chartreuse/30 bg-chartreuse/10">
-            <svg className="w-6 h-6 text-chartreuse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="flex-shrink-0 w-12 h-12 flex items-center justify-center rounded border border-parchment/20 bg-parchment/5">
+            <svg className="w-6 h-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
           </div>
           <div className="flex-1">
-            <h3 className="font-arizona-text text-lg text-chartreuse mb-1">Vesting Schedule Complete</h3>
-            <p className="font-md-thermochrome text-sm text-parchment/60">
+            <h3 className="font-arizona-text text-lg text-accent mb-1">Vesting Schedule Complete</h3>
+            <p className="font-oracle-standard text-sm text-parchment/60">
               All tokens from this vesting schedule have been fully vested.
             </p>
           </div>
@@ -172,12 +172,12 @@ export const VestingGraph = ({ globalLock, registryAddress, className = "", bloc
   }, [globalLock, vestingData, blockTimestamp])
 
   return (
-    <div className={`bg-gradient-to-br from-ink/40 to-ink/20 border border-parchment/10 rounded-lg p-6 ${className}`}>
+    <div className={`card-dark p-6 ${className}`}>
       {/* TGE Notice for Auction ATP */}
       {isAuctionATP && (
-        <div className="mb-6 p-4 bg-chartreuse/10 border border-chartreuse/30 text-left">
+        <div className="mb-6 p-4 bg-parchment/5 border border-parchment/20 text-left rounded-inset">
           <div className="text-sm text-parchment font-oracle-standard">
-            <strong className="text-chartreuse">TGE Notice:</strong> Tokens become available at TGE. TGE is decided by governance. Earliest anticipated in 90 days from start date. Latest is{' '}
+            <strong className="text-accent">TGE Notice:</strong> Tokens become available at TGE. TGE is decided by governance. Earliest anticipated in 90 days from start date. Latest is{' '}
             <strong>
               {new Date(Number(globalLock.endTime) * 1000).toLocaleDateString('en-US', {
                 day: 'numeric',
@@ -198,14 +198,13 @@ export const VestingGraph = ({ globalLock, registryAddress, className = "", bloc
         <defs>
           {/* Gradients */}
           <linearGradient id="areaGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="#D4FF28" stopOpacity="0.4" />
-            <stop offset="100%" stopColor="#D4FF28" stopOpacity="0.1" />
+            <stop offset="0%" stopColor="#C8FA00" stopOpacity="0.4" />
+            <stop offset="100%" stopColor="#C8FA00" stopOpacity="0.1" />
           </linearGradient>
 
           <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#2BFAE9" />
-            <stop offset="50%" stopColor="#D4FF28" />
-            <stop offset="100%" stopColor="#FF2DF4" />
+            <stop offset="0%" stopColor="#FFF9F2" />
+            <stop offset="100%" stopColor="#C8FA00" />
           </linearGradient>
 
           {/* Filter for glow effect */}
@@ -219,7 +218,7 @@ export const VestingGraph = ({ globalLock, registryAddress, className = "", bloc
 
           {/* Grid pattern */}
           <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(242, 238, 225, 0.05)" strokeWidth="0.5"/>
+            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255, 249, 242, 0.05)" strokeWidth="0.5"/>
           </pattern>
         </defs>
 
@@ -231,7 +230,7 @@ export const VestingGraph = ({ globalLock, registryAddress, className = "", bloc
           <line
             x1="0" y1="0"
             x2="0" y2={graphData.graphHeight}
-            stroke="rgba(242, 238, 225, 0.3)"
+            stroke="rgba(255, 249, 242, 0.3)"
             strokeWidth="2"
           />
 
@@ -239,15 +238,15 @@ export const VestingGraph = ({ globalLock, registryAddress, className = "", bloc
           <line
             x1="0" y1={graphData.graphHeight}
             x2={graphData.graphWidth} y2={graphData.graphHeight}
-            stroke="rgba(242, 238, 225, 0.3)"
+            stroke="rgba(255, 249, 242, 0.3)"
             strokeWidth="2"
           />
 
           {/* Y-axis labels */}
-          <text x="-20" y="5" textAnchor="end" fontSize="14" fill="rgba(242, 238, 225, 0.8)" className="font-mono font-bold">
+          <text x="-20" y="5" textAnchor="end" fontSize="14" fill="rgba(255, 249, 242, 0.8)" className="font-mono font-bold">
             {formatTokenAmount(globalLock.allocation, decimals, symbol)}
           </text>
-          <text x="-20" y="22" textAnchor="end" fontSize="12" fill="rgba(242, 238, 225, 0.5)" className="font-mono">
+          <text x="-20" y="22" textAnchor="end" fontSize="12" fill="rgba(255, 249, 242, 0.5)" className="font-mono">
             100%
           </text>
 
@@ -256,25 +255,25 @@ export const VestingGraph = ({ globalLock, registryAddress, className = "", bloc
           {vestingData.cliffUnlockRatio > 0.01 && (
             vestingData.cliffUnlockRatio > 0.6 ? (
               <>
-                <text x="10" y={graphData.graphHeight - (vestingData.cliffUnlockRatio * graphData.graphHeight) + 2} textAnchor="start" fontSize="9" fill="rgba(212, 255, 40, 0.5)" className="font-mono uppercase">
+                <text x="10" y={graphData.graphHeight - (vestingData.cliffUnlockRatio * graphData.graphHeight) + 2} textAnchor="start" fontSize="9" fill="rgba(200, 250, 0, 0.5)" className="font-mono uppercase">
                   Cliff Unlock
                 </text>
-                <text x="10" y={graphData.graphHeight - (vestingData.cliffUnlockRatio * graphData.graphHeight) + 17} textAnchor="start" fontSize="14" fill="rgba(212, 255, 40, 0.8)" className="font-mono font-bold">
+                <text x="10" y={graphData.graphHeight - (vestingData.cliffUnlockRatio * graphData.graphHeight) + 17} textAnchor="start" fontSize="14" fill="rgba(200, 250, 0, 0.8)" className="font-mono font-bold">
                   {formatTokenAmount(BigInt(Math.floor(Number(globalLock.allocation) * vestingData.cliffUnlockRatio)), decimals, symbol)}
                 </text>
-                <text x="10" y={graphData.graphHeight - (vestingData.cliffUnlockRatio * graphData.graphHeight) + 35} textAnchor="start" fontSize="12" fill="rgba(212, 255, 40, 0.6)" className="font-mono">
+                <text x="10" y={graphData.graphHeight - (vestingData.cliffUnlockRatio * graphData.graphHeight) + 35} textAnchor="start" fontSize="12" fill="rgba(200, 250, 0, 0.6)" className="font-mono">
                   {(vestingData.cliffUnlockRatio * 100).toFixed(2)}%
                 </text>
               </>
             ) : (
               <>
-                <text x="-20" y={graphData.graphHeight - (vestingData.cliffUnlockRatio * graphData.graphHeight) - 25} textAnchor="end" fontSize="9" fill="rgba(212, 255, 40, 0.5)" className="font-mono uppercase">
+                <text x="-20" y={graphData.graphHeight - (vestingData.cliffUnlockRatio * graphData.graphHeight) - 25} textAnchor="end" fontSize="9" fill="rgba(200, 250, 0, 0.5)" className="font-mono uppercase">
                   Cliff Unlock
                 </text>
-                <text x="-20" y={graphData.graphHeight - (vestingData.cliffUnlockRatio * graphData.graphHeight) - 10} textAnchor="end" fontSize="14" fill="rgba(212, 255, 40, 0.8)" className="font-mono font-bold">
+                <text x="-20" y={graphData.graphHeight - (vestingData.cliffUnlockRatio * graphData.graphHeight) - 10} textAnchor="end" fontSize="14" fill="rgba(200, 250, 0, 0.8)" className="font-mono font-bold">
                   {formatTokenAmount(BigInt(Math.floor(Number(globalLock.allocation) * vestingData.cliffUnlockRatio)), decimals, symbol)}
                 </text>
-                <text x="-20" y={graphData.graphHeight - (vestingData.cliffUnlockRatio * graphData.graphHeight) + 8} textAnchor="end" fontSize="12" fill="rgba(212, 255, 40, 0.6)" className="font-mono">
+                <text x="-20" y={graphData.graphHeight - (vestingData.cliffUnlockRatio * graphData.graphHeight) + 8} textAnchor="end" fontSize="12" fill="rgba(200, 250, 0, 0.6)" className="font-mono">
                   {(vestingData.cliffUnlockRatio * 100).toFixed(2)}%
                 </text>
               </>
@@ -302,7 +301,7 @@ export const VestingGraph = ({ globalLock, registryAddress, className = "", bloc
           {graphData.pathPoints.map((point, index) => {
             // Determine label based on edge cases
             let label = ''
-            let labelColor = "rgba(242, 238, 225, 0.6)"
+            let labelColor = "rgba(255, 249, 242, 0.6)"
             let textAnchor: "start" | "middle" | "end" = "middle"
 
             if (graphData.startEqualsCliff && graphData.cliffEqualsEnd) {
@@ -310,14 +309,14 @@ export const VestingGraph = ({ globalLock, registryAddress, className = "", bloc
               if (index === 0) {
                 label = "Unlock Start/End"
                 textAnchor = "start"
-                labelColor = "rgba(212, 255, 40, 0.8)"
+                labelColor = "rgba(200, 250, 0, 0.8)"
               }
             } else if (graphData.startEqualsCliff) {
               // Start = Cliff
               if (index === 0) {
                 label = "Unlock Start Time"
                 textAnchor = "middle"
-                labelColor = "rgba(212, 255, 40, 0.8)"
+                labelColor = "rgba(200, 250, 0, 0.8)"
               } else if (index === 1) {
                 label = "End"
                 textAnchor = "end"
@@ -330,7 +329,7 @@ export const VestingGraph = ({ globalLock, registryAddress, className = "", bloc
               } else if (index === 2) {
                 label = "Cliff/End"
                 textAnchor = "end"
-                labelColor = "rgba(212, 255, 40, 0.8)"
+                labelColor = "rgba(200, 250, 0, 0.8)"
               }
             } else {
               // Normal case - all distinct
@@ -340,7 +339,7 @@ export const VestingGraph = ({ globalLock, registryAddress, className = "", bloc
               } else if (index === 1) {
                 label = "Cliff"
                 textAnchor = "middle"
-                labelColor = "rgba(212, 255, 40, 0.8)"
+                labelColor = "rgba(200, 250, 0, 0.8)"
               } else if (index === 3) {
                 label = "End"
                 textAnchor = "end"
@@ -353,8 +352,8 @@ export const VestingGraph = ({ globalLock, registryAddress, className = "", bloc
                   cx={point.x}
                   cy={point.y}
                   r="5"
-                  fill="#D4FF28"
-                  stroke="#1A1400"
+                  fill="#C8FA00"
+                  stroke="#141900"
                   strokeWidth="2"
                 />
                 {label && (
@@ -382,7 +381,7 @@ export const VestingGraph = ({ globalLock, registryAddress, className = "", bloc
                 y1="0"
                 x2={graphData.nowPosition}
                 y2={graphData.graphHeight}
-                stroke="#2BFAE9"
+                stroke="#FFF9F2"
                 strokeWidth="2"
                 strokeDasharray="5,5"
                 opacity="0.6"
@@ -396,7 +395,7 @@ export const VestingGraph = ({ globalLock, registryAddress, className = "", bloc
                     y1={graphData.currentY}
                     x2={graphData.nowPosition}
                     y2={graphData.currentY}
-                    stroke="#2BFAE9"
+                    stroke="#FFF9F2"
                     strokeWidth="2"
                     strokeDasharray="5,5"
                     opacity="0.6"
@@ -407,7 +406,7 @@ export const VestingGraph = ({ globalLock, registryAddress, className = "", bloc
                     y={graphData.currentY + 4}
                     textAnchor="end"
                     fontSize="12"
-                    fill="#2BFAE9"
+                    fill="#FFF9F2"
                     className="font-mono font-bold"
                   >
                     {formatTokenAmount(vestingData.currentVestedAmount, decimals, symbol)}
@@ -420,8 +419,8 @@ export const VestingGraph = ({ globalLock, registryAddress, className = "", bloc
                 cx={graphData.nowPosition}
                 cy={graphData.currentY}
                 r="8"
-                fill="#2BFAE9"
-                stroke="#1A1400"
+                fill="#FFF9F2"
+                stroke="#141900"
                 strokeWidth="2"
                 className="animate-pulse"
               />
@@ -432,7 +431,7 @@ export const VestingGraph = ({ globalLock, registryAddress, className = "", bloc
                 y={graphData.graphHeight + 20}
                 textAnchor="middle"
                 fontSize="14"
-                fill="#2BFAE9"
+                fill="#FFF9F2"
                 className="font-bold"
               >
                 NOW
@@ -450,7 +449,7 @@ export const VestingGraph = ({ globalLock, registryAddress, className = "", bloc
                 y={graphData.graphHeight + 65}
                 textAnchor="middle"
                 fontSize="10"
-                fill="#2BFAE9"
+                fill="#FFF9F2"
                 className="font-mono font-bold"
               >
                 {graphData.formatTimeRemaining(graphData.timeNowToStart)}
@@ -460,7 +459,7 @@ export const VestingGraph = ({ globalLock, registryAddress, className = "", bloc
                 y={graphData.graphHeight + 78}
                 textAnchor="middle"
                 fontSize="8"
-                fill="rgba(43, 250, 233, 0.6)"
+                fill="rgba(255, 249, 242, 0.6)"
                 className="font-mono"
               >
                 (Until Vesting Starts)
@@ -475,7 +474,7 @@ export const VestingGraph = ({ globalLock, registryAddress, className = "", bloc
               y={graphData.graphHeight + 65}
               textAnchor="middle"
               fontSize="10"
-              fill="#FF2DF4"
+              fill="#B6B8B0"
               className="font-mono font-bold"
             >
               {graphData.formatTimeRemaining(graphData.lockDuration)}
@@ -485,7 +484,7 @@ export const VestingGraph = ({ globalLock, registryAddress, className = "", bloc
               y={graphData.graphHeight + 78}
               textAnchor="middle"
               fontSize="8"
-              fill="rgba(255, 45, 244, 0.6)"
+              fill="rgba(182, 184, 176, 0.7)"
               className="font-mono"
             >
               (Vesting Duration)
@@ -500,7 +499,7 @@ export const VestingGraph = ({ globalLock, registryAddress, className = "", bloc
                 y1={graphData.graphHeight}
                 x2={graphData.cliffX}
                 y2={graphData.graphHeight - (vestingData.cliffUnlockRatio * graphData.graphHeight)}
-                stroke="#D4FF28"
+                stroke="#C8FA00"
                 strokeWidth="2"
                 strokeDasharray="3,3"
                 opacity="0.5"
@@ -509,7 +508,7 @@ export const VestingGraph = ({ globalLock, registryAddress, className = "", bloc
                 x={graphData.cliffX + 10}
                 y={graphData.graphHeight - (vestingData.cliffUnlockRatio * graphData.graphHeight) - 10}
                 fontSize="10"
-                fill="#D4FF28"
+                fill="#C8FA00"
                 className="font-mono font-bold"
               >
                 {Math.round(vestingData.cliffUnlockRatio * 100)}%
@@ -525,7 +524,7 @@ export const VestingGraph = ({ globalLock, registryAddress, className = "", bloc
                 y1="0"
                 x2={graphData.startX}
                 y2={graphData.graphHeight}
-                stroke="rgba(242, 238, 225, 0.2)"
+                stroke="rgba(255, 249, 242, 0.2)"
                 strokeWidth="1"
                 strokeDasharray="2,3"
               />
@@ -534,7 +533,7 @@ export const VestingGraph = ({ globalLock, registryAddress, className = "", bloc
                 y={graphData.graphHeight + 50}
                 textAnchor={graphData.nowBeforeStart ? "middle" : "start"}
                 fontSize="9"
-                fill="rgba(242, 238, 225, 0.5)"
+                fill="rgba(255, 249, 242, 0.5)"
                 className="font-mono"
               >
                 {new Date(graphData.startTime * 1000).toLocaleDateString('en-US', {
@@ -553,7 +552,7 @@ export const VestingGraph = ({ globalLock, registryAddress, className = "", bloc
                 y1="0"
                 x2={graphData.cliffX}
                 y2={graphData.graphHeight}
-                stroke="rgba(212, 255, 40, 0.4)"
+                stroke="rgba(200, 250, 0, 0.4)"
                 strokeWidth="1"
                 strokeDasharray="2,3"
               />
@@ -562,7 +561,7 @@ export const VestingGraph = ({ globalLock, registryAddress, className = "", bloc
                 y={graphData.graphHeight + 50}
                 textAnchor="middle"
                 fontSize="9"
-                fill="rgba(212, 255, 40, 0.8)"
+                fill="rgba(200, 250, 0, 0.8)"
                 className="font-mono"
               >
                 {new Date(graphData.cliffTime * 1000).toLocaleDateString('en-US', {
@@ -581,7 +580,7 @@ export const VestingGraph = ({ globalLock, registryAddress, className = "", bloc
                 y1="0"
                 x2={graphData.graphWidth}
                 y2={graphData.graphHeight}
-                stroke="rgba(242, 238, 225, 0.2)"
+                stroke="rgba(255, 249, 242, 0.2)"
                 strokeWidth="1"
                 strokeDasharray="2,3"
               />
@@ -590,7 +589,7 @@ export const VestingGraph = ({ globalLock, registryAddress, className = "", bloc
                 y={graphData.graphHeight + 50}
                 textAnchor="end"
                 fontSize="9"
-                fill="rgba(242, 238, 225, 0.7)"
+                fill="rgba(255, 249, 242, 0.7)"
                 className="font-mono"
               >
                 {new Date(graphData.endTime * 1000).toLocaleDateString('en-US', {
@@ -610,7 +609,7 @@ export const VestingGraph = ({ globalLock, registryAddress, className = "", bloc
                 y1="0"
                 x2={graphData.cliffEqualsEnd ? graphData.graphWidth : graphData.startX}
                 y2={graphData.graphHeight}
-                stroke="rgba(212, 255, 40, 0.4)"
+                stroke="rgba(200, 250, 0, 0.4)"
                 strokeWidth="1"
                 strokeDasharray="2,3"
               />
@@ -619,7 +618,7 @@ export const VestingGraph = ({ globalLock, registryAddress, className = "", bloc
                 y={graphData.graphHeight + 50}
                 textAnchor={graphData.cliffEqualsEnd ? "end" : (graphData.nowBeforeStart ? "middle" : "start")}
                 fontSize="9"
-                fill="rgba(212, 255, 40, 0.8)"
+                fill="rgba(200, 250, 0, 0.8)"
                 className="font-mono"
               >
                 {new Date((graphData.cliffEqualsEnd ? graphData.cliffTime : graphData.startTime) * 1000).toLocaleDateString('en-US', {
@@ -635,7 +634,7 @@ export const VestingGraph = ({ globalLock, registryAddress, className = "", bloc
 
         {/* Title - positioned inside graph area, higher than NOW labels */}
         <g transform={`translate(${graphData.padding.left}, ${graphData.padding.top})`}>
-          <text x={graphData.graphWidth / 2} y="-50" textAnchor="middle" fontSize="16" fill="rgba(242, 238, 225, 0.8)" className="font-oracle-standard font-bold uppercase">
+          <text x={graphData.graphWidth / 2} y="-50" textAnchor="middle" fontSize="16" fill="rgba(255, 249, 242, 0.8)" className="font-oracle-standard font-bold uppercase">
             Vesting Schedule
           </text>
         </g>

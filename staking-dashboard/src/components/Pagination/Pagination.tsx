@@ -87,7 +87,7 @@ export const Pagination = ({
         <button
           onClick={handlePrevious}
           disabled={currentPage === 1}
-          className={`p-2 transition-all ${
+          className={`p-2 rounded-full transition-colors ${
             currentPage === 1
               ? "text-parchment/30 cursor-not-allowed"
               : "text-parchment/70 hover:text-parchment hover:bg-parchment/10"
@@ -113,9 +113,9 @@ export const Pagination = ({
               <button
                 key={pageNumber}
                 onClick={() => onPageChange(pageNumber)}
-                className={`px-3 py-1 text-sm font-oracle-standard transition-all ${
+                className={`min-w-8 h-8 px-2 rounded-full text-xs font-oracle-standard font-medium transition-colors ${
                   currentPage === pageNumber
-                    ? "bg-chartreuse text-ink font-bold"
+                    ? "bg-chartreuse text-ink"
                     : "text-parchment/70 hover:text-parchment hover:bg-parchment/10"
                 }`}
               >
@@ -129,7 +129,7 @@ export const Pagination = ({
         <button
           onClick={handleNext}
           disabled={currentPage === totalPages}
-          className={`p-2 transition-all ${
+          className={`p-2 rounded-full transition-colors ${
             currentPage === totalPages
               ? "text-parchment/30 cursor-not-allowed"
               : "text-parchment/70 hover:text-parchment hover:bg-parchment/10"

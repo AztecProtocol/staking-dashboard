@@ -228,7 +228,7 @@ export const StakeFlowAtpSelection = ({ columns = 3, itemsPerPage: customItemsPe
           {Array.from({ length: itemsPerPage }).map((_, index) => (
             <div
               key={index}
-              className="bg-parchment/5 border border-parchment/20 p-4 animate-pulse"
+              className="glass p-4 animate-pulse"
             >
               <div className="h-4 bg-parchment/20 rounded w-2/3 mb-3"></div>
               <div className="h-6 bg-parchment/20 rounded w-1/2 mb-4"></div>
@@ -247,7 +247,7 @@ export const StakeFlowAtpSelection = ({ columns = 3, itemsPerPage: customItemsPe
     return (
       <div className="space-y-4 sm:space-y-6 px-2 sm:px-0">
         <div className="flex items-center gap-2 mb-3 mt-6">
-          <label className="font-md-thermochrome text-label uppercase tracking-wide-8 text-parchment/90 font-medium">
+          <label className="font-oracle-standard text-label uppercase tracking-wide-8 text-parchment/90 font-medium">
             Select Token Vault to Stake
           </label>
           <TooltipIcon
@@ -255,7 +255,7 @@ export const StakeFlowAtpSelection = ({ columns = 3, itemsPerPage: customItemsPe
             maxWidth="max-w-sm"
           />
         </div>
-        <div className="bg-parchment/5 border border-parchment/20 p-4 sm:p-8 text-center">
+        <div className="glass p-4 sm:p-8 text-center">
           <div className="text-parchment/60 mb-4">
             {isError ? `Error: ${error}` : "No Token Vault holdings found"}
           </div>
@@ -282,7 +282,7 @@ export const StakeFlowAtpSelection = ({ columns = 3, itemsPerPage: customItemsPe
             maxWidth="max-w-sm"
           />
         </div>
-        <div className="bg-parchment/5 border border-parchment/20 p-4 sm:p-8 text-center">
+        <div className="glass p-4 sm:p-8 text-center">
           <div className="w-12 h-12 mx-auto mb-4 flex items-center justify-center bg-parchment/20 text-parchment/60 rounded-full">
             <Icon name="x" className="w-6 h-6" />
           </div>
@@ -290,7 +290,7 @@ export const StakeFlowAtpSelection = ({ columns = 3, itemsPerPage: customItemsPe
             No available balance to stake
           </div>
           <p className="text-xs text-parchment/50">
-            Your Token Vaults do not have sufficient available balance. A minimum of <span className="font-mono text-chartreuse">{formattedThreshold}</span> is required per sequencer.
+            Your Token Vaults do not have sufficient available balance. A minimum of <span className="font-mono text-accent">{formattedThreshold}</span> is required per sequencer.
           </p>
         </div>
       </div>
@@ -319,9 +319,9 @@ export const StakeFlowAtpSelection = ({ columns = 3, itemsPerPage: customItemsPe
         {/* Stake count badge with adjust button */}
         <button
           onClick={handleAdjustCount}
-          className="flex items-center gap-2 px-3 py-1.5 bg-chartreuse/10 border border-chartreuse/30 hover:bg-chartreuse/20 transition-colors"
+          className="flex items-center gap-2 px-3 py-1.5 bg-parchment/5 border border-parchment/20 hover:bg-parchment/10 transition-colors rounded-btn"
         >
-          <span className="text-xs font-oracle-standard font-bold uppercase tracking-wide text-chartreuse">
+          <span className="text-xs font-oracle-standard font-bold uppercase tracking-wide text-accent">
             {stakeCount} {formData.transactionType === "delegation" ? "Delegation" : "Stake"}{stakeCount !== 1 ? "s" : ""}
           </span>
           <span className="text-xs font-oracle-standard uppercase tracking-wide text-parchment/60">
@@ -332,7 +332,7 @@ export const StakeFlowAtpSelection = ({ columns = 3, itemsPerPage: customItemsPe
 
       {/* Pending Transactions Warning */}
       {hasPendingTransactionsForSelectedAtp && (
-        <div className="border-2 border-aqua/40 bg-aqua/10 p-4">
+        <div className="border-2 border-aqua/40 bg-aqua/10 p-4 rounded-inset">
           <div className="flex items-start gap-3">
             <Icon name="info" size="lg" className="text-aqua flex-shrink-0 mt-0.5" />
             <div>
@@ -348,16 +348,16 @@ export const StakeFlowAtpSelection = ({ columns = 3, itemsPerPage: customItemsPe
       )}
 
       {/* Staking Rules Notice */}
-      <div className="border border-parchment/20 bg-parchment/5 p-4">
+      <div className="glass p-4">
         <div className="flex items-center gap-2 mb-3">
           <Icon name="info" size="md" className="text-parchment/60 flex-shrink-0" />
           <p className="text-sm font-oracle-standard font-bold text-parchment">Staking Requirements</p>
         </div>
         <ul className="space-y-1.5 text-sm text-parchment/70 ml-7 list-disc">
-          <li>Requires exactly <span className="font-mono text-chartreuse">{formattedThreshold}</span> per sequencer</li>
+          <li>Requires exactly <span className="font-mono text-accent">{formattedThreshold}</span> per sequencer</li>
           <li>One Token Vault at a time</li>
           <li>Multiple transactions needed for additional stakes</li>
-          <li>Minimum <span className="font-mono text-chartreuse">{formattedThreshold}</span> required</li>
+          <li>Minimum <span className="font-mono text-accent">{formattedThreshold}</span> required</li>
         </ul>
       </div>
 
@@ -397,7 +397,7 @@ export const StakeFlowAtpSelection = ({ columns = 3, itemsPerPage: customItemsPe
       <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-6">
         <button
           type="button"
-          className="flex-1 bg-chartreuse text-ink py-3 px-4 font-oracle-standard font-bold text-sm uppercase tracking-wider hover:bg-parchment hover:text-ink transition-all duration-300 border-2 border-chartreuse hover:border-parchment shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+          className="flex-1 btn-lime py-3 px-4 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
           onClick={handleNextStep}
           disabled={!canContinue()}
         >

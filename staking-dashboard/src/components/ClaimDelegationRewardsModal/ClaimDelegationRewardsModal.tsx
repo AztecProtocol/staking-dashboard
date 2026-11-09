@@ -119,10 +119,10 @@ export const ClaimDelegationRewardsModal = ({
 
   return createPortal(
     <div
-      className="fixed inset-0 backdrop-blur-xs z-[200] flex items-center justify-center p-4 pt-20"
+      className="fixed inset-0 modal-scrim z-[200] flex items-center justify-center p-4 pt-20"
       onClick={handleBackdropClick}
     >
-      <div className="bg-ink border-2 border-chartreuse/40 w-full max-w-lg relative max-h-[calc(100vh-5rem)] overflow-y-auto custom-scrollbar">
+      <div className="card-dark w-full max-w-lg relative max-h-[calc(100vh-5rem)] overflow-y-auto custom-scrollbar">
         {/* Close button */}
         <button
           onClick={handleClose}
@@ -135,7 +135,7 @@ export const ClaimDelegationRewardsModal = ({
           {/* Header */}
           <div className="flex items-start gap-4 mb-6">
             <div className="flex-shrink-0 mt-1">
-              <Icon name="gift" size="lg" className="text-chartreuse w-8 h-8" />
+              <Icon name="gift" size="lg" className="text-accent w-8 h-8" />
             </div>
             <div className="flex-1">
               <h2 className="font-arizona-serif text-2xl font-medium text-parchment mb-2">
@@ -148,7 +148,7 @@ export const ClaimDelegationRewardsModal = ({
           </div>
 
           {/* Delegation Details */}
-          <div className="bg-parchment/5 border border-parchment/20 p-4 mb-6">
+          <div className="glass p-4 mb-6">
             <div className="space-y-3 text-sm">
               <div>
                 <div className="text-xs text-parchment/60 uppercase tracking-wide mb-1">Provider</div>
@@ -168,7 +168,7 @@ export const ClaimDelegationRewardsModal = ({
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <div className="text-xs text-parchment/60 uppercase tracking-wide mb-1">Your Share</div>
-                  <div className="font-mono text-chartreuse font-bold">
+                  <div className="font-mono text-accent font-bold">
                     {userPercentage}%
                   </div>
                 </div>
@@ -189,14 +189,14 @@ export const ClaimDelegationRewardsModal = ({
             const stepCount = claimableRollupCount + 2
             let stepNum = 1
             return (
-              <div className="bg-chartreuse/10 border border-chartreuse/30 p-4 mb-6">
-                <div className="text-xs font-oracle-standard font-bold text-chartreuse mb-2 uppercase tracking-wide">
+              <div className="bg-parchment/5 border border-parchment/20 p-4 mb-6 rounded-inset">
+                <div className="text-xs font-oracle-standard font-bold text-accent mb-2 uppercase tracking-wide">
                   {stepCount}-Step Claim Process
                 </div>
                 <div className="space-y-2 text-xs text-parchment/80">
                   <div className="flex items-center gap-2">
-                    <div className="flex-shrink-0 mt-0.5 w-4 h-4 rounded-full bg-chartreuse/20 border border-chartreuse flex items-center justify-center">
-                      <span className="text-[10px] font-bold text-chartreuse">{stepNum++}</span>
+                    <div className="flex-shrink-0 mt-0.5 w-4 h-4 rounded-full bg-parchment/10 border border-accent flex items-center justify-center">
+                      <span className="text-[10px] font-bold text-accent">{stepNum++}</span>
                     </div>
                     <div>
                       <span className="font-bold text-parchment">Claim ({claimableRollupCount}):</span>{' '}
@@ -204,16 +204,16 @@ export const ClaimDelegationRewardsModal = ({
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <div className="flex-shrink-0 mt-0.5 w-4 h-4 rounded-full bg-chartreuse/20 border border-chartreuse flex items-center justify-center">
-                      <span className="text-[10px] font-bold text-chartreuse">{stepNum++}</span>
+                    <div className="flex-shrink-0 mt-0.5 w-4 h-4 rounded-full bg-parchment/10 border border-accent flex items-center justify-center">
+                      <span className="text-[10px] font-bold text-accent">{stepNum++}</span>
                     </div>
                     <div>
                       <span className="font-bold text-parchment">Distribute:</span> Split rewards between you ({userPercentage}%) and provider ({providerPercentage}%)
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <div className="flex-shrink-0 mt-0.5 w-4 h-4 rounded-full bg-chartreuse/20 border border-chartreuse flex items-center justify-center">
-                      <span className="text-[10px] font-bold text-chartreuse">{stepNum++}</span>
+                    <div className="flex-shrink-0 mt-0.5 w-4 h-4 rounded-full bg-parchment/10 border border-accent flex items-center justify-center">
+                      <span className="text-[10px] font-bold text-accent">{stepNum++}</span>
                     </div>
                     <div>
                       <span className="font-bold text-parchment">Withdraw:</span> Transfer your share to your wallet
@@ -227,17 +227,17 @@ export const ClaimDelegationRewardsModal = ({
           {/* Total You Will Receive */}
           {isLoadingBalances ? (
             <div className="flex items-center gap-2 mb-6 text-sm text-parchment/60">
-              <div className="w-3 h-3 border border-parchment/30 border-t-parchment rounded-full animate-spin"></div>
+              <div className="w-3 h-3 pill border-t-parchment animate-spin"></div>
               <span>Checking rewards...</span>
             </div>
           ) : (
             <div className="mb-6">
-              <div className="bg-ink border-2 border-chartreuse p-4 mb-3">
+              <div className="bg-parchment/5 border border-accent p-4 mb-3 rounded-inset">
                 <div className="text-center">
-                  <div className="text-xs font-oracle-standard text-chartreuse uppercase tracking-wide mb-2">
+                  <div className="text-xs font-oracle-standard text-accent uppercase tracking-wide mb-2">
                     Total You Will Receive After Claim
                   </div>
-                  <div className="font-mono text-3xl font-bold text-chartreuse">
+                  <div className="font-mono text-3xl font-bold text-accent">
                     {decimals && symbol ? formatTokenAmount(userShare, decimals, symbol, 2) : '-'}
                   </div>
                   {userShare === 0n && (
@@ -249,7 +249,7 @@ export const ClaimDelegationRewardsModal = ({
               </div>
 
               {/* Extended Breakdown */}
-              <div className="bg-parchment/5 border border-parchment/20 p-4">
+              <div className="glass p-4">
                 <div className="text-xs font-oracle-standard font-bold text-parchment/80 mb-3 uppercase tracking-wide">
                   Breakdown
                 </div>
@@ -258,7 +258,7 @@ export const ClaimDelegationRewardsModal = ({
                   <div className="flex flex-col gap-1">
                     <div className="flex items-center justify-between">
                       <div className="text-parchment/60">
-                        <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-chartreuse/20 border border-chartreuse text-[10px] font-bold text-chartreuse mr-1.5">1</span>
+                        <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-parchment/10 border border-accent text-[10px] font-bold text-accent mr-1.5">1</span>
                         Rollup Balance
                       </div>
                       <div className={`font-mono font-bold ${userShareFromRollup > 0n ? 'text-parchment' : 'text-parchment/40'}`}>
@@ -274,7 +274,7 @@ export const ClaimDelegationRewardsModal = ({
                   <div className="flex flex-col gap-1">
                     <div className="flex items-center justify-between">
                       <div className="text-parchment/60">
-                        <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-chartreuse/20 border border-chartreuse text-[10px] font-bold text-chartreuse mr-1.5">2</span>
+                        <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-parchment/10 border border-accent text-[10px] font-bold text-accent mr-1.5">2</span>
                         Delegation Rewards
                       </div>
                       <div className={`font-mono font-bold ${userShareFromSplitContract > 0n ? 'text-parchment' : 'text-parchment/40'}`}>
@@ -290,10 +290,10 @@ export const ClaimDelegationRewardsModal = ({
                   <div className="flex flex-col gap-1">
                     <div className="flex items-center justify-between">
                       <div className="text-parchment/60">
-                        <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-chartreuse/20 border border-chartreuse text-[10px] font-bold text-chartreuse mr-1.5">3</span>
+                        <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-parchment/10 border border-accent text-[10px] font-bold text-accent mr-1.5">3</span>
                         Warehouse (Shared)
                       </div>
-                      <div className={`font-mono font-bold ${hasWithdrawableWarehouseBalance ? 'text-chartreuse' : 'text-parchment/40'}`}>
+                      <div className={`font-mono font-bold ${hasWithdrawableWarehouseBalance ? 'text-accent' : 'text-parchment/40'}`}>
                         {decimals && symbol ? formatTokenAmount(warehouseBalance || 0n, decimals, symbol, 2) : '-'}
                       </div>
                     </div>
@@ -310,7 +310,7 @@ export const ClaimDelegationRewardsModal = ({
           <div className="flex justify-end gap-3">
             <button
               onClick={handleClose}
-              className="px-6 py-3 border border-parchment/30 text-parchment font-oracle-standard font-bold text-sm uppercase tracking-wider hover:bg-parchment/10 transition-all"
+              className="px-6 py-3 btn-glass text-sm"
             >
               Cancel
             </button>
@@ -319,7 +319,7 @@ export const ClaimDelegationRewardsModal = ({
                 <div>
                   <button
                     disabled
-                    className="px-6 py-3 bg-chartreuse text-ink font-oracle-standard font-bold text-sm uppercase tracking-wider transition-all opacity-50 cursor-not-allowed"
+                    className="px-6 py-3 btn-lime text-sm opacity-50 cursor-not-allowed"
                   >
                     Claim Rewards
                   </button>

@@ -1,93 +1,88 @@
 import { cva } from "class-variance-authority"
 
+/**
+ * Buttons as on aztec.network: a 4px corner, uppercase Oracle with wide
+ * tracking, lime for the one primary action and glass for the rest. The
+ * `btn-*` skins live in index.css so hand-written buttons can share them.
+ */
 export const buttonVariants = cva(
-  // Base styles - sesuai dengan design system Aztec
-  "inline-flex items-center justify-center font-oracle-standard font-bold uppercase tracking-wider transition-all duration-300 disabled:pointer-events-none disabled:opacity-50 outline-none focus-visible:ring-2 focus-visible:ring-chartreuse/50 focus-visible:ring-offset-2 focus-visible:ring-offset-ink",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap leading-none outline-none disabled:pointer-events-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent",
   {
     variants: {
       variant: {
-        // Primary - Connect Wallet style
-        primary:
-          "bg-chartreuse text-ink border-2 border-chartreuse hover:bg-parchment hover:border-parchment hover:-translate-y-0.5 shadow-lg hover:shadow-xl",
+        // Primary: the lime fill. One per view.
+        primary: "btn-lime",
 
-        // Secondary - inverse of primary
-        secondary:
-          "bg-parchment text-ink border-2 border-parchment hover:bg-chartreuse hover:border-chartreuse hover:-translate-y-0.5 shadow-lg hover:shadow-xl",
+        // Secondary: frosted glass on dark surfaces, outlined paper on light ones
+        secondary: "btn-glass",
 
-        // Outline style - for secondary actions
-        outline:
-          "bg-transparent text-chartreuse border-2 border-chartreuse hover:bg-chartreuse hover:text-ink shadow-sm hover:shadow-md",
+        // Outline: same quiet button, kept as its own name for existing callers
+        outline: "btn-glass",
 
-        // Ghost - minimal style
-        ghost:
-          "bg-transparent text-parchment hover:bg-parchment/10 hover:text-chartreuse",
+        // Ghost: no fill until hovered
+        ghost: "btn-ghost",
 
-        // Muted - for less prominent actions
-        muted:
-          "bg-parchment/10 text-parchment border-2 border-parchment/30 hover:bg-chartreuse/10 hover:border-chartreuse hover:text-chartreuse",
+        // Muted: the quiet button, dimmed
+        muted: "btn-glass text-parchment/70",
 
         // Danger/Destructive
-        danger:
-          "bg-vermillion text-parchment border-2 border-vermillion hover:bg-vermillion/80 hover:border-vermillion/80 hover:-translate-y-0.5 shadow-lg hover:shadow-xl",
+        danger: "btn-coral",
 
-        // Aqua accent
-        aqua:
-          "bg-aqua text-ink border-2 border-aqua hover:bg-aqua/80 hover:border-aqua/80 hover:-translate-y-0.5 shadow-lg hover:shadow-xl",
+        // Neutral accent (Grey 100)
+        aqua: "btn-glass",
 
-        // Orchid accent
-        orchid:
-          "bg-orchid text-parchment border-2 border-orchid hover:bg-orchid/80 hover:border-orchid/80 hover:-translate-y-0.5 shadow-lg hover:shadow-xl",
+        // Muted accent (Grey 200)
+        orchid: "btn-glass text-parchment/70",
 
         // Dark/Ink variant
-        dark:
-          "bg-ink text-parchment border-2 border-ink hover:bg-ink/90 hover:border-ink/90 hover:-translate-y-0.5 shadow-lg hover:shadow-xl",
+        dark: "btn-ink",
 
         // Link style
         link:
-          "text-chartreuse underline-offset-4 hover:underline hover:text-chartreuse/80 p-0 h-auto",
+          "text-accent underline underline-offset-4 hover:opacity-80 p-0 h-auto",
       },
       size: {
-        // Small - compact button
-        sm: "px-3 sm:px-4 py-2.5 text-xs sm:text-xs min-h-[44px]",
+        // Small: the compact button that fits inside the navigation pill
+        sm: "px-[18px] py-[9px] text-[0.6875rem] min-h-[36px]",
 
-        // Default - standard size (matching Connect Wallet)
-        default: "px-4 sm:px-6 py-3 sm:py-3 text-sm sm:text-sm min-h-[44px]",
+        // Default
+        default: "px-6 py-3 text-xs min-h-[44px]",
 
-        // Large - bigger buttons
-        lg: "px-6 sm:px-8 py-3.5 sm:py-4 text-base sm:text-base min-h-[48px]",
+        // Large
+        lg: "px-7 py-3.5 text-[0.8125rem] min-h-[50px]",
 
-        // Extra large - hero buttons
-        xl: "px-8 sm:px-10 py-4 sm:py-5 text-lg sm:text-lg min-h-[52px]",
+        // Extra large
+        xl: "px-9 py-4 text-sm min-h-[56px]",
 
         // Icon only - minimum touch target
-        icon: "w-10 h-10 sm:w-10 sm:h-10 p-0 min-w-[44px] min-h-[44px]",
+        icon: "w-10 h-10 p-0 min-w-[44px] min-h-[44px]",
 
         // Icon small
-        "icon-sm": "w-8 h-8 sm:w-8 sm:h-8 p-0 min-w-[40px] min-h-[40px]",
+        "icon-sm": "w-8 h-8 p-0 min-w-[40px] min-h-[40px]",
 
         // Icon large
-        "icon-lg": "w-12 h-12 sm:w-12 sm:h-12 p-0 min-w-[48px] min-h-[48px]",
+        "icon-lg": "w-12 h-12 p-0 min-w-[48px] min-h-[48px]",
       },
       // Full width variant
       fullWidth: {
         true: "w-full",
         false: "",
       },
-      // Rounded variants
+      // Corner. The default is the skin's own 4px.
       rounded: {
         default: "",
-        md: "",
-        lg: "",
-        xl: "",
-        full: "",
-        none: "",
+        md: "rounded-field",
+        lg: "rounded-inset",
+        xl: "rounded-panel",
+        full: "rounded-full",
+        none: "rounded-none",
       }
     },
     defaultVariants: {
       variant: "primary",
       size: "default",
       fullWidth: false,
-      rounded: "none",
+      rounded: "default",
     },
   }
 )

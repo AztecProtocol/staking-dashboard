@@ -56,7 +56,7 @@ export const StakeHealthBar = ({
   const getTextColor = () => {
     if (isCritical) return 'text-vermillion'
     if (isAtRisk) return 'text-yellow-500'
-    return 'text-chartreuse'
+    return 'text-accent'
   }
 
   const hasLoss = lossAmount > 0n

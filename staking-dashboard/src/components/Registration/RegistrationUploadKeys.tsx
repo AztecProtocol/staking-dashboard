@@ -193,7 +193,7 @@ export const RegistrationUploadKeys = () => {
       </div>
 
       {/* How to generate sequencer keys */}
-      <div className="bg-parchment/5 border border-parchment/20 p-4 mb-6">
+      <div className="glass p-4 mb-6">
         <div className="flex items-center gap-2 mb-3">
           <Icon name="info" size="sm" className="text-parchment/60" />
           <span className="text-xs font-oracle-standard text-parchment/70 uppercase tracking-wide">
@@ -203,7 +203,7 @@ export const RegistrationUploadKeys = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {/* Step 1 */}
-          <div className="bg-ink/40 border-l-2 border-aqua/40 p-4 hover:bg-ink/50 hover:border-aqua transition-all">
+          <div className="bg-parchment/5 border-l-2 rounded-r-field border-aqua/40 p-4 hover:bg-parchment/10 hover:border-aqua transition-all">
             <div className="flex items-center gap-2 mb-2">
               <div className="w-5 h-5 rounded bg-aqua/20 flex items-center justify-center flex-shrink-0">
                 <span className="text-xs font-bold text-aqua">1</span>
@@ -219,7 +219,7 @@ export const RegistrationUploadKeys = () => {
               href="https://docs.aztec.network/the_aztec_network/setup/sequencer_management#step-2-move-keystore-to-docker-directory"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-aqua hover:text-chartreuse text-xs inline-flex items-center gap-1 font-medium cursor-pointer transition-colors"
+              className="text-aqua hover:text-accent text-xs inline-flex items-center gap-1 font-medium cursor-pointer transition-colors"
             >
               View guide
               <Icon name="externalLink" size="sm" />
@@ -227,7 +227,7 @@ export const RegistrationUploadKeys = () => {
           </div>
 
           {/* Step 2 */}
-          <div className="bg-ink/40 border-l-2 border-aqua/40 p-4 hover:bg-ink/50 hover:border-aqua transition-all">
+          <div className="bg-parchment/5 border-l-2 rounded-r-field border-aqua/40 p-4 hover:bg-parchment/10 hover:border-aqua transition-all">
             <div className="flex items-center gap-2 mb-2">
               <div className="w-5 h-5 rounded bg-aqua/20 flex items-center justify-center flex-shrink-0">
                 <span className="text-xs font-bold text-aqua">2</span>
@@ -243,7 +243,7 @@ export const RegistrationUploadKeys = () => {
               href="https://docs.aztec.network/the_aztec_network/setup/sequencer_management#preparing-bls-keys-for-staking-dashboard"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-aqua hover:text-chartreuse text-xs inline-flex items-center gap-1 font-medium cursor-pointer transition-colors"
+              className="text-aqua hover:text-accent text-xs inline-flex items-center gap-1 font-medium cursor-pointer transition-colors"
             >
               View guide
               <Icon name="externalLink" size="sm" />
@@ -255,10 +255,10 @@ export const RegistrationUploadKeys = () => {
       {/* Upload area - only show when no file is uploaded */}
       {!uploadedFile && (
         <div
-          className={`relative py-12 px-8 text-center transition-all duration-200 cursor-pointer group border-l-4 ${
+          className={`relative py-12 px-8 text-center transition-all duration-200 cursor-pointer group border-l-4 rounded-r-field ${
             isDragOver
-              ? 'bg-chartreuse/10 border-l-chartreuse'
-              : 'bg-parchment/5 border-l-parchment/30 hover:border-l-chartreuse hover:bg-chartreuse/5'
+              ? 'bg-parchment/5 border-l-accent'
+              : 'bg-parchment/5 border-l-parchment/30 hover:border-l-accent hover:bg-parchment/5'
           }`}
           onClick={handleUploadClick}
           onDragOver={handleDragOver}
@@ -267,13 +267,13 @@ export const RegistrationUploadKeys = () => {
           onDrop={handleDrop}
         >
           <div className="flex flex-col items-center justify-center gap-4">
-            <div className={`w-16 h-16 rounded-full flex items-center justify-center transition-all duration-200 ${isDragOver ? 'bg-chartreuse/20' : 'bg-parchment/10 group-hover:bg-chartreuse/15'}`}>
-              <svg className={`w-8 h-8 transition-colors duration-200 ${isDragOver ? 'text-chartreuse' : 'text-parchment/60 group-hover:text-chartreuse'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className={`w-16 h-16 rounded-full flex items-center justify-center transition-all duration-200 ${isDragOver ? 'bg-parchment/10' : 'bg-parchment/10 group-hover:bg-parchment/10'}`}>
+              <svg className={`w-8 h-8 transition-colors duration-200 ${isDragOver ? 'text-accent' : 'text-parchment/60 group-hover:text-accent'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
               </svg>
             </div>
             <div>
-              <p className={`font-oracle-standard font-bold text-sm uppercase tracking-wide transition-colors duration-200 mb-1 ${isDragOver ? 'text-chartreuse' : 'text-parchment group-hover:text-chartreuse'}`}>
+              <p className={`font-oracle-standard font-bold text-sm uppercase tracking-wide transition-colors duration-200 mb-1 ${isDragOver ? 'text-accent' : 'text-parchment group-hover:text-accent'}`}>
                 {isValidating ? "Validating keystore..." : isDragOver ? "Drop to upload" : "Upload Keystore"}
               </p>
               <p className="text-xs text-parchment/60 font-arizona-text">
@@ -286,8 +286,8 @@ export const RegistrationUploadKeys = () => {
 
       {/* Uploaded file display - show when file is uploaded */}
       {uploadedFile && (
-        <div className="border border-parchment/20 bg-parchment/5 p-4">
-          <div className="flex items-center gap-2 text-chartreuse font-medium mb-1">
+        <div className="glass p-4">
+          <div className="flex items-center gap-2 text-accent font-medium mb-1">
             <Icon name="check" size="lg" />
             <span className="font-oracle-standard text-sm uppercase tracking-wide">File Uploaded Successfully</span>
           </div>
@@ -297,14 +297,14 @@ export const RegistrationUploadKeys = () => {
           <div className="flex gap-3">
             <button
               type="button"
-              className="px-4 py-2 bg-parchment/10 text-parchment border-2 border-parchment/30 font-oracle-standard font-bold text-xs uppercase tracking-wider hover:bg-parchment/20 hover:border-parchment/50 transition-all"
+              className="px-4 py-2 btn-glass text-xs"
               onClick={handleRemoveFile}
             >
               Remove File
             </button>
             <button
               type="button"
-              className="px-4 py-2 bg-parchment/10 text-parchment border-2 border-parchment/30 font-oracle-standard font-bold text-xs uppercase tracking-wider hover:bg-parchment/20 hover:border-parchment/50 transition-all"
+              className="px-4 py-2 btn-glass text-xs"
               onClick={handleUploadClick}
             >
               Change File
@@ -330,7 +330,7 @@ export const RegistrationUploadKeys = () => {
 
       {/* Display sequencer addresses and confirmation */}
       {(uploadedKeystores?.length || 0) > 0 && (
-        <div className="bg-parchment/5 border border-parchment/20 p-4 space-y-4">
+        <div className="glass p-4 space-y-4">
           {/* Sequencer Addresses */}
           <RegistrationUploadKeystoreList uploadedKeystores={uploadedKeystores!} />
 
@@ -347,16 +347,16 @@ export const RegistrationUploadKeys = () => {
       <div className="flex gap-4">
         <button
           type="button"
-          className="flex-1 bg-parchment/10 text-parchment border-2 border-parchment/30 py-3 font-oracle-standard font-bold text-sm uppercase tracking-wider hover:bg-parchment/20 hover:border-parchment/50 transition-all"
+          className="flex-1 btn-glass py-3 text-sm"
           onClick={handlePrevStep}
         >
           Back
         </button>
         <button
           type="button"
-          className={`flex-1 py-3 font-oracle-standard font-bold text-sm uppercase tracking-wider transition-all border-2 ${
+          className={`flex-1 py-3 font-oracle-standard font-bold text-sm uppercase tracking-wider transition-all border-2 rounded-btn ${
             canContinue()
-              ? "bg-chartreuse text-ink border-chartreuse hover:bg-parchment hover:text-ink hover:border-parchment shadow-lg"
+              ? "btn-lime"
               : "bg-parchment/10 text-parchment/50 border-parchment/30 cursor-not-allowed"
           }`}
           onClick={handleNextStep}

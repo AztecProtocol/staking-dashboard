@@ -277,14 +277,14 @@ export function VotingPanel({
 
   if (!isConnected) {
     return (
-      <div className="p-4 border border-parchment/20 bg-parchment/5">
+      <div className="p-4 glass">
         <p className="text-parchment/70 text-center">Connect wallet to participate</p>
       </div>
     );
   }
 
   return (
-    <div className="p-4 border border-parchment/20 bg-parchment/5">
+    <div className="p-4 glass">
       <h4 className="font-oracle-standard text-sm mb-2">
         Cast Your Vote
         {proposal.state !== ProposalState.Pending && (
@@ -296,7 +296,7 @@ export function VotingPanel({
       {proposal.state !== ProposalState.Pending && (
         <p className={`text-xs mt-4 mb-4 ${
           hasPowerMismatch
-            ? "text-aqua border border-aqua/30 bg-aqua/5 p-2"
+            ? "text-aqua border border-aqua/30 bg-aqua/5 p-2 rounded-inset"
             : "text-parchment/50"
         }`}>
           Voting power reflects your balance at the time of proposal creation, not your current holdings.
@@ -305,7 +305,7 @@ export function VotingPanel({
 
       {/* User's previous votes from all sources */}
       {hasAnyVotes && (
-        <div className="mb-4 p-3 bg-parchment/5 border border-parchment/10">
+        <div className="mb-4 p-3 glass">
           <p className="text-sm text-parchment/70 mb-2">Your votes on this proposal:</p>
           <div className="space-y-1 text-sm">
             {/* Direct votes */}
@@ -317,7 +317,7 @@ export function VotingPanel({
                   <span className="text-parchment/50">Wallet:</span>
                   <div className="flex gap-3">
                     {directBallot.yea > 0n && (
-                      <span className="text-chartreuse">
+                      <span className="text-accent">
                         Yes: {formatCompact(directBallot.yea)}
                       </span>
                     )}
@@ -341,7 +341,7 @@ export function VotingPanel({
                   </span>
                   <div className="flex gap-3">
                     {ballot.yea > 0n && (
-                      <span className="text-chartreuse">
+                      <span className="text-accent">
                         Yes: {formatCompact(ballot.yea)}
                       </span>
                     )}
@@ -378,9 +378,9 @@ export function VotingPanel({
                     key="direct"
                     onClick={() => setSelectedSourceIndex(index)}
                     disabled={votingDisabled}
-                    className={`px-3 py-1 text-sm border transition-colors ${
+                    className={`px-3 py-1 text-sm border rounded-inset transition-colors ${
                       isSelected
-                        ? "border-chartreuse bg-chartreuse/10 text-chartreuse"
+                        ? "border-accent bg-parchment/5 text-accent"
                         : "border-parchment/20 text-parchment/70 hover:border-parchment/40"
                     } ${votingDisabled ? "opacity-50 cursor-not-allowed" : ""}`}
                   >
@@ -398,7 +398,7 @@ export function VotingPanel({
                     key="delegated"
                     onClick={() => setSelectedSourceIndex(index)}
                     disabled={votingDisabled || !canVoteWithDelegated}
-                    className={`px-3 py-1 text-sm border transition-colors ${
+                    className={`px-3 py-1 text-sm border rounded-inset transition-colors ${
                       isSelected && canVoteWithDelegated
                         ? "border-orchid bg-orchid/10 text-orchid"
                         : !canVoteWithDelegated
@@ -420,9 +420,9 @@ export function VotingPanel({
                   key={source.staker.stakerAddress}
                   onClick={() => setSelectedSourceIndex(index)}
                   disabled={votingDisabled}
-                  className={`px-3 py-1 text-sm border transition-colors ${
+                  className={`px-3 py-1 text-sm border rounded-inset transition-colors ${
                     isSelected
-                      ? "border-chartreuse bg-chartreuse/10 text-chartreuse"
+                      ? "border-accent bg-parchment/5 text-accent"
                       : "border-parchment/20 text-parchment/70 hover:border-parchment/40"
                   } ${votingDisabled ? "opacity-50 cursor-not-allowed" : ""}`}
                 >
@@ -449,7 +449,7 @@ export function VotingPanel({
       </div> */}
 
       {!isVotingOpen(proposal.state) ? (
-        <div className="p-4 border border-parchment/30 bg-parchment/10 text-center">
+        <div className="p-4 glass text-center">
           <p className="text-parchment font-oracle-standard">
             {getVotingClosedMessage(proposal.state)}
           </p>
@@ -460,7 +460,7 @@ export function VotingPanel({
           )}
         </div>
       ) : availablePower === 0n ? (
-        <div className="p-4 border border-orchid/30 bg-orchid/10 text-center">
+        <div className="p-4 border border-orchid/30 bg-orchid/10 text-center rounded-inset">
           <p className="text-orchid font-oracle-standard">
             No voting power available
           </p>
@@ -479,11 +479,11 @@ export function VotingPanel({
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
                 placeholder="0"
-                className="flex-1 px-3 py-2 bg-ink border border-parchment/20 text-parchment focus:border-chartreuse outline-none"
+                className="flex-1 px-3 py-2 field text-parchment"
               />
               <button
                 onClick={() => setAmount(formatUnits(availablePower, 18))}
-                className="px-3 py-2 text-xs border border-parchment/20 text-parchment/70 hover:border-parchment/40"
+                className="px-3 py-2 text-xs border border-parchment/20 text-parchment/70 hover:border-parchment/40 rounded-btn"
               >
                 MAX
               </button>
@@ -495,14 +495,14 @@ export function VotingPanel({
             <button
               onClick={() => handleVote(true)}
               disabled={isPending || isConfirming || !amount}
-              className="flex-1 px-4 py-2 bg-chartreuse text-ink font-oracle-standard hover:bg-chartreuse/90 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 px-4 py-2 btn-lime disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isPending || isConfirming ? "..." : "Vote Yes"}
             </button>
             <button
               onClick={() => handleVote(false)}
               disabled={isPending || isConfirming || !amount}
-              className="flex-1 px-4 py-2 bg-orchid text-ink font-oracle-standard hover:bg-orchid/90 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 px-4 py-2 btn-glass text-xs disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isPending || isConfirming ? "..." : "Vote No"}
             </button>

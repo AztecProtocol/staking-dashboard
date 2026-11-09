@@ -76,8 +76,8 @@ export const TransactionCartExpanded = ({ onMinimize }: TransactionCartExpandedP
       {/* Cart Header */}
       <div className="flex items-center justify-between p-4 border-b border-parchment/20">
         <div className="flex items-center gap-3 flex-1">
-          <div className="w-10 h-10 bg-chartreuse/20 border border-chartreuse flex items-center justify-center">
-            <Icon name="shoppingCart" className="w-5 h-5 text-chartreuse" />
+          <div className="w-10 h-10 bg-parchment/10 border border-accent flex items-center justify-center rounded-inset">
+            <Icon name="shoppingCart" className="w-5 h-5 text-accent" />
           </div>
           <div>
             <h3 className="font-oracle-standard text-sm font-bold uppercase tracking-wide text-parchment">
@@ -117,7 +117,7 @@ export const TransactionCartExpanded = ({ onMinimize }: TransactionCartExpandedP
           disabled={isExecuting || pendingCount === 0}
           className={`flex-1 px-4 py-2 font-oracle-standard text-xs sm:text-sm font-bold uppercase tracking-wide transition-all ${isExecuting || pendingCount === 0
               ? 'bg-parchment/20 text-parchment/40 cursor-not-allowed'
-              : 'bg-chartreuse text-ink hover:bg-chartreuse/90'
+              : 'btn-lime'
             }`}
         >
           {isExecuting ? (
@@ -147,7 +147,7 @@ export const TransactionCartExpanded = ({ onMinimize }: TransactionCartExpandedP
         <button
           onClick={clearCart}
           disabled={isExecuting || transactions.length === 0}
-          className="sm:p-2 py-2 px-4 sm:px-2 text-parchment/60 hover:text-vermillion transition-colors disabled:opacity-40 border border-parchment/30 sm:border-0"
+          className="sm:p-2 py-2 px-4 sm:px-2 text-parchment/60 hover:text-vermillion transition-colors disabled:opacity-40 border border-parchment/30 sm:border-0 rounded-btn"
           title="Clear all transactions"
         >
           <span className="flex items-center justify-center gap-2 sm:gap-0">
@@ -182,7 +182,7 @@ export const TransactionCartExpanded = ({ onMinimize }: TransactionCartExpandedP
               <div
                 key={tx.id}
                 className={`border-b border-parchment/10 last:border-b-0 transition-all ${indented ? 'pl-2 sm:pl-4 bg-aqua/[0.02]' : ''} ${isCurrentlyExecuting
-                    ? 'bg-chartreuse/10 border-l-4 border-l-chartreuse'
+                    ? 'bg-parchment/5 border-l-4 border-l-accent'
                     : isPending
                       ? 'bg-parchment/5 opacity-50'
                       : 'hover:bg-parchment/5'
@@ -210,7 +210,7 @@ export const TransactionCartExpanded = ({ onMinimize }: TransactionCartExpandedP
                   </div>
 
                   {/* Order Number */}
-                  <div className="w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center border border-parchment/30 text-parchment/60 font-oracle-standard text-[10px] sm:text-xs font-bold flex-shrink-0">
+                  <div className="w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center glass text-parchment/60 font-oracle-standard text-[10px] sm:text-xs font-bold flex-shrink-0">
                     {index + 1}
                   </div>
 
@@ -222,8 +222,8 @@ export const TransactionCartExpanded = ({ onMinimize }: TransactionCartExpandedP
                       </h4>
                       {/* Status Badge - Even Smaller */}
                       {tx.status && (
-                        <div className={`px-1 py-0.5 border text-[9px] font-oracle-standard uppercase tracking-wide whitespace-nowrap ${
-                          tx.status === 'completed' ? 'bg-chartreuse/10 border-chartreuse/30 text-chartreuse' :
+                        <div className={`px-1 py-0.5 border rounded-btn text-[9px] font-oracle-standard uppercase tracking-wide whitespace-nowrap ${
+                          tx.status === 'completed' ? 'bg-parchment/5 border-parchment/20 text-accent' :
                           tx.status === 'failed' ? 'bg-vermillion/10 border-vermillion/30 text-vermillion' :
                           tx.status === 'executing' ? 'bg-aqua/10 border-aqua/30 text-aqua' :
                           'bg-parchment/10 border-parchment/30 text-parchment/60'
@@ -232,8 +232,8 @@ export const TransactionCartExpanded = ({ onMinimize }: TransactionCartExpandedP
                         </div>
                       )}
                       {isCurrentlyExecuting && (
-                        <div className="flex items-center gap-1.5 text-chartreuse text-xs">
-                          <div className="w-3 h-3 border border-chartreuse/30 border-t-chartreuse rounded-full animate-spin"></div>
+                        <div className="flex items-center gap-1.5 text-accent text-xs">
+                          <div className="w-3 h-3 border border-parchment/20 border-t-accent rounded-full animate-spin"></div>
                           <span className="hidden sm:inline">Executing</span>
                         </div>
                       )}
@@ -244,7 +244,7 @@ export const TransactionCartExpanded = ({ onMinimize }: TransactionCartExpandedP
                   </div>
 
                   {/* Transaction Type Badge */}
-                  <div className="hidden md:flex items-center px-2 py-1 bg-parchment/10 border border-parchment/20 flex-shrink-0">
+                  <div className="hidden md:flex items-center px-2 py-1 glass flex-shrink-0">
                     <span className="text-[10px] text-parchment/70 font-oracle-standard uppercase tracking-wide whitespace-nowrap">
                       {tx.type.replace('-', ' ')}
                     </span>
@@ -254,7 +254,7 @@ export const TransactionCartExpanded = ({ onMinimize }: TransactionCartExpandedP
                   <button
                     onClick={() => toggleExpand(tx.id)}
                     disabled={isExecuting}
-                    className="flex items-center gap-1 px-2 py-1 border border-parchment/30 text-parchment/60 hover:text-parchment hover:border-parchment/50 transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex-shrink-0"
+                    className="flex items-center gap-1 px-2 py-1 border border-parchment/30 text-parchment/60 hover:text-parchment hover:border-parchment/50 transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex-shrink-0 rounded-btn"
                     title={isExpanded ? "Hide details" : "Show details"}
                   >
                     <span className="text-[10px] font-oracle-standard uppercase tracking-wide">Details</span>

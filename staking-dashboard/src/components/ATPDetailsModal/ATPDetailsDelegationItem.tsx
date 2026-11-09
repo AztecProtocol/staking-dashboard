@@ -89,7 +89,7 @@ export const ATPDetailsDelegationItem = ({
   const isInQueue = status === SequencerStatus.NONE && !delegation.hasFailedDeposit && !isUnstaked
 
   return (
-    <div className="bg-parchment/5 border border-parchment/20 hover:border-chartreuse/40 transition-all">
+    <div className="glass transition-all">
       {/* Collapsible Header */}
       <button
         onClick={() => setIsExpanded(!isExpanded)}
@@ -157,7 +157,7 @@ export const ATPDetailsDelegationItem = ({
             <div className="text-right flex-shrink-0">
               <div className="text-xs text-parchment/60 mb-1">Rewards</div>
               {!delegation.hasFailedDeposit ? (
-                <div className="font-mono text-sm font-bold text-chartreuse">
+                <div className="font-mono text-sm font-bold text-accent">
                   {isLoadingDelegationRewards ? "..." : formatTokenAmount(delegationRewards.userRewards, decimals, symbol)}
                 </div>
               ) : (
@@ -170,7 +170,7 @@ export const ATPDetailsDelegationItem = ({
           <Icon
             name="chevronDown"
             size="lg"
-            className={`text-parchment/40 group-hover:text-chartreuse transition-all ${isExpanded ? 'rotate-180' : ''}`}
+            className={`text-parchment/40 group-hover:text-accent transition-all ${isExpanded ? 'rotate-180' : ''}`}
           />
         </div>
       </button>
@@ -238,7 +238,7 @@ export const ATPDetailsDelegationItem = ({
                           href={getExplorerAddressUrl(delegation.splitContract)}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-parchment/60 hover:text-chartreuse transition-colors"
+                          className="text-parchment/60 hover:text-accent transition-colors"
                           title="View on Etherscan"
                           onClick={(e) => e.stopPropagation()}
                         >
@@ -266,7 +266,7 @@ export const ATPDetailsDelegationItem = ({
                           href={getExplorerTxUrl(delegation.txHash)}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-parchment/60 hover:text-chartreuse transition-colors"
+                          className="text-parchment/60 hover:text-accent transition-colors"
                           title="View on Etherscan"
                           onClick={(e) => e.stopPropagation()}
                         >
@@ -300,7 +300,7 @@ export const ATPDetailsDelegationItem = ({
                           href={getValidatorDashboardValidatorUrl(delegation.operatorAddress)}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-parchment/60 hover:text-chartreuse transition-colors"
+                          className="text-parchment/60 hover:text-accent transition-colors"
                           title="View sequencer on dashboard"
                         >
                           <Icon name="externalLink" size="sm" />
@@ -327,7 +327,7 @@ export const ATPDetailsDelegationItem = ({
                           href={getExplorerTxUrl(delegation.txHash)}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-parchment/60 hover:text-chartreuse transition-colors"
+                          className="text-parchment/60 hover:text-accent transition-colors"
                           title="View on Etherscan"
                           onClick={(e) => e.stopPropagation()}
                         >
@@ -355,7 +355,7 @@ export const ATPDetailsDelegationItem = ({
                           href={getExplorerAddressUrl(delegation.splitContract)}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-parchment/60 hover:text-chartreuse transition-colors"
+                          className="text-parchment/60 hover:text-accent transition-colors"
                           title="View on Etherscan"
                           onClick={(e) => e.stopPropagation()}
                         >
@@ -441,7 +441,7 @@ export const ATPDetailsDelegationItem = ({
                           providerRewardsRecipient: delegation.providerRewardsRecipient
                         })}
                         disabled={delegationRewards.userRewards === 0n || isRewardsClaimable === false}
-                        className="px-3 py-1.5 border font-oracle-standard text-xs font-bold uppercase tracking-wide whitespace-nowrap transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-parchment/10 disabled:border-parchment/30 disabled:text-parchment/60 border-chartreuse bg-chartreuse text-ink hover:bg-chartreuse/90"
+                        className="px-3 py-1.5 text-xs whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-parchment/10 disabled:border-parchment/30 disabled:text-parchment/60 btn-lime"
                         title={
                           isRewardsClaimable === false
                             ? "Rewards are currently locked by the network protocol"

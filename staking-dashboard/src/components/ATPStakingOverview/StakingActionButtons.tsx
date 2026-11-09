@@ -15,7 +15,7 @@ export const StakingActionButtons = ({ totalValidatorCount }: StakingActionButto
     <div className="grid grid-cols-2 gap-3">
       <button
         onClick={() => navigate('/register-validator')}
-        className="bg-chartreuse text-ink py-3 px-4 font-oracle-standard font-bold text-xs uppercase tracking-wider hover:bg-chartreuse/90 transition-colors border border-chartreuse"
+        className="btn-lime py-3 px-4 text-xs"
       >
         <div className="flex items-center justify-center gap-1">
           <Icon name="plus" size="md" />
@@ -24,7 +24,7 @@ export const StakingActionButtons = ({ totalValidatorCount }: StakingActionButto
       </button>
       <button
         onClick={() => navigate('/providers')}
-        className="bg-parchment/10 text-parchment py-3 px-4 font-oracle-standard font-bold text-xs uppercase tracking-wider hover:bg-parchment/20 transition-colors border border-parchment/30"
+        className="btn-glass py-3 px-4 text-xs"
       >
         <div className="flex items-center justify-center gap-1">
           <Icon name="users" size="sm" />

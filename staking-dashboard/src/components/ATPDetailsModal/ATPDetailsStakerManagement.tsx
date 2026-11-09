@@ -94,7 +94,7 @@ export const ATPDetailsStakerManagement = ({ atp }: ATPDetailsStakerManagementPr
     <div className="mb-6">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full bg-parchment/5 border border-parchment/20 p-4 flex items-center justify-between hover:bg-parchment/10 transition-colors"
+        className="w-full glass p-4 flex items-center justify-between hover:bg-parchment/10 transition-colors"
       >
         <div className="flex items-center gap-2">
           <h3 className="font-oracle-standard text-sm uppercase tracking-wider text-parchment/90 font-medium">
@@ -114,7 +114,7 @@ export const ATPDetailsStakerManagement = ({ atp }: ATPDetailsStakerManagementPr
       </button>
 
       {isOpen && (
-        <div className="bg-parchment/5 border border-parchment/20 border-t-0 p-4 space-y-6">
+        <div className="glass border-t-0 p-4 space-y-6">
           {isLoading ? (
             <div className="text-sm text-parchment/50">Loading information...</div>
           ) : (
@@ -152,11 +152,11 @@ export const ATPDetailsStakerManagement = ({ atp }: ATPDetailsStakerManagementPr
                     return (
                       <div
                         key={version.toString()}
-                        className={`flex items-center justify-between p-2 border ${
+                        className={`flex items-center justify-between p-2 border rounded-inset ${
                           isCurrent
                             ? isDisabled
                               ? 'border-vermillion/40 bg-vermillion/5'
-                              : 'border-chartreuse/40 bg-chartreuse/5'
+                              : 'border-parchment/20 bg-parchment/5'
                             : isDisabled
                             ? 'border-parchment/10 bg-parchment/5'
                             : 'border-parchment/20 bg-parchment/5'
@@ -165,7 +165,7 @@ export const ATPDetailsStakerManagement = ({ atp }: ATPDetailsStakerManagementPr
                         <div className="flex items-center gap-1">
                           <span className={`font-mono text-sm font-bold ${
                             isCurrent
-                              ? isDisabled ? 'text-vermillion' : 'text-chartreuse'
+                              ? isDisabled ? 'text-vermillion' : 'text-accent'
                               : isDisabled ? 'text-parchment/40' : 'text-parchment'
                           }`}>
                             v{version.toString()}
@@ -181,7 +181,7 @@ export const ATPDetailsStakerManagement = ({ atp }: ATPDetailsStakerManagementPr
                         </div>
                         <div className="flex items-center gap-2">
                           {isLatest && !isDisabled && (
-                            <span className="text-[10px] uppercase font-oracle-standard font-bold text-chartreuse">
+                            <span className="text-[10px] uppercase font-oracle-standard font-bold text-accent">
                               Latest
                             </span>
                           )}
@@ -221,7 +221,7 @@ export const ATPDetailsStakerManagement = ({ atp }: ATPDetailsStakerManagementPr
                             <SelectItem key={version.toString()} value={version.toString()}>
                               <span className="font-mono">v{version.toString()}</span>
                               <span className="text-parchment/60"> - {description}</span>
-                              {isLatest && <span className="text-chartreuse"> (Latest)</span>}
+                              {isLatest && <span className="text-accent"> (Latest)</span>}
                             </SelectItem>
                           )
                         })}
@@ -232,7 +232,7 @@ export const ATPDetailsStakerManagement = ({ atp }: ATPDetailsStakerManagementPr
                     isUpgradeQueued ? (
                       <button
                         onClick={openCart}
-                        className="bg-chartreuse/20 border border-chartreuse/40 text-chartreuse py-2 px-3 font-oracle-standard font-bold text-xs uppercase tracking-wider hover:bg-chartreuse/30 transition-all whitespace-nowrap flex items-center gap-1"
+                        className="bg-parchment/10 border border-parchment/20 text-accent py-2 px-3 font-oracle-standard font-bold text-xs uppercase tracking-wider hover:bg-parchment/15 transition-all whitespace-nowrap flex items-center gap-1 rounded-btn"
                       >
                         <Icon name="shoppingCart" size="sm" />
                         In Batch
@@ -240,7 +240,7 @@ export const ATPDetailsStakerManagement = ({ atp }: ATPDetailsStakerManagementPr
                     ) : (
                       <button
                         onClick={handleUpgrade}
-                        className="bg-chartreuse text-ink py-2 px-3 font-oracle-standard font-bold text-xs uppercase tracking-wider hover:bg-chartreuse/90 transition-all whitespace-nowrap"
+                        className="btn-lime py-2 px-3 text-xs whitespace-nowrap"
                       >
                         Add to Batch
                       </button>

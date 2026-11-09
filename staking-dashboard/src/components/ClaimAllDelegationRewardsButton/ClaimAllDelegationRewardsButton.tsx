@@ -180,10 +180,10 @@ export const ClaimAllDelegationRewardsButton = ({
     <button
       onClick={handleClick}
       disabled={!isReady}
-      className={`px-4 py-1.5 border font-oracle-standard text-xs font-bold uppercase tracking-wide whitespace-nowrap transition-colors ${
+      className={`px-4 py-1.5 border rounded-btn font-oracle-standard text-xs font-bold uppercase tracking-wide whitespace-nowrap transition-colors ${
         isInBatch
-          ? 'border-chartreuse/40 bg-chartreuse/10 text-chartreuse hover:bg-chartreuse/20'
-          : 'border-chartreuse bg-chartreuse text-ink hover:bg-chartreuse/90'
+          ? 'border-parchment/20 bg-parchment/5 text-accent hover:bg-parchment/10'
+          : 'btn-lime'
       } disabled:opacity-50 disabled:cursor-not-allowed`}
       title={
         isInBatch

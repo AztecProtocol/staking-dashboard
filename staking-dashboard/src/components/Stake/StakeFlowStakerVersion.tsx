@@ -126,7 +126,7 @@ export const StakeFlowStakerVersion = () => {
         </div>
 
         {/* Current Version Display */}
-        <div className="bg-parchment/5 border border-parchment/20 p-6 mb-6">
+        <div className="glass p-6 mb-6">
           <div className="text-center">
             <div className="flex items-center justify-center gap-1 mb-2">
               <div className="text-xs font-oracle-standard text-parchment/60 uppercase tracking-wide">Current Staker Version</div>
@@ -136,7 +136,7 @@ export const StakeFlowStakerVersion = () => {
                 maxWidth="max-w-md"
               />
             </div>
-            <div className="text-3xl font-mono font-bold text-chartreuse">
+            <div className="text-3xl font-mono font-bold text-accent">
               {isLoading ? "..." : !needsUpgrade ? "Latest" : currentVersion !== null ? `Version ${currentVersion.toString()}` : "N/A"}
             </div>
             <div className="text-sm text-parchment/60 mt-1">
@@ -150,7 +150,7 @@ export const StakeFlowStakerVersion = () => {
           <div className="space-y-3 mb-6">
             <button
               type="button"
-              className="w-full bg-chartreuse text-ink py-3 px-4 font-oracle-standard font-bold text-sm uppercase tracking-wider hover:bg-parchment hover:text-ink transition-all duration-300 border-2 border-chartreuse hover:border-parchment shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full btn-lime py-3 px-4 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
               onClick={handleAddToQueue}
               disabled={!selectedAtp || isLoading || isInQueue}
             >
@@ -164,15 +164,15 @@ export const StakeFlowStakerVersion = () => {
       <div className="flex gap-4">
         <button
           type="button"
-          className="flex-1 bg-parchment/10 text-parchment border-2 border-parchment/30 py-3 font-oracle-standard font-bold text-sm uppercase tracking-wider hover:bg-parchment/20 hover:border-parchment/50 transition-all"
+          className="flex-1 btn-glass py-3 text-sm"
           onClick={handlePrevStep}
         >
           Back
         </button>
         <button
           type="button"
-          className={`flex-1 py-3 font-oracle-standard font-bold text-sm uppercase tracking-wider transition-all border-2 ${canContinue()
-            ? "bg-chartreuse text-ink border-chartreuse hover:bg-parchment hover:text-ink hover:border-parchment shadow-lg"
+          className={`flex-1 py-3 font-oracle-standard font-bold text-sm uppercase tracking-wider transition-all border-2 rounded-btn ${canContinue()
+            ? "btn-lime"
             : "bg-parchment/10 text-parchment/50 border-parchment/30 cursor-not-allowed"
             }`}
           onClick={handleNextStep}

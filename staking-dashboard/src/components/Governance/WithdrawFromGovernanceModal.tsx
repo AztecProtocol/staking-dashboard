@@ -129,8 +129,8 @@ export function WithdrawFromGovernanceModal({
   if (!isOpen) return null;
 
   return createPortal(
-    <div className="fixed inset-0 backdrop-blur-xs z-50 flex items-center justify-center p-4">
-      <div className="bg-ink border border-parchment/20 max-w-md w-full p-6 relative">
+    <div className="fixed inset-0 modal-scrim z-50 flex items-center justify-center p-4">
+      <div className="card-dark max-w-md w-full p-6 relative">
         <div className="flex items-center justify-between mb-6">
           <h3 className="font-oracle-standard text-xl text-parchment">Withdraw from Governance</h3>
           <button
@@ -157,7 +157,7 @@ export function WithdrawFromGovernanceModal({
                   setSelectedSourceIndex(Number(e.target.value));
                   setAmount("");
                 }}
-                className="w-full pl-3 pr-10 py-2 bg-ink border border-parchment/20 text-parchment focus:border-chartreuse outline-none cursor-pointer appearance-none"
+                className="w-full pl-3 pr-10 py-2 field text-parchment cursor-pointer appearance-none"
               >
                 {availableSources.map((source, index) => {
                   const sourceBalance =
@@ -191,11 +191,11 @@ export function WithdrawFromGovernanceModal({
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
               placeholder="0"
-              className="flex-1 px-3 py-2 bg-ink border border-parchment/20 text-parchment focus:border-chartreuse outline-none"
+              className="flex-1 px-3 py-2 field text-parchment"
             />
             <button
               onClick={() => setAmount(formatUnits(depositedBalance, decimals))}
-              className="px-3 py-2 text-xs border border-parchment/20 text-parchment/70 hover:border-parchment/40"
+              className="px-3 py-2 text-xs border border-parchment/20 text-parchment/70 hover:border-parchment/40 rounded-btn"
             >
               MAX
             </button>
@@ -205,7 +205,7 @@ export function WithdrawFromGovernanceModal({
         <button
           onClick={handleAddToBatch}
           disabled={!canWithdraw}
-          className="w-full px-4 py-3 bg-chartreuse text-ink font-oracle-standard hover:bg-chartreuse/90 disabled:opacity-30 disabled:cursor-not-allowed"
+          className="w-full px-4 py-3 btn-lime disabled:opacity-30 disabled:cursor-not-allowed"
         >
           Add to Batch
         </button>

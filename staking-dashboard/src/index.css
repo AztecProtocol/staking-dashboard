@@ -10,27 +10,66 @@
   --breakpoint-xl: 1280px;
   --breakpoint-2xl: 1536px;
 
-  /* Colors */
-  --color-parchment: #F2EEE1;
-  --color-ink: #1A1400;
-  --color-chartreuse: #D4FF28;
-  --color-orchid: #FF2DF4;
-  --color-aqua: #2BFAE9;
-  --color-vermillion: #FF1A1A;
-  --color-malachite: #001F18;
-  --color-aubergine: #2E0026;
-  --color-lapis: #00122E;
-  --color-oxblood: #2E0700;
+  /* Colors
+   *
+   * Aztec brand palette, from https://aztec.network/brand, laid out the way
+   * aztec.network uses it: a cream page with light and dark glass cards on top.
+   *
+   * Fixed colours. These never change:
+   *
+   *   paper       type and logo on dark surfaces, the fill of light cards
+   *   cream       the page background (the site's body colour)
+   *   ink         type on light surfaces, and on any lime fill
+   *   coal        the fill of dark cards (the site's near-black)
+   *   chartreuse  Lime: fills, highlights and primary buttons
+   *   coral       fill of destructive buttons. Not a brand colour: a functional
+   *               exception, since a failure has to read as one.
+   *
+   * Role colours. These follow the surface an element sits on, so the same
+   * component reads correctly on a light card and on a dark one. The values
+   * here are the ones for dark surfaces; "Surfaces" below sets the light ones.
+   * The names predate the current brand and are kept so existing classes keep
+   * working:
+   *
+   *   parchment   content: type, icons, hairlines, tints (paper on dark, ink on light)
+   *   accent      accent type and outlines (lime on dark; ink on light, where
+   *               lime type is not allowed)
+   *   aqua        neutral info and secondary states
+   *   orchid      winding-down states (exiting, queued, rejected)
+   *   vermillion  error text and outlines
+   */
+  --color-paper: #FFF9F2;
+  --color-cream: #F8F1E7;
+  --color-ink: #141900;
+  --color-coal: #121410;
+  --color-chartreuse: #C8FA00;
+  --color-chartreuse-light: #E3FF9B;
+  --color-coral: #FF6944;
 
-  /* Font Family - dengan namespace yang benar */
-  --font-body: system-ui, -apple-system, sans-serif;
-  --font-arizona-serif: "Arizona Serif", serif;
-  --font-oracle-triple-medium: "Oracle Triple Medium", sans-serif;
-  --font-oracle-triple-book: "Oracle Triple Book", sans-serif;
-  --font-md-thermochrome: "MD Thermochrome", sans-serif;
-  --font-francesco: "Francesco", serif;
-  --font-oracle-standard: "Oracle Standard", sans-serif;
-  --font-arizona-text: "Arizona Text Light", sans-serif;
+  --color-parchment: #FFF9F2;
+  --color-accent: #C8FA00;
+  --color-aqua: #B6B8B0;
+  --color-orchid: #93958A;
+  --color-vermillion: #FF6944;
+
+  /* Radii, as on aztec.network */
+  --radius-card: 20px;
+  --radius-panel: 14px;
+  --radius-inset: 10px;
+  --radius-field: 7px;
+  --radius-btn: 4px;
+
+  /* Font Family
+   *
+   * ABC Arizona carries the headlines and ABC Oracle everything else, as on
+   * aztec.network. Martel and Geist are the brand's free stand-ins.
+   */
+  --font-body: "Oracle Standard", "Geist", system-ui, -apple-system, sans-serif;
+  --font-arizona-serif: "Arizona Serif", "Martel", Georgia, serif;
+  --font-oracle-triple-medium: "Oracle Triple Medium", "Geist", system-ui, sans-serif;
+  --font-oracle-triple-book: "Oracle Triple Book", "Geist", system-ui, sans-serif;
+  --font-oracle-standard: "Oracle Standard", "Geist", system-ui, sans-serif;
+  --font-arizona-text: "Arizona Text Light", "Martel", Georgia, serif;
 
   /* Font Size - harus tanpa prefix family */
   --text-hero: clamp(4.5rem, 11vw, 13rem);
@@ -66,14 +105,6 @@
 
 /* Aztec Brand Font Faces */
 @font-face {
-  font-family: "Francesco";
-  src: url("https://cdn.prod.website-files.com/6847005bc403085c1aa846e0/68a48c23f460b5ef9ca3bc5c_FrancescoWeb-Regular.woff2") format("woff2"), url("https://cdn.prod.website-files.com/6847005bc403085c1aa846e0/68a48be986ea8d97d1e9dca3_FrancescoWeb-Regular.woff") format("woff");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
   font-family: "Arizona Serif";
   src: url("https://cdn.prod.website-files.com/6847005bc403085c1aa846e0/68a4949a4a2b7324ce9c388a_ArizonaSerifLight.woff2") format("woff2"), url("https://cdn.prod.website-files.com/6847005bc403085c1aa846e0/68a4949a854fee2642bdeb08_ArizonaSerifLight.woff") format("woff");
   font-weight: 300;
@@ -108,14 +139,6 @@
 }
 
 @font-face {
-  font-family: "MD Thermochrome";
-  src: url("https://cdn.prod.website-files.com/6847005bc403085c1aa846e0/68a4af0262e25779dd6c12d5_MDThermochrome0.2-Regular.woff2") format("woff2"), url("https://cdn.prod.website-files.com/6847005bc403085c1aa846e0/68a4af021d38629df81e002b_MDThermochrome0.2-Regular.woff") format("woff");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
   font-family: "Arizona Text Light";
   src: url("https://cdn.prod.website-files.com/6847005bc403085c1aa846e0/68a4b1697f408250b73e6db7_ABCArizonaText-Light.woff2") format("woff2"), url("https://cdn.prod.website-files.com/6847005bc403085c1aa846e0/68a4b169554913da6c39b48a_ABCArizonaText-Light.woff") format("woff");
   font-weight: 300;
@@ -124,8 +147,9 @@
   line-height: 125%;
 }
 
+/* The italic of "Arizona Serif": the headline accent. */
 @font-face {
-  font-family: "Arizona Serif Italic";
+  font-family: "Arizona Serif";
   src: url("https://cdn.prod.website-files.com/6847005bc403085c1aa846e0/68a4b36bdbfc3561caaf152a_ABCArizonaSerif-LightItalic.woff2") format("woff2"), url("https://cdn.prod.website-files.com/6847005bc403085c1aa846e0/68a4b36b8728198c061f0183_ABCArizonaSerif-LightItalic.woff") format("woff");
   font-weight: 300;
   font-style: italic;
@@ -198,10 +222,372 @@
 
 @keyframes pulse-glow {
   0%, 100% {
-    box-shadow: 0 0 0 0 rgba(212, 255, 40, 0.4);
+    box-shadow: 0 0 0 0 rgba(200, 250, 0, 0.4);
   }
   50% {
-    box-shadow: 0 0 20px 5px rgba(212, 255, 40, 0.2);
+    box-shadow: 0 0 20px 5px rgba(200, 250, 0, 0.2);
+  }
+}
+
+/* Surfaces
+ *
+ * The page is light. A dark card (or anything painted solid ink) switches its
+ * contents to the dark values, and a light card switches them back, so cards
+ * nest in any order. Besides the role colours, a surface sets the recipe for
+ * the glass panels that sit on it.
+ */
+body,
+.on-light,
+.card-light {
+  --color-parchment: #141900;
+  --color-accent: #141900;
+  --color-aqua: #4D4D3E;
+  --color-orchid: #626554;
+  --color-vermillion: #C2330F;
+  /* Tailwind's amber and yellow carry the warnings; on paper they need depth. */
+  --color-yellow-500: #8A5A00;
+  --color-amber-500: #8A5A00;
+  --color-amber-400: #8A5A00;
+  --color-amber-300: #7A4E00;
+  --color-amber-200: #7A4E00;
+
+  --glass-fill: #fff9f29e;
+  --glass-sheen: linear-gradient(155deg, #ffffffb3 0%, #ffffff2e 36%, #fff0 58%, #ffffff6b 100%);
+  --glass-edge: inset 0 1px 0 #fffffff2, inset 1px 0 0 #ffffff8c, inset -1px 0 0 #ffffff8c,
+    inset 0 -1px 0 #ffffff4d, 0 0 0 1px #1419000d, 0 28px 56px -36px #14190047;
+  --inset-fill: #ffffff80;
+  --inset-edge: inset 0 1px 0 #ffffffd9, inset 0 0 0 1px #14190012;
+  --field-fill: #fffcf8;
+  --field-edge: #14190033;
+  --field-focus: #141900;
+  color-scheme: light;
+}
+
+.on-dark,
+.card-dark,
+.bg-ink,
+.bg-coal {
+  --color-parchment: #FFF9F2;
+  --color-accent: #C8FA00;
+  --color-aqua: #B6B8B0;
+  --color-orchid: #93958A;
+  --color-vermillion: #FF6944;
+  --color-yellow-500: oklch(79.5% 0.184 86.047);
+  --color-amber-500: oklch(76.9% 0.188 70.08);
+  --color-amber-400: oklch(82.8% 0.189 84.429);
+  --color-amber-300: oklch(87.9% 0.169 91.605);
+  --color-amber-200: oklch(92.4% 0.12 95.746);
+
+  --glass-fill: #ffffff0e;
+  --glass-sheen: linear-gradient(155deg, #ffffff12 0%, #ffffff05 40%, #fff0 60%, #ffffff0d 100%);
+  --glass-edge: inset 0 1px 0 #ffffff29, inset 0 0 0 1px #ffffff14;
+  --inset-fill: #ffffff0e;
+  --inset-edge: inset 0 0 0 1px #ffffff1a;
+  --field-fill: #ffffff0e;
+  --field-edge: #ffffff29;
+  --field-focus: #C8FA00;
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--color-cream);
+  color: var(--color-ink);
+}
+
+::selection {
+  background: var(--color-chartreuse);
+  color: var(--color-ink);
+}
+
+@layer components {
+  /* Cards
+   *
+   * .glass       a panel on whatever surface it is on: paper glass on the
+   *              page, white-tinted glass inside a dark card
+   * .card-light  a light card, wherever it is
+   * .card-dark   a dark card, wherever it is
+   *
+   * None of them has a border: the edge is an inset highlight, as on the site.
+   */
+  .glass,
+  .card-light,
+  .card-dark {
+    border-radius: var(--radius-card);
+    background-color: var(--glass-fill);
+    background-image: var(--glass-sheen);
+    box-shadow: var(--glass-edge);
+  }
+
+  .card-light {
+    color: var(--color-ink);
+  }
+
+  .card-dark {
+    color: var(--color-paper);
+    background-color: #121410f2;
+    box-shadow: inset 0 1px 0 #ffffff29, inset 0 0 0 1px #ffffff14, 0 28px 56px -36px #14190080;
+  }
+
+  /* Glass that sits over a picture or a gradient, where there is something to frost. */
+  .glass-frost {
+    -webkit-backdrop-filter: blur(14px) saturate(1.15);
+    backdrop-filter: blur(14px) saturate(1.15);
+  }
+
+  /* A panel inside a card is a well, not a second raised card. */
+  :where(.glass, .card-light, .card-dark) .glass,
+  .glass-inset {
+    border-radius: var(--radius-inset);
+    background-color: var(--inset-fill);
+    background-image: none;
+    box-shadow: var(--inset-edge);
+  }
+
+  /* Paper-on-picture glass: the hero cards and anything else laid on a brand picture. */
+  .glass-picture {
+    border-radius: var(--radius-card);
+    background-color: #1419004d;
+    background-image: linear-gradient(178deg, #fff9f20d 1.5%, #fff9f20c 41.6%, #fff9f200 61.7%, #fff9f20d 98.5%);
+    box-shadow: inset 0 1px #ffffff4d, inset 1px 0 #ffffff42, inset -1px 0 #ffffff42, inset 0 -1px #ffffff24;
+    -webkit-backdrop-filter: blur(26px);
+    backdrop-filter: blur(26px);
+  }
+
+  /* The veil behind a dialog, lightly frosted. A neutral near-black rather
+     than ink: ink has no blue in it, and thinned out over the cream page it
+     turns khaki. */
+  .modal-scrim {
+    background-color: #15171c99;
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+  }
+
+  /* Pills: chips, counters, segmented controls */
+  .pill {
+    border-radius: 999px;
+    background-color: var(--inset-fill);
+    box-shadow: var(--inset-edge);
+  }
+
+  /* Text inputs */
+  .field {
+    border-radius: var(--radius-field);
+    background-color: var(--field-fill);
+    box-shadow: inset 0 0 0 1px var(--field-edge);
+    transition: box-shadow 0.15s;
+  }
+
+  .field:focus,
+  .field:focus-within {
+    box-shadow: inset 0 0 0 1px var(--field-focus);
+    outline: none;
+  }
+
+  /* Buttons
+   *
+   * The skin only: colour, corner, type and motion. Size stays with the
+   * element's own padding utilities.
+   */
+  .btn-lime,
+  .btn-glass,
+  .btn-ink,
+  .btn-coral,
+  .btn-ghost {
+    border-radius: var(--radius-btn);
+    border-color: transparent;
+    font-family: var(--font-oracle-standard);
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: background-color 0.3s, color 0.3s, box-shadow 0.4s, transform 0.4s;
+  }
+
+  :is(.btn-lime, .btn-glass, .btn-ink, .btn-coral, .btn-ghost):active:not(:disabled) {
+    transform: scale(0.985);
+  }
+
+  :is(.btn-lime, .btn-glass, .btn-ink, .btn-coral, .btn-ghost):disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .btn-lime {
+    background-color: var(--color-chartreuse);
+    color: var(--color-ink);
+  }
+
+  /* A disabled lime button goes neutral: lime at half strength reads as olive. */
+  .btn-lime:disabled {
+    opacity: 1 !important;
+    background-color: color-mix(in srgb, var(--color-parchment) 12%, transparent);
+    color: color-mix(in srgb, var(--color-parchment) 45%, transparent);
+  }
+
+  .btn-lime:hover:not(:disabled) {
+    background-color: var(--color-chartreuse-light);
+    box-shadow: 0 14px 32px -12px #c8fa008c;
+  }
+
+  /* The quiet button: frosted on dark surfaces, outlined paper on light ones. */
+  .btn-glass {
+    color: var(--color-parchment);
+    background-color: var(--btn-glass-fill, #fffcf899);
+    background-image: var(--btn-glass-sheen, none);
+    box-shadow: inset 0 0 0 1px var(--btn-glass-edge, #14190033);
+  }
+
+  .btn-glass:hover:not(:disabled) {
+    color: var(--btn-glass-hover-text, #FFF9F2);
+    background-color: var(--btn-glass-hover-fill, #141900);
+    background-image: none;
+  }
+
+  :where(.on-dark, .card-dark, .bg-ink, .bg-coal) {
+    --btn-glass-fill: #1419001a;
+    --btn-glass-sheen: linear-gradient(104deg, #fffbf633 0.6%, #fffbf600 30% 59.5%, #fffbf633 95%);
+    --btn-glass-edge: #fff9f229;
+    --btn-glass-hover-text: #FFF9F2;
+    --btn-glass-hover-fill: #fff9f229;
+  }
+
+  :where(.on-light, .card-light) {
+    --btn-glass-fill: initial;
+    --btn-glass-sheen: initial;
+    --btn-glass-edge: initial;
+    --btn-glass-hover-text: initial;
+    --btn-glass-hover-fill: initial;
+  }
+
+  .btn-ink {
+    background-color: var(--color-ink);
+    color: var(--color-paper);
+  }
+
+  .btn-ink:hover:not(:disabled) {
+    background-color: color-mix(in srgb, var(--color-ink) 82%, var(--color-paper));
+  }
+
+  .btn-coral {
+    background-color: var(--color-coral);
+    color: var(--color-ink);
+  }
+
+  .btn-coral:hover:not(:disabled) {
+    background-color: #ff8a6b;
+  }
+
+  .btn-ghost {
+    color: var(--color-parchment);
+    background-color: transparent;
+  }
+
+  .btn-ghost:hover:not(:disabled) {
+    background-color: color-mix(in srgb, var(--color-parchment) 10%, transparent);
+  }
+
+  /* The lime glow that sits behind the top of a page on aztec.network. It gives
+     the glass cards something to catch. Decorative: place it first inside a
+     `relative isolate` container. */
+  .page-glow {
+    position: absolute;
+    z-index: -1;
+    top: -60px;
+    right: 0;
+    width: min(760px, 85%);
+    height: 560px;
+    pointer-events: none;
+    background: radial-gradient(closest-side, #c8fa003d 0%, #e3ff9b2b 45%, #f8f1e700 100%);
+  }
+
+  /* Small uppercase label: table heads, card eyebrows, nav */
+  .eyebrow {
+    font-family: var(--font-oracle-standard);
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* Navigation: the floating glass pill from aztec.network */
+  .nav-pill::before,
+  .nav-sheet {
+    background-color: #fff9f29e;
+    background-image: linear-gradient(178deg, #fff9f20d 1.5%, #fff9f20c 41.6%, #fff9f200 61.7%, #fff9f20d 98.5%);
+    box-shadow: inset 0 1px #ffffffe6, inset 1px 0 #ffffffb3, inset -1px 0 #ffffffb3,
+      inset 0 -1px #1419000d, 0 0 0 1px #1419000f, 0 14px 34px -20px #1419004d;
+    -webkit-backdrop-filter: blur(26px);
+    backdrop-filter: blur(26px);
+  }
+
+  .nav-pill {
+    position: relative;
+    border-radius: 999px;
+  }
+
+  /* The glass is a layer behind the pill, not the pill itself, so the menu
+     sheet beside it can frost the page on its own. */
+  .nav-pill::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+  }
+
+  .on-dark > .nav-pill::before,
+  .on-dark > .nav-sheet {
+    background-color: #14190033;
+    box-shadow: inset 0 1px #ffffff4d, inset 1px 0 #ffffff42, inset -1px 0 #ffffff42, inset 0 -1px #ffffff24;
+  }
+
+  .nav-sheet {
+    border-radius: var(--radius-card);
+    background-color: #fff9f2e6;
+  }
+
+  .on-dark > .nav-sheet {
+    background-color: #121410d9;
+  }
+
+  .nav-link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 25px;
+    padding: 6.5px 16px;
+    border-radius: 50px;
+    color: var(--color-parchment);
+    font-family: var(--font-oracle-standard);
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    background-color: #1419000f;
+    box-shadow: inset 0 1px #ffffffe6, inset 0 0 0 1px #1419001a;
+    transition: opacity 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  .on-dark .nav-link::after {
+    background-color: #1419001a;
+    box-shadow: inset 0 1px #ffffff80, inset 1px 0 #ffffff73, inset -1px 0 #ffffff73, inset 0 -1px #ffffff4d;
+  }
+
+  .nav-link:is(:hover, :focus-visible, [aria-current="page"])::after {
+    opacity: 1;
   }
 }
 
@@ -247,33 +633,10 @@ button:disabled {
     animation: pulse-glow 2s infinite;
   }
 
-  .bg-gradient-hero {
-    background:
-      linear-gradient(180deg, rgba(46, 7, 0, 0.85) 0%, rgba(26, 20, 0, 0.95) 100%),
-      url('/assets/Aztec%20Image_15.png');
-    background-size: cover;
-    background-position: center;
-  }
-
-  .bg-radial-accent {
-    background:
-      radial-gradient(circle at 20% 50%, rgba(212, 255, 40, 0.05) 0%, transparent 50%),
-      url('/assets/Aztec%20Image_08.png');
-    background-size: 40% auto;
-    background-position: top right;
-    background-repeat: no-repeat;
-    opacity: 0.15;
-  }
-
-  .border-gradient {
-    background: linear-gradient(90deg, #D4FF28 0%, #FF2DF4 50%, #2BFAE9 100%);
-    padding: 1px;
-  }
-
   /* Custom scrollbar to match Aztec UI */
   .custom-scrollbar {
     scrollbar-width: thin;
-    scrollbar-color: rgba(212, 255, 40, 0.3) rgba(242, 238, 225, 0.1);
+    scrollbar-color: color-mix(in srgb, var(--color-parchment) 30%, transparent) color-mix(in srgb, var(--color-parchment) 8%, transparent);
   }
 
   .custom-scrollbar::-webkit-scrollbar {
@@ -281,140 +644,17 @@ button:disabled {
   }
 
   .custom-scrollbar::-webkit-scrollbar-track {
-    background: rgba(242, 238, 225, 0.1);
+    background: color-mix(in srgb, var(--color-parchment) 8%, transparent);
     border-radius: 4px;
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: rgba(212, 255, 40, 0.3);
+    background: color-mix(in srgb, var(--color-parchment) 30%, transparent);
     border-radius: 4px;
-    border: 1px solid rgba(242, 238, 225, 0.2);
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: rgba(212, 255, 40, 0.5);
-  }
-
-  .shimmer::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(212, 255, 40, 0.1), transparent);
-    animation: shimmer 2s infinite;
-  }
-
-  .bg-card-texture {
-    position: relative;
-  }
-
-  .bg-card-texture::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: url('/assets/Aztec%20Image_28.webp');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    opacity: 0.08;
-    z-index: 0;
-  }
-
-
-  .bg-card-texture-absolute::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: url('/assets/Aztec%20Image_28.webp');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    opacity: 0.1;
-    z-index: -1;
-  }
-
-  .bg-stats-accent {
-    position: relative;
-  }
-
-  .bg-stats-accent::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: url('/assets/Aztec%20Image_06.png');
-    background-size: 70% auto;
-    background-position: center right;
-    background-repeat: no-repeat;
-    opacity: 0.05;
-    z-index: 0;
-  }
-
-  .bg-sidebar-texture {
-    position: relative;
-  }
-
-  .bg-sidebar-texture::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: url('/assets/Aztec%20Image_12.png');
-    background-size: 80% auto;
-    background-position: center right;
-    background-repeat: no-repeat;
-    opacity: 0.06;
-    z-index: 0;
-  }
-
-  .bg-rewards-accent {
-    position: relative;
-  }
-
-  .bg-rewards-accent::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: url('/assets/Aztec%20Image_28.png');
-    background-size: 50% auto;
-    background-position: center left;
-    background-repeat: no-repeat;
-    opacity: 0.06;
-    z-index: 0;
-  }
-
-  .bg-privacy-accent {
-    position: relative;
-  }
-
-  .bg-privacy-accent::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: url('/assets/Aztec%20Image_19.png');
-    background-size: 60% auto;
-    background-position: center;
-    background-repeat: no-repeat;
-    opacity: 0.08;
-    z-index: 0;
+    background: color-mix(in srgb, var(--color-parchment) 50%, transparent);
   }
 
   @keyframes alertBounce {

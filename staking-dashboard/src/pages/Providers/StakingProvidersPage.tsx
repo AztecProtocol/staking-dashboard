@@ -69,7 +69,7 @@ export default function StakingProvidersPage() {
       />
 
       {/* Provider Registration */}
-      <div className="bg-parchment/5 border border-parchment/20 p-4 mb-6">
+      <div className="glass p-4 mb-6">
         <div className="flex items-center justify-between">
           <div>
             <h4 className="font-oracle-standard font-bold text-parchment text-sm mb-1">

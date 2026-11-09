@@ -177,11 +177,11 @@ export const ProviderStakingFlow = ({ provider }: StakingFlowFeatureProps) => {
   if (isDelegationCompleted) {
     const sourceLabel = selectedSource === "wallet" ? "Wallet" : "Token Vault"
     return (
-      <div className="bg-parchment/5 border border-parchment/20 p-8 text-center">
-        <div className="w-16 h-16 mx-auto mb-6 flex items-center justify-center bg-chartreuse/20 text-chartreuse rounded-full">
+      <div className="glass p-8 text-center">
+        <div className="w-16 h-16 mx-auto mb-6 flex items-center justify-center bg-parchment/10 text-accent rounded-full">
           <Icon name="check" className="w-8 h-8" />
         </div>
-        <h3 className="font-md-thermochrome text-2xl text-parchment mb-4">
+        <h3 className="font-arizona-serif text-2xl text-parchment mb-4">
           Delegation Complete!
         </h3>
         <p className="text-parchment/70 mb-6">
@@ -190,13 +190,13 @@ export const ProviderStakingFlow = ({ provider }: StakingFlowFeatureProps) => {
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <button
             onClick={openCart}
-            className="bg-chartreuse text-ink px-6 py-3 font-oracle-standard font-bold text-sm uppercase tracking-wider hover:bg-parchment hover:text-ink transition-all"
+            className="btn-lime px-6 py-3 text-sm"
           >
             View Cart
           </button>
           <button
             onClick={handleResetFlow}
-            className="border border-parchment/30 text-parchment px-6 py-3 font-oracle-standard font-bold text-sm uppercase tracking-wider hover:bg-parchment/10 transition-all"
+            className="btn-glass px-6 py-3 text-sm"
           >
             Delegate Another Source
           </button>
@@ -207,11 +207,11 @@ export const ProviderStakingFlow = ({ provider }: StakingFlowFeatureProps) => {
 
   if (queueLength === 0) {
     return (
-      <div className="bg-parchment/5 border border-parchment/20 p-4 sm:p-6">
+      <div className="glass p-4 sm:p-6">
         <h4 className="font-arizona-serif text-xl font-medium text-parchment mb-6">
           Delegate to {provider.name}
         </h4>
-        <div className="bg-parchment/10 border border-parchment/30 p-6 text-center">
+        <div className="glass p-6 text-center">
           <div className="w-12 h-12 mx-auto mb-4 flex items-center justify-center bg-parchment/20 text-parchment/60 rounded-full">
             <Icon name="x" className="w-6 h-6" />
           </div>
@@ -227,7 +227,7 @@ export const ProviderStakingFlow = ({ provider }: StakingFlowFeatureProps) => {
   }
 
   return (
-    <div className="bg-parchment/5 border border-parchment/20 p-4 sm:p-6">
+    <div className="glass p-4 sm:p-6">
       <h4 className="font-arizona-serif text-xl font-medium text-parchment mb-6">
         Delegate to {provider.name}
       </h4>

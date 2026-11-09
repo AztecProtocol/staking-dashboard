@@ -80,8 +80,8 @@ export const StakeFlowCountModal = ({
   const canDecrease = count > 1
 
   return createPortal(
-    <div className="fixed inset-0 backdrop-blur-xs flex items-center justify-center z-50 p-4">
-      <div className="bg-malachite border-2 border-chartreuse max-w-md w-full p-6 space-y-6">
+    <div className="fixed inset-0 modal-scrim flex items-center justify-center z-50 p-4">
+      <div className="card-dark max-w-md w-full p-6 space-y-6">
         {/* Header */}
         <div>
           <h3 className="font-arizona-serif text-xl font-medium text-parchment mb-2">
@@ -98,13 +98,13 @@ export const StakeFlowCountModal = ({
             <button
               onClick={() => setCount(Math.max(1, count - 1))}
               disabled={!canDecrease}
-              className="w-12 h-12 bg-parchment/10 border-2 border-parchment/30 flex items-center justify-center hover:bg-parchment/20 hover:border-parchment/50 transition-all disabled:opacity-30 disabled:cursor-not-allowed text-2xl font-bold text-parchment"
+              className="w-12 h-12 btn-glass flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed text-2xl font-bold text-parchment rounded-btn"
             >
               −
             </button>
 
             <div className="text-center min-w-[120px]">
-              <div className="text-5xl font-mono font-bold text-chartreuse">
+              <div className="text-5xl font-mono font-bold text-accent">
                 {count}
               </div>
               <div className="text-xs text-parchment/60 uppercase tracking-wide font-oracle-standard mt-2">
@@ -120,7 +120,7 @@ export const StakeFlowCountModal = ({
             <button
               onClick={() => setCount(Math.min(maxCount, count + 1))}
               disabled={!canIncrease}
-              className="w-12 h-12 bg-parchment/10 border-2 border-parchment/30 flex items-center justify-center hover:bg-parchment/20 hover:border-parchment/50 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+              className="w-12 h-12 btn-glass flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed rounded-btn"
             >
               <Icon name="plus" size="lg" />
             </button>
@@ -131,14 +131,14 @@ export const StakeFlowCountModal = ({
             <button
               onClick={() => setCount(1)}
               disabled={count === 1}
-              className="px-4 py-2 bg-parchment/10 border border-parchment/30 text-xs font-oracle-standard uppercase tracking-wide text-parchment hover:bg-parchment/20 hover:border-parchment/50 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+              className="px-4 py-2 btn-glass text-xs disabled:opacity-30 disabled:cursor-not-allowed"
             >
               Min (1)
             </button>
             <button
               onClick={() => setCount(maxCount)}
               disabled={count === maxCount}
-              className="px-4 py-2 bg-chartreuse/10 border border-chartreuse/30 text-xs font-oracle-standard uppercase tracking-wide text-chartreuse hover:bg-chartreuse/20 hover:border-chartreuse/50 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+              className="px-4 py-2 bg-parchment/5 border border-parchment/20 text-xs font-oracle-standard uppercase tracking-wide text-accent hover:bg-parchment/10 hover:border-parchment/30 transition-all disabled:opacity-30 disabled:cursor-not-allowed rounded-btn"
             >
               Max ({maxCount})
             </button>
@@ -146,7 +146,7 @@ export const StakeFlowCountModal = ({
         </div>
 
         {/* Max count info */}
-        <div className="bg-parchment/5 border border-parchment/20 p-3">
+        <div className="glass p-3">
           <div className="flex items-center justify-between mb-1">
             <div className="text-xs text-parchment/60 uppercase tracking-wide font-oracle-standard">
               Maximum Available
@@ -154,21 +154,21 @@ export const StakeFlowCountModal = ({
             {selectedAtp && (
               <button
                 onClick={() => setUseSelectedAtp(!useSelectedAtp)}
-                className="px-2 py-1 bg-parchment/10 border border-parchment/30 text-xs text-parchment hover:bg-parchment/20 hover:border-parchment/50 transition-all"
+                className="px-2 py-1 btn-glass text-xs"
               >
                 {useSelectedAtp ? "Selected Vault" : "Max Allowed"}
               </button>
             )}
           </div>
           <div className="text-sm text-parchment">
-            You can create up to <span className="font-bold text-chartreuse">{maxCount}</span> stake{maxCount !== 1 ? "s" : ""}
+            You can create up to <span className="font-bold text-accent">{maxCount}</span> stake{maxCount !== 1 ? "s" : ""}
           </div>
         </div>
 
         {/* Actions */}
         <button
           onClick={handleConfirm}
-          className="w-full bg-chartreuse text-ink py-3 font-oracle-standard font-bold text-sm uppercase tracking-wider hover:bg-parchment hover:text-ink transition-all duration-300 border-2 border-chartreuse hover:border-parchment"
+          className="w-full btn-lime py-3 text-sm"
         >
           Confirm
         </button>

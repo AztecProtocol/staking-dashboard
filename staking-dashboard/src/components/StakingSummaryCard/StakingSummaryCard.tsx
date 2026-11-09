@@ -36,8 +36,8 @@ const MetricCard = ({
   color?: 'parchment' | 'chartreuse' | 'aqua' | 'orchid'
 }) => {
   return (
-    <div className="bg-parchment/5 border border-parchment/20 p-4 sm:p-6 hover:bg-parchment/8 transition-all">
-      <div className="text-xs font-francesco uppercase tracking-wide text-parchment/60 mb-2">
+    <div className="glass p-4 sm:p-6 hover:bg-parchment/8 transition-all">
+      <div className="text-xs font-oracle-standard uppercase tracking-wide text-parchment/60 mb-2">
         {label}
       </div>
       {isLoading ? (
@@ -114,7 +114,7 @@ export const StakingSummaryCard = () => {
   // Error state
   if (error && !data) {
     return (
-      <div className="bg-parchment/5 border border-vermillion/20 p-6 text-center">
+      <div className="bg-parchment/5 border border-vermillion/20 p-6 text-center rounded-inset">
         <div className="text-vermillion mb-4">
           <div className="flex justify-center mb-2">
             <Icon name="warning" className="w-8 h-8" />
@@ -126,7 +126,7 @@ export const StakingSummaryCard = () => {
         <p className="text-xs text-parchment/60 mb-4">{error}</p>
         <button
           onClick={() => refetch()}
-          className="px-4 py-2 bg-chartreuse text-ink font-oracle-standard font-bold text-xs uppercase tracking-wider hover:bg-parchment hover:text-ink transition-all border-2 border-chartreuse hover:border-parchment"
+          className="px-4 py-2 btn-lime text-xs"
         >
           Retry
         </button>
@@ -161,7 +161,7 @@ export const StakingSummaryCard = () => {
       </div>
 
       {/* Collapsible Details Section */}
-      <div className="bg-parchment/5 border border-parchment/20">
+      <div className="glass">
         <button
           onClick={() => setShowDetails(!showDetails)}
           className="w-full p-4 flex items-center justify-between hover:bg-parchment/8 transition-all"
@@ -180,7 +180,7 @@ export const StakingSummaryCard = () => {
           <div className="border-t border-parchment/20 p-4 space-y-4">
             {/* Stakes Distribution */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="bg-ink/20 border border-parchment/10 p-4 rounded">
+              <div className="glass-inset p-4">
                 <h4 className="font-oracle-standard text-xs font-bold uppercase tracking-wide text-parchment/80 mb-3">
                   Stakes Distribution
                 </h4>
@@ -202,12 +202,12 @@ export const StakingSummaryCard = () => {
                     </div>
                     <div className="flex justify-between text-sm">
                       <span className="text-parchment/60">Direct:</span>
-                      <span className="font-mono text-chartreuse">{formatNumber(data.stats.directStakes)}</span>
+                      <span className="font-mono text-accent">{formatNumber(data.stats.directStakes)}</span>
                     </div>
                     {/* Simple percentage bar */}
                     {data.stats.totalStakes > 0 && (
                       <div className="mt-3 pt-3 border-t border-parchment/10">
-                        <div className="h-2 bg-ink/40 rounded overflow-hidden">
+                        <div className="h-2 bg-parchment/15 rounded-full overflow-hidden">
                           <div className="h-full flex">
                             <div
                               className="bg-chartreuse"
@@ -220,7 +220,7 @@ export const StakingSummaryCard = () => {
                           </div>
                         </div>
                         <div className="flex justify-between mt-1 text-xs">
-                          <span className="text-chartreuse">
+                          <span className="text-accent">
                             Direct {((data.stats.directStakes / data.stats.totalStakes) * 100).toFixed(1)}%
                           </span>
                           <span className="text-aqua">
@@ -233,7 +233,7 @@ export const StakingSummaryCard = () => {
                 ) : null}
               </div>
 
-              <div className="bg-ink/20 border border-parchment/10 p-4 rounded">
+              <div className="glass-inset p-4">
                 <h4 className="font-oracle-standard text-xs font-bold uppercase tracking-wide text-parchment/80 mb-3">
                   Network Stats
                 </h4>

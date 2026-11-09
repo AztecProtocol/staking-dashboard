@@ -160,10 +160,10 @@ export const ClaimAllRewardsModal = ({
 
   return createPortal(
     <div
-      className="fixed inset-0 backdrop-blur-xs z-[200] flex items-center justify-center p-4 pt-20"
+      className="fixed inset-0 modal-scrim z-[200] flex items-center justify-center p-4 pt-20"
       onClick={handleBackdropClick}
     >
-      <div className="bg-ink border-2 border-chartreuse/40 w-full max-w-lg relative max-h-[calc(100vh-5rem)] overflow-y-auto custom-scrollbar">
+      <div className="card-dark w-full max-w-lg relative max-h-[calc(100vh-5rem)] overflow-y-auto custom-scrollbar">
         <button
           onClick={handleClose}
           className="absolute top-4 right-4 text-parchment/60 hover:text-parchment transition-colors"
@@ -174,7 +174,7 @@ export const ClaimAllRewardsModal = ({
         <div className="p-6">
           <div className="flex items-start gap-4 mb-6">
             <div className="flex-shrink-0 mt-1">
-              <Icon name="gift" size="lg" className="text-chartreuse w-8 h-8" />
+              <Icon name="gift" size="lg" className="text-accent w-8 h-8" />
             </div>
             <div className="flex-1">
               <h2 className="font-arizona-serif text-2xl font-medium text-parchment mb-2">

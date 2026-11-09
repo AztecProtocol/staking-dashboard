@@ -106,7 +106,7 @@ export const ATPDetailsSummary = ({
               maxWidth="max-w-xs"
             />
           </div>
-          <div className="font-mono text-base font-bold text-chartreuse">
+          <div className="font-mono text-base font-bold text-accent">
             {isLoadingTokenDetails ? "Loading..." : formatTokenAmount(totalRewards, decimals, symbol)}
           </div>
         </div>

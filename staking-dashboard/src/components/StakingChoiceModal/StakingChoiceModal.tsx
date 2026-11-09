@@ -43,10 +43,10 @@ export const StakingChoiceModal = ({ isOpen, onClose, selectedAtp }: StakingChoi
 
   return createPortal(
     <div
-      className="fixed inset-0 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 modal-scrim z-50 flex items-center justify-center p-4"
       onClick={handleBackdropClick}
     >
-      <div className="bg-ink border border-parchment/20 w-full max-w-4xl max-h-[90vh] overflow-y-auto relative">
+      <div className="card-dark w-full max-w-4xl max-h-[90vh] overflow-y-auto relative">
         <div className="p-8 relative z-10">
           {/* Header */}
           <div className="flex justify-between items-center mb-8">
@@ -72,10 +72,10 @@ export const StakingChoiceModal = ({ isOpen, onClose, selectedAtp }: StakingChoi
           {/* Options - Side by Side */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Delegate to Operator Option */}
-            <div className="bg-parchment/5 border border-parchment/20 p-6 hover:border-chartreuse/50 hover:bg-chartreuse/5 transition-all">
+            <div className="glass p-6 hover:bg-parchment/5 transition-all">
               <div className="flex flex-col items-center text-center h-full">
                 {/* Icon */}
-                <div className="w-20 h-20 mb-4 flex items-center justify-center border border-parchment/30">
+                <div className="w-20 h-20 mb-4 flex items-center justify-center glass">
                   <Icon name="users" className="w-10 h-10 text-parchment" />
                 </div>
 
@@ -95,7 +95,7 @@ export const StakingChoiceModal = ({ isOpen, onClose, selectedAtp }: StakingChoi
 
                 <button
                   onClick={handleDelegateToProvider}
-                  className="w-full mt-auto bg-chartreuse text-ink py-3 px-6 font-oracle-standard font-bold text-sm uppercase tracking-wider hover:bg-parchment hover:text-ink transition-all duration-300 border-2 border-chartreuse hover:border-parchment shadow-lg"
+                  className="w-full mt-auto btn-lime py-3 px-6 text-sm"
                 >
                   Browse Delegates
                 </button>
@@ -103,10 +103,10 @@ export const StakingChoiceModal = ({ isOpen, onClose, selectedAtp }: StakingChoi
             </div>
 
             {/* Register Your Sequencer Option */}
-            <div className="bg-parchment/5 border border-parchment/20 p-6 hover:border-chartreuse/50 hover:bg-chartreuse/5 transition-all">
+            <div className="glass p-6 hover:bg-parchment/5 transition-all">
               <div className="flex flex-col items-center text-center h-full">
                 {/* Icon */}
-                <div className="w-20 h-20 mb-4 flex items-center justify-center border border-parchment/30">
+                <div className="w-20 h-20 mb-4 flex items-center justify-center glass">
                   <Icon name="shield" className="w-10 h-10 text-parchment" />
                 </div>
 
@@ -126,7 +126,7 @@ export const StakingChoiceModal = ({ isOpen, onClose, selectedAtp }: StakingChoi
 
                 <button
                   onClick={handleStakeOwnNode}
-                  className="w-full mt-auto bg-parchment/10 text-parchment border-2 border-parchment/30 py-3 px-6 font-oracle-standard font-bold text-sm uppercase tracking-wider hover:bg-chartreuse hover:text-ink hover:border-chartreuse transition-all duration-300"
+                  className="w-full mt-auto btn-glass py-3 px-6 text-sm"
                 >
                   Stake Own Node
                 </button>

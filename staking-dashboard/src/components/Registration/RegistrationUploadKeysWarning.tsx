@@ -22,7 +22,7 @@ export const RegistrationUploadKeysWarning = ({
     <>
       {/* Error display */}
       {uploadError && (
-        <div className="bg-vermillion/10 border-l-4 border-vermillion p-4">
+        <div className="bg-vermillion/10 border-l-4 rounded-r-field border-vermillion p-4">
           <div className="flex items-start gap-3">
             <div className="flex-shrink-0 mt-0.5">
               <Icon name="warning" size="lg" className="text-vermillion" />
@@ -39,13 +39,13 @@ export const RegistrationUploadKeysWarning = ({
 
       {/* Warning: Insufficient keystores */}
       {uploadedKeystores?.length && stakeCount && uploadedKeystores.length < stakeCount ? (
-        <div className="bg-chartreuse/10 border-l-4 border-chartreuse p-4">
+        <div className="bg-parchment/5 border-l-4 rounded-r-field border-accent p-4">
           <div className="flex items-start gap-3">
             <div className="flex-shrink-0 mt-0.5">
-              <Icon name="info" size="lg" className="text-chartreuse" />
+              <Icon name="info" size="lg" className="text-accent" />
             </div>
             <div className="flex-1">
-              <div className="font-oracle-standard text-sm font-bold text-chartreuse uppercase tracking-wide mb-2">
+              <div className="font-oracle-standard text-sm font-bold text-accent uppercase tracking-wide mb-2">
                 Keystore Count Notice
               </div>
               <div className="text-sm text-parchment/90 space-y-1">
@@ -74,21 +74,21 @@ export const RegistrationUploadKeysWarning = ({
           })
 
           return (
-            <div className="bg-chartreuse/10 border-l-4 border-chartreuse p-4">
+            <div className="bg-parchment/5 border-l-4 rounded-r-field border-accent p-4">
               <div className="flex items-start gap-3">
                 <div className="flex-shrink-0 mt-0.5">
-                  <Icon name="info" size="lg" className="text-chartreuse" />
+                  <Icon name="info" size="lg" className="text-accent" />
                 </div>
                 <div className="flex-1">
-                  <div className="font-oracle-standard text-sm font-bold text-chartreuse uppercase tracking-wide mb-2">
+                  <div className="font-oracle-standard text-sm font-bold text-accent uppercase tracking-wide mb-2">
                     Duplicate Attester Notice
                   </div>
                   <div className="text-sm text-parchment/90 space-y-2">
                     <p>Your keystore file contains {uniqueDuplicates.length} duplicate attester address{uniqueDuplicates.length !== 1 ? 'es' : ''}. Each sequencer should have a unique address.</p>
-                    <div className="font-mono text-xs space-y-1 bg-ink/30 p-2 border border-parchment/10">
+                    <div className="font-mono text-xs space-y-1 glass p-2">
                       {duplicateCounts.map(({ addr, count }, idx) => (
                         <div key={idx} className="flex items-center gap-2">
-                          <span className="text-chartreuse">{uploadedKeystores.find(k => k.attester.toLowerCase() === addr)?.attester}</span>
+                          <span className="text-accent">{uploadedKeystores.find(k => k.attester.toLowerCase() === addr)?.attester}</span>
                           <span className="text-parchment/60">(appears {count} times)</span>
                         </div>
                       ))}

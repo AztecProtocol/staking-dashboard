@@ -21,14 +21,14 @@ export const NotFoundPage = () => {
         </h1>
 
         {/* Description */}
-        <p className="font-md-thermochrome text-base md:text-lg text-parchment/60 mb-6 max-w-md mx-auto">
+        <p className="font-oracle-standard text-base md:text-lg text-parchment/60 mb-6 max-w-md mx-auto">
           The page you're looking for doesn't exist or has been moved.
         </p>
 
         {/* Actions */}
         <Link
           to="/"
-          className="inline-flex items-center justify-center gap-2 bg-chartreuse text-ink px-6 py-3 font-oracle-standard font-bold text-sm uppercase tracking-wider hover:bg-parchment hover:text-ink transition-all"
+          className="inline-flex items-center justify-center gap-2 btn-lime px-6 py-3 text-sm"
         >
           <Icon name="arrowLeft" size="sm" />
           Go to Dashboard

@@ -52,13 +52,13 @@ const SplitContractItem = ({
     : null
 
   return (
-    <div className="bg-parchment/5 border border-parchment/20 p-4">
+    <div className="glass p-4">
       <div className="flex items-start justify-between gap-3">
         <div className="flex-1 min-w-0">
           {/* Source badge + allocation */}
           <div className="flex items-center gap-2 mb-2 flex-wrap">
             {isDelegation ? (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-chartreuse/20 text-chartreuse text-xs font-bold uppercase tracking-wide">
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-parchment/10 text-accent text-xs font-bold uppercase tracking-wide">
                 <Icon name="users" size="sm" />
                 {providerName || "Delegation"}
               </span>
@@ -69,7 +69,7 @@ const SplitContractItem = ({
               </span>
             )}
             {userPercentage && (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-ink border border-chartreuse/40 text-chartreuse text-xs font-mono">
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 card-dark text-accent text-xs font-mono">
                 {userPercentage}% yours
               </span>
             )}
@@ -95,7 +95,7 @@ const SplitContractItem = ({
                 <div className="text-xs text-parchment/60 uppercase tracking-wide mb-0.5">
                   Your Share
                 </div>
-                <div className="font-mono text-lg font-bold text-chartreuse">
+                <div className="font-mono text-lg font-bold text-accent">
                   {formatTokenAmountFull(userShare, decimals, symbol)}
                 </div>
               </div>
@@ -118,7 +118,7 @@ const SplitContractItem = ({
           <button
             onClick={onRemove}
             disabled={isRemoving}
-            className="p-2 text-parchment/60 hover:text-red-400 transition-colors disabled:opacity-50"
+            className="p-2 text-parchment/60 hover:text-vermillion transition-colors disabled:opacity-50"
             title="Remove split contract"
           >
             <Icon name="trash2" size="sm" />

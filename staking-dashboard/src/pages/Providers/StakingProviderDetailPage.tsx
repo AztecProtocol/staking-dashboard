@@ -21,7 +21,7 @@ export default function StakingProviderDetailPage() {
   if (error || !provider) {
     return (
       <div className="text-center py-12">
-        <h3 className="font-md-thermochrome text-2xl text-parchment mb-4">
+        <h3 className="font-arizona-serif text-2xl text-parchment mb-4">
           Provider Not Found
         </h3>
         <p className="text-parchment/60 mb-6">
@@ -29,7 +29,7 @@ export default function StakingProviderDetailPage() {
         </p>
         <Link
           to="/providers"
-          className="inline-block bg-chartreuse text-ink px-6 py-2 font-oracle-standard font-bold text-xs uppercase tracking-wider hover:bg-chartreuse/90 transition-all"
+          className="inline-block btn-lime px-6 py-2 text-xs"
         >
           Back to Delegate
         </Link>

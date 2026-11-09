@@ -101,7 +101,7 @@ export const StakeFlowOperatorUpdate = () => {
       {/* Current vs New Operator Comparison */}
       <div className="space-y-4">
         {/* Current Operator */}
-        <div className="bg-parchment/5 border border-parchment/20 p-4">
+        <div className="glass p-4">
           <div className="text-xs font-oracle-standard uppercase tracking-wide text-parchment/60 mb-3">
             Current Operator
           </div>
@@ -109,11 +109,11 @@ export const StakeFlowOperatorUpdate = () => {
             <div className="text-sm text-parchment/50">Loading...</div>
           ) : currentOperator && !isZeroAddress ? (
             <div className="flex items-center justify-between gap-3">
-              <div className="font-mono text-sm text-chartreuse break-all">
+              <div className="font-mono text-sm text-accent break-all">
                 {currentOperator}
               </div>
               {isCurrentAddressOperator && (
-                <div className="flex items-center gap-1 bg-chartreuse/20 px-2 py-1 text-xs font-medium text-chartreuse shrink-0">
+                <div className="flex items-center gap-1 bg-parchment/10 px-2 py-1 text-xs font-medium text-accent shrink-0">
                   <Icon name="check" size="sm" />
                   You
                 </div>
@@ -126,12 +126,12 @@ export const StakeFlowOperatorUpdate = () => {
 
         {/* New Operator */}
         {(needsOperatorUpdate || !isCurrentAddressOperator) && (
-          <div className="bg-chartreuse/5 border border-chartreuse/30 p-4">
+          <div className="bg-parchment/5 border border-parchment/20 p-4 rounded-inset">
             <div className="text-xs font-oracle-standard uppercase tracking-wide text-parchment/60 mb-3">
               {needsOperatorUpdate ? 'Set As Operator' : 'Update To'}
             </div>
             <div className="space-y-1">
-              <div className="font-mono text-sm text-chartreuse break-all">
+              <div className="font-mono text-sm text-accent break-all">
                 {address}
               </div>
               <div className="text-xs text-parchment/60">
@@ -147,7 +147,7 @@ export const StakeFlowOperatorUpdate = () => {
         <div className="space-y-3">
           <button
             type="button"
-            className="w-full bg-chartreuse text-ink py-3 font-oracle-standard font-bold text-sm uppercase tracking-wider hover:bg-parchment hover:text-ink transition-all duration-300 border-2 border-chartreuse hover:border-parchment shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full btn-lime py-3 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
             onClick={handleAddToQueue}
             disabled={!selectedAtp || !address || isLoading || isInQueue}
           >
@@ -161,7 +161,7 @@ export const StakeFlowOperatorUpdate = () => {
       <div className="flex gap-4">
         <button
           type="button"
-          className="flex-1 bg-parchment/10 text-parchment border-2 border-parchment/30 py-3 font-oracle-standard font-bold text-sm uppercase tracking-wider hover:bg-parchment/20 hover:border-parchment/50 transition-all disabled:opacity-50"
+          className="flex-1 btn-glass py-3 text-sm disabled:opacity-50"
           onClick={handlePrevStep}
           disabled={isLoading}
         >
@@ -169,8 +169,8 @@ export const StakeFlowOperatorUpdate = () => {
         </button>
         <button
           type="button"
-          className={`flex-1 py-3 font-oracle-standard font-bold text-sm uppercase tracking-wider transition-all border-2 ${canContinue()
-            ? "bg-chartreuse text-ink border-chartreuse hover:bg-parchment hover:text-ink hover:border-parchment shadow-lg"
+          className={`flex-1 py-3 font-oracle-standard font-bold text-sm uppercase tracking-wider transition-all border-2 rounded-btn ${canContinue()
+            ? "btn-lime"
             : "bg-parchment/10 text-parchment/50 border-parchment/30 cursor-not-allowed"
             }`}
           onClick={handleNextStep}

@@ -185,12 +185,12 @@ export const ProviderStake = ({
         </p>
 
         {/* Stake details */}
-        <div className="bg-parchment/5 border border-parchment/20 p-6 max-w-md mx-auto mb-8">
+        <div className="glass p-6 max-w-md mx-auto mb-8">
           {isLoading ? (
             <div className="text-lg text-parchment/60">Loading stake details...</div>
           ) : (
             <>
-              <div className="text-2xl font-mono font-bold text-chartreuse mb-2">
+              <div className="text-2xl font-mono font-bold text-accent mb-2">
                 {formatTokenAmount(totalStakeAmount, decimals, symbol)}
               </div>
               <div className="text-sm font-oracle-standard text-parchment/60 mb-2 uppercase tracking-wide">Total Stake Amount</div>
@@ -203,7 +203,7 @@ export const ProviderStake = ({
 
                 <div className="space-y-2">
                   {/* Provider Name */}
-                  <div className="flex items-center justify-between py-2 px-3 bg-parchment/5 border-l-2 border-aqua">
+                  <div className="flex items-center justify-between py-2 px-3 bg-parchment/5 border-l-2 rounded-r-field border-aqua">
                     <span className="text-xs font-oracle-standard text-parchment/60 uppercase tracking-wide">Provider</span>
                     <span className="text-sm font-medium text-aqua">{providerName}</span>
                   </div>
@@ -243,8 +243,8 @@ export const ProviderStake = ({
 
         {/* Success display */}
         {isStakingSuccess() && (
-          <div className="mt-4 p-3 bg-chartreuse/10 border border-chartreuse/20 rounded text-center max-w-md mx-auto">
-            <div className="text-sm font-oracle-standard font-bold text-chartreuse mb-2 uppercase tracking-wide">
+          <div className="mt-4 p-3 bg-parchment/5 border border-parchment/15 rounded text-center max-w-md mx-auto">
+            <div className="text-sm font-oracle-standard font-bold text-accent mb-2 uppercase tracking-wide">
               {stakeCount > 1 ? 'All Delegations Successful' : 'Staking Successful'}
             </div>
             <div className="text-sm text-parchment/60">
@@ -260,7 +260,7 @@ export const ProviderStake = ({
       <div className="space-y-3">
         <button
           type="button"
-          className="w-full bg-chartreuse text-ink py-3 font-oracle-standard font-bold text-sm uppercase tracking-wider hover:bg-parchment hover:text-ink transition-all duration-300 border-2 border-chartreuse hover:border-parchment shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full btn-lime py-3 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
           onClick={handleAddToQueue}
           disabled={!canDelegate || isStakingSuccess() || isInQueue}
         >
@@ -279,7 +279,7 @@ export const ProviderStake = ({
         <div className="flex gap-4">
           <button
             type="button"
-            className="flex-1 bg-parchment/10 text-parchment border-2 border-parchment/30 py-3 font-oracle-standard font-bold text-sm uppercase tracking-wider hover:bg-parchment/20 hover:border-parchment/50 transition-all disabled:opacity-50"
+            className="flex-1 btn-glass py-3 text-sm disabled:opacity-50"
             onClick={handlePrevStep}
           >
             Back

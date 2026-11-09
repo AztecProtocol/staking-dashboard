@@ -14,12 +14,12 @@ interface StatCardProps {
 export const StatCard = ({ title, value, change, delay }: StatCardProps) => {
   return (
     <div
-      className="bg-ink/8 bg-stats-accent border border-parchment/20 p-4 sm:p-6 md:p-8 backdrop-blur-sm hover:bg-parchment/12 hover:-translate-y-1 hover:border-chartreuse transition-all duration-300 opacity-0 animate-fade-up relative overflow-hidden"
+      className="glass p-4 sm:p-6 md:p-8 hover:-translate-y-1 transition-transform duration-300 opacity-0 animate-fade-up relative overflow-hidden rounded-inset"
       style={delay ? { animationDelay: delay } : undefined}
     >
       <div className="relative z-10">
         <div className="flex items-center gap-1 mb-4">
-          <div className="font-francesco text-xs sm:text-sm uppercase tracking-wide-8 text-chartreuse font-medium">
+          <div className="font-oracle-standard text-xs sm:text-sm uppercase tracking-wide-8 text-accent font-medium">
             {title}
           </div>
           <TooltipIcon

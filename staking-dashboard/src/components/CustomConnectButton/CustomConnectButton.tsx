@@ -16,6 +16,8 @@ export interface CustomConnectButtonProps {
   fullWidth?: boolean
   /** Custom className */
   className?: string
+  /** Visibility of the network button shown beside the account */
+  chainClassName?: string
 }
 
 /**
@@ -30,6 +32,7 @@ export const CustomConnectButton = ({
   size = "default",
   fullWidth = false,
   className = "",
+  chainClassName = "hidden sm:inline-flex",
 }: CustomConnectButtonProps = {}) => {
   const [showModeModal, setShowModeModal] = useState(false)
   const { isSafeApp } = useSafeApp()
@@ -125,11 +128,11 @@ export const CustomConnectButton = ({
                     variant="outline"
                     size={size}
                     onClick={openChainModal}
-                    className="hidden sm:inline-flex"
+                    className={chainClassName}
                   >
                     {chain.hasIcon && (
                       <div
-                        className="w-3 h-3 overflow-hidden mr-1"
+                        className="w-3 h-3 overflow-hidden rounded-full"
                         style={{ background: chain.iconBackground }}
                       >
                         {chain.iconUrl && (

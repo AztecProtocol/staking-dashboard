@@ -4,7 +4,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const inputVariants = cva(
-  "w-full bg-transparent border-none text-parchment font-md-thermochrome outline-none placeholder-parchment/30 selection:bg-chartreuse selection:text-ink disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 file:inline-flex file:border-0 file:bg-transparent file:font-medium file:text-parchment",
+  "w-full bg-transparent border-none text-parchment font-oracle-standard outline-none placeholder-parchment/30 selection:bg-chartreuse selection:text-ink disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 file:inline-flex file:border-0 file:bg-transparent file:font-medium file:text-parchment",
   {
     variants: {
       size: {
@@ -21,7 +21,7 @@ const inputVariants = cva(
 )
 
 const containerVariants = cva(
-  "bg-parchment/5 border border-parchment/20 focus-within:border-chartreuse focus-within:bg-chartreuse/5 transition-all duration-300",
+  "glass focus-within:border-accent focus-within:bg-parchment/5 transition-all duration-300",
   {
     variants: {
       size: {

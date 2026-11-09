@@ -31,7 +31,7 @@ export const RegistrationStakeSequencerList = ({
           Sequencers ({numberOfAttesters})
         </h3>
       </div>
-      <div className="border border-parchment/20 bg-parchment/5 max-h-80 overflow-y-auto">
+      <div className="glass max-h-80 overflow-y-auto">
         {uploadedKeystores.map((keystore, index) => {
           const isCompletedWithQueue = completedValidatorsWithQueue.has(keystore.attester)
           const isValid = validateValidatorKeys(convertRawToValidatorKeys(keystore))
@@ -42,18 +42,18 @@ export const RegistrationStakeSequencerList = ({
               key={index}
               className="flex items-center gap-2 p-3 border-b border-parchment/10 last:border-b-0 hover:bg-parchment/10 transition-colors"
             >
-              <div className="flex-shrink-0 w-6 h-6 rounded-full border-2 border-parchment/30 flex items-center justify-center text-xs font-bold text-parchment/60">
+              <div className="flex-shrink-0 w-6 h-6 pill flex items-center justify-center text-xs font-bold text-parchment/60">
                 {index + 1}
               </div>
               <div className="flex-1 min-w-0 flex items-center">
-                <div className="text-xs font-mono text-chartreuse truncate pr-2">
+                <div className="text-xs font-mono text-accent truncate pr-2">
                   {keystore.attester}
                 </div>
                 <div className="flex items-center flex-shrink-0">
                   <CopyButton text={keystore.attester} size="sm" />
                   <button
                     onClick={() => openAddressInExplorer(keystore.attester)}
-                    className="p-1 text-parchment/60 hover:text-chartreuse transition-colors"
+                    className="p-1 text-parchment/60 hover:text-accent transition-colors"
                     title="View in explorer"
                   >
                     <Icon name="externalLink" size="sm" />
@@ -64,11 +64,11 @@ export const RegistrationStakeSequencerList = ({
                 {!isCompletedWithQueue ? (
                   <button
                     type="button"
-                    className="px-3 py-1.5 text-xs font-oracle-standard font-bold uppercase tracking-wide border-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+                    className="px-3 py-1.5 text-xs font-oracle-standard font-bold uppercase tracking-wide border-2 rounded-btn transition-all disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
                     style={{
-                      backgroundColor: 'rgb(var(--color-chartreuse))',
-                      color: 'rgb(var(--color-ink))',
-                      borderColor: 'rgb(var(--color-chartreuse))',
+                      backgroundColor: 'var(--color-chartreuse)',
+                      color: 'var(--color-ink)',
+                      borderColor: 'var(--color-chartreuse)',
                     }}
                     onClick={() => onAddValidatorToQueue(index)}
                     disabled={!isValid || isLoading || isInQueue}
@@ -82,11 +82,11 @@ export const RegistrationStakeSequencerList = ({
                 ) : (
                   <button
                     type="button"
-                    className="px-3 py-1.5 text-xs font-oracle-standard font-bold uppercase tracking-wide border-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+                    className="px-3 py-1.5 text-xs font-oracle-standard font-bold uppercase tracking-wide border-2 rounded-btn transition-all disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
                     style={{
                       backgroundColor: 'transparent',
-                      color: 'rgb(var(--color-chartreuse))',
-                      borderColor: 'rgb(var(--color-chartreuse))',
+                      color: 'var(--color-accent)',
+                      borderColor: 'var(--color-accent)',
                     }}
                     disabled
                   >

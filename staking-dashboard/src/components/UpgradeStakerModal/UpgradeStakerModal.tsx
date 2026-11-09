@@ -97,7 +97,7 @@ export const UpgradeStakerModal = ({
         <div className="p-6 space-y-6">
           {/* Header */}
           <div>
-            <h2 className="font-md-thermochrome text-2xl font-medium text-chartreuse mb-2">
+            <h2 className="font-arizona-serif text-2xl font-medium text-accent mb-2">
               Set Staker Version
             </h2>
             <p className="text-sm text-parchment/70">
@@ -107,7 +107,7 @@ export const UpgradeStakerModal = ({
           </div>
 
           {/* ATP Info */}
-          <div className="bg-parchment/5 border border-parchment/20 p-4 space-y-3">
+          <div className="glass p-4 space-y-3">
             <div className="flex justify-between items-center">
               <span className="text-xs text-parchment/60 uppercase tracking-wide font-oracle-standard">
                 Token Vault
@@ -142,7 +142,7 @@ export const UpgradeStakerModal = ({
           ) : (
             <div className="space-y-4">
               {/* Current Version */}
-              <div className="flex justify-between items-center p-3 bg-parchment/5 border border-parchment/20">
+              <div className="flex justify-between items-center p-3 glass">
                 <div className="flex items-center gap-2">
                   <span className="text-xs text-parchment/60 uppercase tracking-wide font-oracle-standard">
                     Current Version
@@ -165,7 +165,7 @@ export const UpgradeStakerModal = ({
               </div>
 
               {/* Latest Version */}
-              <div className="flex justify-between items-center p-3 bg-chartreuse/5 border border-chartreuse/30">
+              <div className="flex justify-between items-center p-3 bg-parchment/5 border border-parchment/20 rounded-inset">
                 <div className="flex items-center gap-2">
                   <span className="text-xs text-parchment/60 uppercase tracking-wide font-oracle-standard">
                     Latest Version
@@ -175,14 +175,14 @@ export const UpgradeStakerModal = ({
                     size="sm"
                   />
                 </div>
-                <span className="font-mono text-sm font-bold text-chartreuse">
+                <span className="font-mono text-sm font-bold text-accent">
                   {latestVersion !== null ? `v${latestVersion.toString()}` : 'N/A'}
                 </span>
               </div>
 
               {/* Upgrade Button / Status */}
               {isAlreadyLatest ? (
-                <div className="bg-aqua/10 border border-aqua/40 p-4 text-center">
+                <div className="bg-aqua/10 border border-aqua/40 p-4 text-center rounded-inset">
                   <span className="text-aqua font-oracle-standard font-bold text-sm">
                     Already on latest version
                   </span>
@@ -191,7 +191,7 @@ export const UpgradeStakerModal = ({
                 isUpgradeQueued ? (
                   <button
                     onClick={openCart}
-                    className="w-full bg-chartreuse/20 border border-chartreuse/40 text-chartreuse py-3 px-4 font-oracle-standard font-bold text-sm uppercase tracking-wider hover:bg-chartreuse/30 transition-all flex items-center justify-center gap-2"
+                    className="w-full bg-parchment/10 border border-parchment/20 text-accent py-3 px-4 font-oracle-standard font-bold text-sm uppercase tracking-wider hover:bg-parchment/15 transition-all flex items-center justify-center gap-2 rounded-btn"
                   >
                     <Icon name="shoppingCart" size="sm" />
                     In Batch — Open Cart
@@ -199,7 +199,7 @@ export const UpgradeStakerModal = ({
                 ) : (
                   <button
                     onClick={handleUpgrade}
-                    className="w-full bg-chartreuse text-ink py-3 px-4 font-oracle-standard font-bold text-sm uppercase tracking-wider hover:bg-chartreuse/90 transition-all"
+                    className="w-full btn-lime py-3 px-4 text-sm"
                   >
                     Add upgrade to v{latestVersion.toString()} to batch
                   </button>

@@ -46,7 +46,7 @@ function getTimelinePhase(
 
 const PHASE_STYLES: Record<TimelinePhase, string> = {
   Pending: "bg-parchment/20 text-parchment/70",
-  "Voting Live": "bg-chartreuse/20 text-chartreuse",
+  "Voting Live": "bg-parchment/10 text-accent",
   Queued: "bg-orchid/20 text-orchid",
   Executable: "bg-aqua/20 text-aqua",
   Expired: "bg-parchment/20 text-parchment/70",
@@ -71,9 +71,9 @@ function getVotingResult(state: ProposalState): VotingResult {
 }
 
 const RESULT_STYLES: Record<Exclude<VotingResult, null>, string> = {
-  Passed: "bg-chartreuse/20 text-chartreuse border border-chartreuse/50",
-  Executed: "bg-aqua/20 text-aqua border border-aqua/50",
-  Rejected: "bg-orchid/20 text-orchid border border-orchid/50",
+  Passed: "bg-parchment/10 text-accent border border-parchment/30 rounded-inset",
+  Executed: "bg-aqua/20 text-aqua border border-aqua/50 rounded-inset",
+  Rejected: "bg-orchid/20 text-orchid border border-orchid/50 rounded-inset",
 };
 
 function VotingResultBadge({ state }: { state: ProposalState }) {
@@ -205,7 +205,7 @@ export function ProposalDetails({
   const isExecuting = executeProposal.isPending || executeProposal.isConfirming;
 
   return (
-    <div className="mt-6 border border-parchment/20 bg-parchment/5 overflow-hidden">
+    <div className="mt-6 glass overflow-hidden">
       {/* Header */}
       <div className="p-6 border-b border-parchment/10">
         <div className="flex items-center gap-3">
@@ -221,13 +221,13 @@ export function ProposalDetails({
 
       {/* Success message for passed proposals in Queued phase */}
       {currentPhase === "Queued" && quorumMet && yeaMet && minVotesMet && (
-        <div className="mx-6 mt-6 p-4 bg-chartreuse/10 border border-chartreuse/30">
+        <div className="mx-6 mt-6 p-4 bg-parchment/5 border border-parchment/20 rounded-inset">
           <div className="flex items-start gap-3">
-            <svg className="w-5 h-5 text-chartreuse flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+            <svg className="w-5 h-5 text-accent flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <div>
-              <p className="font-oracle-standard text-chartreuse">Proposal Passed</p>
+              <p className="font-oracle-standard text-accent">Proposal Passed</p>
               <p className="text-sm text-parchment/70 mt-1">
                 This proposal has met all voting requirements and will be executable starting {formatDateTime(queuedThrough)}.
               </p>
@@ -238,7 +238,7 @@ export function ProposalDetails({
 
       {/* Ready to execute banner for Executable phase */}
       {currentPhase === "Executable" && proposal.state === ProposalState.Executable && (
-        <div className="mx-6 mt-6 p-4 bg-aqua/10 border border-aqua/30">
+        <div className="mx-6 mt-6 p-4 bg-aqua/10 border border-aqua/30 rounded-inset">
           <div className="flex items-start justify-between gap-4">
             <div className="flex items-start gap-3">
               <svg className="w-5 h-5 text-aqua flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
@@ -254,7 +254,7 @@ export function ProposalDetails({
             <button
               onClick={handleExecute}
               disabled={isExecuting}
-              className="px-4 py-2 bg-aqua text-ink font-oracle-standard hover:bg-aqua/90 disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
+              className="px-4 py-2 btn-glass text-xs disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
             >
               {isExecuting ? "Executing..." : "Execute Proposal"}
             </button>
@@ -264,7 +264,7 @@ export function ProposalDetails({
 
       {/* Executed success message */}
       {proposal.state === ProposalState.Executed && (
-        <div className="mx-6 mt-6 p-4 bg-aqua/10 border border-aqua/30">
+        <div className="mx-6 mt-6 p-4 bg-aqua/10 border border-aqua/30 rounded-inset">
           <div className="flex items-start gap-3">
             <svg className="w-5 h-5 text-aqua flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -281,7 +281,7 @@ export function ProposalDetails({
 
       {/* Expired message - proposal passed but wasn't executed in time */}
       {proposal.state === ProposalState.Expired && (
-        <div className="mx-6 mt-6 p-4 bg-orchid/10 border border-orchid/30">
+        <div className="mx-6 mt-6 p-4 bg-orchid/10 border border-orchid/30 rounded-inset">
           <div className="flex items-start gap-3">
             <svg className="w-5 h-5 text-orchid flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -298,7 +298,7 @@ export function ProposalDetails({
 
       {/* Rejected message - proposal failed to meet requirements */}
       {proposal.state === ProposalState.Rejected && (
-        <div className="mx-6 mt-6 p-4 bg-orchid/10 border border-orchid/30">
+        <div className="mx-6 mt-6 p-4 bg-orchid/10 border border-orchid/30 rounded-inset">
           <div className="flex items-start gap-3">
             <svg className="w-5 h-5 text-orchid flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
               <path strokeLinecap="round" strokeLinejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -375,13 +375,13 @@ export function ProposalDetails({
                     position="top"
                   />
                 </span>
-                <span className={quorumMet ? "text-chartreuse" : votingOver ? "text-orchid" : "text-parchment/70"}>
+                <span className={quorumMet ? "text-accent" : votingOver ? "text-orchid" : "text-parchment/70"}>
                   {participationPct.toFixed(1)}% participated {quorumMet ? "✓" : votingOver ? "✗" : ""}
                 </span>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-parchment/50">Yes votes ({requiredYeaPercentage.toFixed(1)}% needed):</span>
-                <span className={yeaMet ? "text-chartreuse" : votingOver ? "text-orchid" : "text-parchment/70"}>
+                <span className={yeaMet ? "text-accent" : votingOver ? "text-orchid" : "text-parchment/70"}>
                   {yeaPercentage.toFixed(1)}% {yeaMet ? "✓" : votingOver ? "✗" : ""}
                 </span>
               </div>
@@ -393,7 +393,7 @@ export function ProposalDetails({
                     position="top"
                   />
                 </span>
-                <span className={minVotesMet ? "text-chartreuse" : votingOver ? "text-orchid" : "text-parchment/70"}>
+                <span className={minVotesMet ? "text-accent" : votingOver ? "text-orchid" : "text-parchment/70"}>
                   {Number(formatUnits(config.minimumVotes, 18)).toLocaleString()} tokens {minVotesMet ? "✓" : votingOver ? "✗" : ""}
                 </span>
               </div>

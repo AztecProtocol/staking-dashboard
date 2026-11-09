@@ -35,19 +35,19 @@ export const AtpCard = ({ atp, isSelected, onSelect, disabled = false }: AtpCard
 
   return (
     <div
-      className={`w-full border transition-all ${
+      className={`w-full border rounded-inset transition-all ${
         !isStakeable || disabled
           ? "bg-parchment/5 border-parchment/20 text-parchment/40 opacity-50 cursor-not-allowed"
           : isSelected
-          ? "bg-chartreuse/5 border-chartreuse text-parchment"
-          : "bg-parchment/5 border-parchment/20 hover:border-chartreuse/50 hover:bg-chartreuse/5 text-parchment cursor-pointer"
+          ? "bg-parchment/5 border-accent text-parchment"
+          : "bg-parchment/5 border-parchment/20 hover:border-parchment/30 hover:bg-parchment/5 text-parchment cursor-pointer"
       }`}
       onClick={isClickable ? onSelect : undefined}
     >
       {/* Header */}
       <div className="p-4">
         <div className="flex items-center justify-between mb-4">
-          <div className={`px-3 py-1 text-xs font-md-thermochrome font-bold uppercase tracking-wider ${
+          <div className={`px-3 py-1 text-xs font-oracle-standard font-bold uppercase tracking-wider ${
             isStakeable
               ? "bg-parchment/20 text-parchment"
               : "bg-parchment/10 text-parchment/40"
@@ -63,7 +63,7 @@ export const AtpCard = ({ atp, isSelected, onSelect, disabled = false }: AtpCard
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <span className="text-xs text-parchment/60 uppercase tracking-wide">Total Funds</span>
-            <div className="font-mono text-sm font-bold text-chartreuse">
+            <div className="font-mono text-sm font-bold text-accent">
               {isLoading ? "..." : totalAllocation}
             </div>
           </div>

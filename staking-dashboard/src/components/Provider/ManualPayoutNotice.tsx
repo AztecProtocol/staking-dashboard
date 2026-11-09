@@ -39,7 +39,7 @@ export function ManualPayoutNotice({
         rel="noopener noreferrer"
         onClick={(e) => e.stopPropagation()}
         title={`${who} distributes rewards manually. View audit reports.`}
-        className="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-oracle-standard uppercase tracking-wider bg-aqua/10 border border-aqua/40 text-aqua hover:bg-aqua/20 transition-colors"
+        className="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-oracle-standard uppercase tracking-wider bg-aqua/10 border border-aqua/40 text-aqua hover:bg-aqua/20 transition-colors rounded-btn"
       >
         <Icon name="info" size="sm" />
         Manual payouts
@@ -68,7 +68,7 @@ export function ManualPayoutNotice({
   }
 
   return (
-    <div className="bg-aqua/5 border border-aqua/30 p-4 sm:p-5 flex items-start gap-3">
+    <div className="bg-aqua/5 border border-aqua/30 p-4 sm:p-5 flex items-start gap-3 rounded-inset">
       <Icon name="info" size="md" className="text-aqua mt-0.5 shrink-0" />
       <div className="flex-1">
         <div className="font-oracle-standard text-sm text-aqua font-bold uppercase tracking-wider mb-1">

@@ -442,8 +442,8 @@ export function DepositToGovernanceModal({
   const isWalletSource = selectedSource?.type === "wallet";
 
   return createPortal(
-    <div className="fixed inset-0 backdrop-blur-xs z-50 flex items-center justify-center p-4">
-      <div className="bg-ink border border-parchment/20 max-w-md w-full p-6 relative">
+    <div className="fixed inset-0 modal-scrim z-50 flex items-center justify-center p-4">
+      <div className="card-dark max-w-md w-full p-6 relative">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <h3 className="font-oracle-standard text-xl text-parchment">Deposit to Governance</h3>
@@ -480,7 +480,7 @@ export function DepositToGovernanceModal({
                   setAmount("");
                 }}
                 disabled={isPending || isConfirming}
-                className="w-full pl-3 pr-10 py-2 bg-ink border border-parchment/20 text-parchment focus:border-chartreuse outline-none cursor-pointer appearance-none disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full pl-3 pr-10 py-2 field text-parchment cursor-pointer appearance-none disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {availableSources.map((source, index) => {
                   const sourceBalance =
@@ -516,12 +516,12 @@ export function DepositToGovernanceModal({
               onChange={(e) => setAmount(e.target.value)}
               placeholder="0"
               disabled={isPending || isConfirming}
-              className="flex-1 px-3 py-2 bg-ink border border-parchment/20 text-parchment focus:border-chartreuse outline-none disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 px-3 py-2 field text-parchment disabled:opacity-50 disabled:cursor-not-allowed"
             />
             <button
               onClick={() => setAmount(formatUnits(availableBalance, decimals))}
               disabled={isPending || isConfirming}
-              className="px-3 py-2 text-xs border border-parchment/20 text-parchment/70 hover:border-parchment/40 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-3 py-2 text-xs border border-parchment/20 text-parchment/70 hover:border-parchment/40 disabled:opacity-50 disabled:cursor-not-allowed rounded-btn"
             >
               MAX
             </button>
@@ -536,7 +536,7 @@ export function DepositToGovernanceModal({
               <button
                 onClick={handleWalletAction}
                 disabled={isPending || isConfirming || !canDeposit || !isReady}
-                className="w-full px-4 py-3 bg-chartreuse text-ink font-oracle-standard hover:bg-chartreuse/90 disabled:opacity-30 disabled:cursor-not-allowed"
+                className="w-full px-4 py-3 btn-lime disabled:opacity-30 disabled:cursor-not-allowed"
               >
                 {approveERC20.isPending || approveERC20.isConfirming
                   ? "Approving..."
@@ -555,7 +555,7 @@ export function DepositToGovernanceModal({
               {needsStakerUpgrade ? (
                 <>
                   {/* Version 0: Upgrade required - cannot deposit */}
-                  <div className="p-3 bg-vermillion/10 border border-vermillion/30 mb-3">
+                  <div className="p-3 bg-vermillion/10 border border-vermillion/30 mb-3 rounded-inset">
                     <div className="flex items-start gap-2">
                       <Icon name="warning" className="w-4 h-4 text-vermillion flex-shrink-0 mt-0.5" />
                       <div className="text-sm text-parchment/80">
@@ -567,7 +567,7 @@ export function DepositToGovernanceModal({
                   <button
                     onClick={handleUpgradeStaker}
                     disabled={isPending || isConfirming}
-                    className="w-full px-4 py-3 bg-chartreuse text-ink font-oracle-standard hover:bg-chartreuse/90 disabled:opacity-30 disabled:cursor-not-allowed"
+                    className="w-full px-4 py-3 btn-lime disabled:opacity-30 disabled:cursor-not-allowed"
                   >
                     {upgradeStaker.isPending || upgradeStaker.isConfirming
                       ? "Upgrading..."
@@ -577,7 +577,7 @@ export function DepositToGovernanceModal({
               ) : showOperatorRequired ? (
                 <>
                   {/* Operator not set: Must set operator before depositing */}
-                  <div className="p-3 bg-vermillion/10 border border-vermillion/30 mb-3">
+                  <div className="p-3 bg-vermillion/10 border border-vermillion/30 mb-3 rounded-inset">
                     <div className="flex items-start gap-2">
                       <Icon name="warning" className="w-4 h-4 text-vermillion flex-shrink-0 mt-0.5" />
                       <div className="text-sm text-parchment/80">
@@ -589,7 +589,7 @@ export function DepositToGovernanceModal({
                   <button
                     onClick={handleSetOperator}
                     disabled={isPending || isConfirming}
-                    className="w-full px-4 py-3 bg-chartreuse text-ink font-oracle-standard hover:bg-chartreuse/90 disabled:opacity-30 disabled:cursor-not-allowed"
+                    className="w-full px-4 py-3 btn-lime disabled:opacity-30 disabled:cursor-not-allowed"
                   >
                     {updateStakerOperator.isPending || updateStakerOperator.isConfirming
                       ? "Setting Operator..."
@@ -599,7 +599,7 @@ export function DepositToGovernanceModal({
               ) : showUpgradeWarning ? (
                 <>
                   {/* Version > 0 but not latest: Warning - can deposit but recommend upgrade */}
-                  <div className="p-3 bg-vermillion/10 border border-vermillion/30 mb-3">
+                  <div className="p-3 bg-vermillion/10 border border-vermillion/30 mb-3 rounded-inset">
                     <div className="flex items-start gap-2">
                       <Icon name="warning" className="w-4 h-4 text-vermillion flex-shrink-0 mt-0.5" />
                       <div className="text-sm text-parchment/80">
@@ -612,7 +612,7 @@ export function DepositToGovernanceModal({
                     <button
                       onClick={handleAtpDeposit}
                       disabled={isPending || isConfirming || !canDeposit || !isReady}
-                      className="w-full px-4 py-3 bg-chartreuse text-ink font-oracle-standard hover:bg-chartreuse/90 disabled:opacity-30 disabled:cursor-not-allowed"
+                      className="w-full px-4 py-3 btn-lime disabled:opacity-30 disabled:cursor-not-allowed"
                     >
                       {approveStaker.isPending || approveStaker.isConfirming
                         ? "Approving..."
@@ -623,7 +623,7 @@ export function DepositToGovernanceModal({
                     <button
                       onClick={handleUpgradeStaker}
                       disabled={isPending || isConfirming}
-                      className="w-full px-4 py-3 border border-parchment/30 text-parchment font-oracle-standard hover:bg-parchment/10 disabled:opacity-30 disabled:cursor-not-allowed"
+                      className="w-full px-4 py-3 border border-parchment/30 text-parchment font-oracle-standard hover:bg-parchment/10 disabled:opacity-30 disabled:cursor-not-allowed rounded-btn"
                     >
                       {upgradeStaker.isPending || upgradeStaker.isConfirming
                         ? "Upgrading..."
@@ -634,7 +634,7 @@ export function DepositToGovernanceModal({
               ) : !supportsGovernance && !isLoadingGovernanceSupport && selectedSource?.type === "atp" ? (
                 <>
                   {/* Governance not supported and no upgrade available */}
-                  <div className="p-3 bg-parchment/10 border border-parchment/20">
+                  <div className="p-3 glass">
                     <div className="flex items-start gap-2">
                       <Icon name="info" className="w-4 h-4 text-parchment/60 flex-shrink-0 mt-0.5" />
                       <p className="text-sm text-parchment/70">
@@ -649,7 +649,7 @@ export function DepositToGovernanceModal({
                   <button
                     onClick={handleAtpDeposit}
                     disabled={isPending || isConfirming || !canDeposit || !isReady || isLoadingGovernanceSupport}
-                    className="w-full px-4 py-3 bg-chartreuse text-ink font-oracle-standard hover:bg-chartreuse/90 disabled:opacity-30 disabled:cursor-not-allowed"
+                    className="w-full px-4 py-3 btn-lime disabled:opacity-30 disabled:cursor-not-allowed"
                   >
                     {isLoadingGovernanceSupport
                       ? "Checking compatibility..."

@@ -4,7 +4,7 @@
  */
 export const ATPStakingCardListEmptyState = () => {
   return (
-    <div className="bg-parchment/5 border border-parchment/20 p-12 text-center">
+    <div className="glass p-12 text-center">
       <div className="max-w-md mx-auto">
         <div className="w-20 h-20 mx-auto mb-6 flex items-center justify-center">
           <svg className="w-full h-full text-parchment/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -16,7 +16,7 @@ export const ATPStakingCardListEmptyState = () => {
             />
           </svg>
         </div>
-        <h3 className="font-md-thermochrome text-xl text-parchment mb-3">
+        <h3 className="font-arizona-serif text-xl text-parchment mb-3">
           No Staking Positions Available
         </h3>
         <p className="font-arizona-text text-sm text-parchment/60 mb-6">
@@ -24,7 +24,7 @@ export const ATPStakingCardListEmptyState = () => {
         </p>
         <button
           onClick={() => window.location.reload()}
-          className="bg-transparent border border-parchment/30 text-parchment px-6 py-3 font-oracle-standard font-bold text-xs uppercase tracking-wider hover:bg-parchment/10 transition-all min-h-[44px]"
+          className="btn-glass px-6 py-3 text-xs min-h-[44px]"
         >
           Refresh
         </button>

@@ -133,7 +133,7 @@ export const SourceSelectionModal = ({
       {isLoadingOptions ? (
         <div className="space-y-3">
           {[1, 2].map((i) => (
-            <div key={i} className="bg-parchment/5 border border-parchment/20 p-4 animate-pulse">
+            <div key={i} className="glass p-4 animate-pulse">
               <div className="h-5 bg-parchment/20 rounded w-1/3 mb-2"></div>
               <div className="h-4 bg-parchment/20 rounded w-2/3"></div>
             </div>
@@ -147,20 +147,20 @@ export const SourceSelectionModal = ({
             <button
               onClick={() => canStakeFromWallet && handleSourceSelect("wallet")}
               disabled={!canStakeFromWallet}
-              className={`w-full text-left p-4 border transition-all ${
+              className={`w-full text-left p-4 border rounded-inset transition-all ${
                 selectedSource === "wallet"
-                  ? "bg-chartreuse/10 border-chartreuse"
+                  ? "bg-parchment/5 border-accent"
                   : canStakeFromWallet
-                    ? "bg-parchment/5 border-parchment/30 hover:border-chartreuse/50"
+                    ? "bg-parchment/5 border-parchment/30 hover:border-parchment/30"
                     : "bg-parchment/5 border-parchment/10 opacity-50 cursor-not-allowed"
               }`}
             >
               <div className="flex items-center gap-4">
                 <div className={`w-10 h-10 flex items-center justify-center rounded-full ${
                   selectedSource === "wallet"
-                    ? "bg-chartreuse/30 text-chartreuse"
+                    ? "bg-parchment/15 text-accent"
                     : canStakeFromWallet
-                      ? "bg-chartreuse/20 text-chartreuse"
+                      ? "bg-parchment/10 text-accent"
                       : "bg-parchment/20 text-parchment/40"
                 }`}>
                   <Icon name="wallet" className="w-5 h-5" />
@@ -171,7 +171,7 @@ export const SourceSelectionModal = ({
                       Wallet
                     </span>
                     {canStakeFromWallet && (
-                      <span className="text-xs font-mono text-chartreuse">
+                      <span className="text-xs font-mono text-accent">
                         Up to {maxStakesFromWallet} stake{maxStakesFromWallet !== 1 ? "s" : ""}
                       </span>
                     )}
@@ -183,7 +183,7 @@ export const SourceSelectionModal = ({
                   </div>
                 </div>
                 {selectedSource === "wallet" && (
-                  <Icon name="check" className="w-5 h-5 text-chartreuse" />
+                  <Icon name="check" className="w-5 h-5 text-accent" />
                 )}
               </div>
             </button>
@@ -202,7 +202,7 @@ export const SourceSelectionModal = ({
                 <button
                   key={atp.atpAddress}
                   onClick={() => handleSourceSelect({ type: "vault", atp })}
-                  className={`w-full text-left p-4 border transition-all ${
+                  className={`w-full text-left p-4 border rounded-inset transition-all ${
                     isSelected
                       ? "bg-aqua/10 border-aqua"
                       : "bg-parchment/5 border-parchment/30 hover:border-aqua/50"
@@ -239,7 +239,7 @@ export const SourceSelectionModal = ({
 
             {/* No options available */}
             {!canStakeFromWallet && stakeableAtps.length === 0 && (
-              <div className="bg-parchment/5 border border-parchment/20 p-6 text-center">
+              <div className="glass p-6 text-center">
                 <p className="text-parchment/70 text-sm">
                   No staking options available. You need either wallet balance or a Token Vault with sufficient funds.
                 </p>
@@ -255,7 +255,7 @@ export const SourceSelectionModal = ({
                   {stakeCountLabel}
                 </span>
                 <div className="text-xs font-mono text-parchment/60">
-                  Total: <span className={selectedSource === "wallet" ? "text-chartreuse" : "text-aqua"}>
+                  Total: <span className={selectedSource === "wallet" ? "text-accent" : "text-aqua"}>
                     {decimals !== undefined && symbol
                       ? formatTokenAmount(totalTokens, decimals, symbol)
                       : "..."}
@@ -267,13 +267,13 @@ export const SourceSelectionModal = ({
                 <button
                   onClick={() => setStakeCount(Math.max(1, stakeCount - 1))}
                   disabled={stakeCount <= 1}
-                  className="w-10 h-10 bg-parchment/10 border border-parchment/30 flex items-center justify-center hover:bg-parchment/20 transition-all disabled:opacity-30 disabled:cursor-not-allowed text-xl font-bold text-parchment"
+                  className="w-10 h-10 btn-glass flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed text-xl font-bold text-parchment rounded-btn"
                 >
                   −
                 </button>
 
                 <div className="text-center min-w-[80px]">
-                  <div className={`text-3xl font-mono font-bold ${selectedSource === "wallet" ? "text-chartreuse" : "text-aqua"}`}>
+                  <div className={`text-3xl font-mono font-bold ${selectedSource === "wallet" ? "text-accent" : "text-aqua"}`}>
                     {stakeCount}
                   </div>
                 </div>
@@ -281,7 +281,7 @@ export const SourceSelectionModal = ({
                 <button
                   onClick={() => setStakeCount(Math.min(currentMaxStakes, stakeCount + 1))}
                   disabled={stakeCount >= currentMaxStakes}
-                  className="w-10 h-10 bg-parchment/10 border border-parchment/30 flex items-center justify-center hover:bg-parchment/20 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                  className="w-10 h-10 btn-glass flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed rounded-btn"
                 >
                   <Icon name="plus" className="w-5 h-5 text-parchment" />
                 </button>
@@ -298,7 +298,7 @@ export const SourceSelectionModal = ({
                 <button
                   onClick={() => setStakeCount(currentMaxStakes)}
                   disabled={stakeCount === currentMaxStakes}
-                  className={`px-3 py-1 text-xs font-oracle-standard uppercase tracking-wide ${selectedSource === "wallet" ? "text-chartreuse hover:text-chartreuse/80" : "text-aqua hover:text-aqua/80"} disabled:opacity-30`}
+                  className={`px-3 py-1 text-xs font-oracle-standard uppercase tracking-wide ${selectedSource === "wallet" ? "text-accent hover:text-accent/80" : "text-aqua hover:text-aqua/80"} disabled:opacity-30`}
                 >
                   Max ({currentMaxStakes})
                 </button>
@@ -312,7 +312,7 @@ export const SourceSelectionModal = ({
       {selectedSource && (
         <button
           onClick={handleConfirmSelection}
-          className="w-full bg-chartreuse text-ink py-3 font-oracle-standard font-bold text-sm uppercase tracking-wider hover:bg-parchment transition-all"
+          className="w-full btn-lime py-3 text-sm"
         >
           Continue
         </button>
@@ -322,12 +322,12 @@ export const SourceSelectionModal = ({
 
   return createPortal(
     <div
-      className="fixed inset-0 backdrop-blur-xs flex items-center justify-center z-50 p-4"
+      className="fixed inset-0 modal-scrim flex items-center justify-center z-50 p-4"
       onClick={handleBackdropClick}
     >
-      <div className="bg-malachite border-2 border-chartreuse max-w-lg w-full max-h-[85vh] overflow-hidden flex flex-col">
+      <div className="card-dark max-w-lg w-full max-h-[85vh] overflow-hidden flex flex-col">
         {/* Modal Header */}
-        <div className="shrink-0 bg-malachite border-b border-parchment/10 p-4 flex justify-between items-center">
+        <div className="shrink-0 border-b border-parchment/10 p-4 flex justify-between items-center">
           <div className="text-xs font-oracle-standard uppercase tracking-wide text-parchment/60">
             Select Staking Source
           </div>

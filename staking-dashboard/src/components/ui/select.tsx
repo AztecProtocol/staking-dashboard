@@ -31,12 +31,12 @@ function SelectTrigger({
   size?: "sm" | "default" | "lg" | "xl"
 }) {
   return (
-    <div className="bg-parchment/5 border border-parchment/20 focus-within:border-chartreuse focus-within:bg-chartreuse/5 transition-all duration-300">
+    <div className="glass focus-within:border-accent focus-within:bg-parchment/5 transition-all duration-300">
       <SelectPrimitive.Trigger
         data-slot="select-trigger"
         data-size={size}
         className={cn(
-          "flex w-full items-center justify-between gap-2 bg-transparent border-none text-parchment font-md-thermochrome outline-none disabled:cursor-not-allowed disabled:opacity-50",
+          "flex w-full items-center justify-between gap-2 bg-transparent border-none text-parchment font-oracle-standard outline-none disabled:cursor-not-allowed disabled:opacity-50",
           "data-[placeholder]:text-parchment/30",
           "data-[size=sm]:h-8 data-[size=sm]:px-3 data-[size=sm]:py-1 data-[size=sm]:text-sm",
           "data-[size=default]:h-9 data-[size=default]:px-3 data-[size=default]:py-1 data-[size=default]:text-sm",
@@ -68,7 +68,7 @@ function SelectContent({
       <SelectPrimitive.Content
         data-slot="select-content"
         className={cn(
-          "bg-oxblood border border-parchment/20 text-parchment shadow-xl",
+          "card-dark text-parchment",
           "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
           "data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
           "relative z-50 max-h-(--radix-select-content-available-height) min-w-[8rem] origin-(--radix-select-content-transform-origin) overflow-x-hidden overflow-y-auto",
@@ -118,7 +118,7 @@ function SelectItem({
       data-slot="select-item"
       className={cn(
         "relative flex w-full cursor-default items-center gap-2 py-2 pr-8 pl-3 text-sm font-oracle-triple-book text-parchment outline-none select-none transition-colors",
-        "hover:bg-parchment/10 hover:text-chartreuse focus:bg-parchment/10 focus:text-chartreuse",
+        "hover:bg-parchment/10 hover:text-accent focus:bg-parchment/10 focus:text-accent",
         "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
         "[&_svg:not([class*='text-'])]:text-parchment/60 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         "*:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2",
@@ -128,7 +128,7 @@ function SelectItem({
     >
       <span className="absolute right-3 flex size-4 items-center justify-center">
         <SelectPrimitive.ItemIndicator>
-          <CheckIcon className="size-4 text-chartreuse" />
+          <CheckIcon className="size-4 text-accent" />
         </SelectPrimitive.ItemIndicator>
       </span>
       <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
@@ -157,7 +157,7 @@ function SelectScrollUpButton({
     <SelectPrimitive.ScrollUpButton
       data-slot="select-scroll-up-button"
       className={cn(
-        "flex cursor-default items-center justify-center py-2 text-parchment/60 hover:text-chartreuse transition-colors",
+        "flex cursor-default items-center justify-center py-2 text-parchment/60 hover:text-accent transition-colors",
         className
       )}
       {...props}
@@ -175,7 +175,7 @@ function SelectScrollDownButton({
     <SelectPrimitive.ScrollDownButton
       data-slot="select-scroll-down-button"
       className={cn(
-        "flex cursor-default items-center justify-center py-2 text-parchment/60 hover:text-chartreuse transition-colors",
+        "flex cursor-default items-center justify-center py-2 text-parchment/60 hover:text-accent transition-colors",
         className
       )}
       {...props}

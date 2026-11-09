@@ -19,7 +19,7 @@ export const RegistrationUploadKeystoreConfirmation = ({
       <label className="flex items-start gap-3 cursor-pointer">
         <input
           type="checkbox"
-          className="mt-1 w-4 h-4 text-chartreuse bg-transparent border-2 border-parchment/30 focus:ring-chartreuse focus:ring-2"
+          className="mt-1 w-4 h-4 text-accent bg-transparent border-2 border-parchment/30 focus:ring-accent focus:ring-2 rounded-field"
           checked={validatorRunningConfirmed}
           onChange={(e) => onConfirmChange(e.target.checked)}
         />

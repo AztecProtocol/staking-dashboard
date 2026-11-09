@@ -30,7 +30,7 @@ export const PaginationControls = ({
 
   return (
     <div className="space-y-4">
-      <div className="bg-parchment/5 border border-parchment/20 p-3 sm:p-4">
+      <div className="glass p-3 sm:p-4">
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 text-xs text-parchment/60">
           <span>
             Select one to proceed to the next step.
@@ -47,7 +47,7 @@ export const PaginationControls = ({
           <button
             onClick={onPrevPage}
             disabled={currentPage === 1}
-            className="px-2 py-1.5 sm:px-3 sm:py-2 text-xs font-oracle-standard font-bold uppercase tracking-wider bg-parchment/10 text-parchment border-2 border-parchment/30 hover:bg-parchment/20 hover:border-parchment/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
+            className="px-2 py-1.5 sm:px-3 sm:py-2 text-xs btn-glass disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
           >
             <span className="hidden sm:inline">Previous</span>
             <span className="sm:hidden">Prev</span>
@@ -61,8 +61,8 @@ export const PaginationControls = ({
                 onClick={() => onPageSelect(page)}
                 className={`px-3 py-2 text-xs font-oracle-standard font-bold uppercase tracking-wider transition-all flex-shrink-0 ${
                   currentPage === page
-                    ? 'bg-chartreuse text-ink border-2 border-chartreuse'
-                    : 'bg-parchment/10 text-parchment border-2 border-parchment/30 hover:bg-parchment/20 hover:border-parchment/50'
+                    ? 'btn-lime'
+                    : 'btn-glass'
                 }`}
               >
                 {page}
@@ -87,8 +87,8 @@ export const PaginationControls = ({
                   onClick={() => onPageSelect(page as number)}
                   className={`px-2 py-1.5 text-xs font-oracle-standard font-bold uppercase tracking-wider transition-all min-w-[32px] flex-shrink-0 ${
                     currentPage === page
-                      ? 'bg-chartreuse text-ink border-2 border-chartreuse'
-                      : 'bg-parchment/10 text-parchment border-2 border-parchment/30 hover:bg-parchment/20 hover:border-parchment/50'
+                      ? 'btn-lime'
+                      : 'btn-glass'
                   }`}
                 >
                   {page}
@@ -100,7 +100,7 @@ export const PaginationControls = ({
           <button
             onClick={onNextPage}
             disabled={currentPage === totalPages}
-            className="px-2 py-1.5 sm:px-3 sm:py-2 text-xs font-oracle-standard font-bold uppercase tracking-wider bg-parchment/10 text-parchment border-2 border-parchment/30 hover:bg-parchment/20 hover:border-parchment/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
+            className="px-2 py-1.5 sm:px-3 sm:py-2 text-xs btn-glass disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
           >
             <span className="hidden sm:inline">Next</span>
             <span className="sm:hidden">Next</span>

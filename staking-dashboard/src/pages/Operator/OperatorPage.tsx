@@ -139,13 +139,13 @@ export default function OperatorPage() {
       />
 
       {indexerError && (
-        <div className="mb-4 px-4 py-3 bg-vermillion/10 border border-vermillion/30 text-vermillion text-sm flex items-center justify-between gap-3 flex-wrap">
+        <div className="mb-4 px-4 py-3 bg-vermillion/10 border border-vermillion/30 text-vermillion text-sm flex items-center justify-between gap-3 flex-wrap rounded-inset">
           <span>
             Indexer request failed. The list below may be incomplete or out of date — totals computed from on-chain reads are still accurate for whichever splits did load.
           </span>
           <button
             onClick={retryIndexer}
-            className="px-3 py-1.5 border border-vermillion/40 text-vermillion font-oracle-standard text-xs uppercase tracking-wider hover:bg-vermillion/10 transition-colors"
+            className="px-3 py-1.5 border border-vermillion/40 text-vermillion font-oracle-standard text-xs uppercase tracking-wider hover:bg-vermillion/10 transition-colors rounded-btn"
           >
             Retry
           </button>
@@ -153,7 +153,7 @@ export default function OperatorPage() {
       )}
 
       {!isRewardsClaimable && (
-        <div className="mb-4 px-4 py-3 bg-vermillion/10 border border-vermillion/30 text-vermillion text-sm">
+        <div className="mb-4 px-4 py-3 bg-vermillion/10 border border-vermillion/30 text-vermillion text-sm rounded-inset">
           Rewards are currently locked on the network. You can queue claims now and execute them once rewards unlock.
         </div>
       )}
@@ -239,14 +239,14 @@ interface IdentitiesSummaryProps {
 function IdentitiesSummary({ address, asAdmin, asRecipient, isLoading }: IdentitiesSummaryProps) {
   if (isLoading) {
     return (
-      <div className="mb-6 p-4 bg-parchment/5 border border-parchment/20 text-sm text-parchment/60">
+      <div className="mb-6 p-4 glass text-sm text-parchment/60">
         Resolving operator identities…
       </div>
     )
   }
   if (asAdmin.length === 0 && asRecipient.length === 0) {
     return (
-      <div className="mb-6 p-4 bg-parchment/5 border border-parchment/20 text-sm">
+      <div className="mb-6 p-4 glass text-sm">
         <p className="text-parchment/70">
           The connected wallet ({address ? `${address.slice(0, 10)}…${address.slice(-8)}` : "—"}) isn't registered as the admin or rewards recipient for any provider.
         </p>
@@ -254,7 +254,7 @@ function IdentitiesSummary({ address, asAdmin, asRecipient, isLoading }: Identit
     )
   }
   return (
-    <div className="mb-6 p-4 bg-parchment/5 border border-parchment/20">
+    <div className="mb-6 p-4 glass">
       <div className="flex flex-wrap gap-3 text-xs">
         {asAdmin.length > 0 && (
           <div className="flex items-center gap-2">
@@ -267,7 +267,7 @@ function IdentitiesSummary({ address, asAdmin, asRecipient, isLoading }: Identit
         {asRecipient.length > 0 && (
           <div className="flex items-center gap-2">
             <span className="text-parchment/50 uppercase tracking-wide">Rewards recipient for</span>
-            <span className="font-mono text-chartreuse">
+            <span className="font-mono text-accent">
               {asRecipient.map((i) => `#${i.providerId}`).join(", ")}
             </span>
           </div>
@@ -313,7 +313,7 @@ function TotalsCard({ totals, decimals, symbol, canBatch, onAddAll }: TotalsCard
   }
 
   return (
-    <div className="mb-6 p-4 bg-chartreuse/5 border border-chartreuse/30 flex items-center justify-between gap-4 flex-wrap">
+    <div className="mb-6 p-4 bg-parchment/5 border border-parchment/20 flex items-center justify-between gap-4 flex-wrap rounded-inset">
       <div className="flex flex-wrap gap-x-8 gap-y-3">
         <div>
           <div className="flex items-center gap-1 mb-1">
@@ -326,7 +326,7 @@ function TotalsCard({ totals, decimals, symbol, canBatch, onAddAll }: TotalsCard
               maxWidth="max-w-md"
             />
           </div>
-          <div className="font-mono text-2xl font-bold text-chartreuse">
+          <div className="font-mono text-2xl font-bold text-accent">
             {formatTokenAmountFull(totals.total, decimals, symbol)}
           </div>
         </div>
@@ -364,7 +364,7 @@ function TotalsCard({ totals, decimals, symbol, canBatch, onAddAll }: TotalsCard
       <button
         onClick={handleAddAll}
         disabled={!canBatch || totals.total === 0n}
-        className="px-4 py-2 bg-chartreuse text-ink font-oracle-standard font-bold text-sm uppercase tracking-wider hover:bg-chartreuse/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        className="px-4 py-2 btn-lime text-sm disabled:opacity-50 disabled:cursor-not-allowed"
       >
         Add all to Batch
       </button>
@@ -435,7 +435,7 @@ function WarehouseSection({
           return (
             <div
               key={recipient.toLowerCase()}
-              className="p-3 bg-parchment/5 border border-parchment/20 flex items-center justify-between gap-3 flex-wrap"
+              className="p-3 glass flex items-center justify-between gap-3 flex-wrap"
             >
               <div className="min-w-0">
                 <div className="text-xs text-parchment/50 mb-0.5">Recipient</div>
@@ -451,14 +451,14 @@ function WarehouseSection({
                   <div className="text-xs text-parchment/60 uppercase tracking-wide mb-0.5">
                     Balance
                   </div>
-                  <div className="font-mono text-lg font-bold text-chartreuse">
+                  <div className="font-mono text-lg font-bold text-accent">
                     {formatTokenAmountFull(balance, decimals, symbol)}
                   </div>
                 </div>
                 {isQueued ? (
                   <button
                     onClick={openCart}
-                    className="px-3 py-1.5 bg-chartreuse/20 border border-chartreuse/40 text-chartreuse font-oracle-standard text-xs uppercase tracking-wider hover:bg-chartreuse/30 transition-colors flex items-center gap-1"
+                    className="px-3 py-1.5 bg-parchment/10 border border-parchment/20 text-accent font-oracle-standard text-xs uppercase tracking-wider hover:bg-parchment/15 transition-colors flex items-center gap-1 rounded-btn"
                   >
                     <Icon name="shoppingCart" size="sm" />
                     In Batch
@@ -466,7 +466,7 @@ function WarehouseSection({
                 ) : (
                   <button
                     onClick={() => handleWithdraw(recipient)}
-                    className="px-3 py-1.5 bg-chartreuse text-ink font-oracle-standard text-xs uppercase tracking-wider hover:bg-chartreuse/90 transition-colors"
+                    className="px-3 py-1.5 btn-lime text-xs"
                   >
                     Add Withdraw
                   </button>
@@ -600,7 +600,7 @@ function SplitsList({
         </label>
       </div>
       {visibleSplits.length === 0 ? (
-        <div className="py-8 text-center bg-parchment/5 border border-parchment/20">
+        <div className="py-8 text-center glass">
           <p className="text-parchment/60 text-sm">All splits are currently empty.</p>
           <p className="text-parchment/40 text-xs mt-1">
             Uncheck "Hide empty splits" to view all {splitContracts.length} historical splits.
@@ -699,15 +699,15 @@ function SplitRow({
   }
 
   return (
-    <div className="p-4 bg-parchment/5 border border-parchment/20">
+    <div className="p-4 glass">
       <div className="flex items-start justify-between gap-3 flex-wrap">
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-2 flex-wrap">
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-chartreuse/20 text-chartreuse text-xs font-bold uppercase tracking-wide">
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-parchment/10 text-accent text-xs font-bold uppercase tracking-wide">
               <Icon name="users" size="sm" />
               {split.providerLabel}
             </span>
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-ink border border-chartreuse/40 text-chartreuse text-xs font-mono">
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 card-dark text-accent text-xs font-mono">
               {formatBipsToPercentage(split.providerTakeRate)}% take
             </span>
             <span className="text-xs text-parchment/40 font-mono">#{split.providerId}</span>
@@ -739,7 +739,7 @@ function SplitRow({
             <div className="text-xs text-parchment/60 uppercase tracking-wide mb-0.5 text-right">
               Pending commission
             </div>
-            <div className="font-mono text-lg font-bold text-chartreuse text-right">
+            <div className="font-mono text-lg font-bold text-accent text-right">
               {formatTokenAmountFull(pendingCommission, decimals, symbol)}
             </div>
             <div className="text-xs text-parchment/40 text-right">
@@ -749,7 +749,7 @@ function SplitRow({
           {isQueued ? (
             <button
               onClick={openCart}
-              className="px-3 py-1.5 bg-chartreuse/20 border border-chartreuse/40 text-chartreuse font-oracle-standard text-xs uppercase tracking-wider hover:bg-chartreuse/30 transition-colors flex items-center gap-1"
+              className="px-3 py-1.5 bg-parchment/10 border border-parchment/20 text-accent font-oracle-standard text-xs uppercase tracking-wider hover:bg-parchment/15 transition-colors flex items-center gap-1 rounded-btn"
             >
               <Icon name="shoppingCart" size="sm" />
               In Batch
@@ -758,7 +758,7 @@ function SplitRow({
             <button
               onClick={handleAdd}
               disabled={!hasWork}
-              className="px-3 py-1.5 bg-chartreuse text-ink font-oracle-standard text-xs uppercase tracking-wider hover:bg-chartreuse/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="px-3 py-1.5 btn-lime text-xs disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Add to Batch
             </button>

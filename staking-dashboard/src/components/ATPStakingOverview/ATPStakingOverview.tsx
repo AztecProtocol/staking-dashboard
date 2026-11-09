@@ -130,7 +130,7 @@ export const ATPStakingOverview = ({ atpData, walletBalance = 0n }: ATPStakingOv
   }
 
   return (
-    <div className="relative bg-parchment/5 border border-parchment/20 p-8">
+    <div className="relative card-dark p-5 sm:p-8">
         {/* Total Allocation, Staked, Stakeable, and Rewards Row */}
         <div>
           <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-6">

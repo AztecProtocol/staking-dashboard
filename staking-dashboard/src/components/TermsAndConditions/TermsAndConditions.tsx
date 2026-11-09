@@ -20,18 +20,7 @@ export const TermsAndConditions = () => {
   }, [location.pathname])
 
   return (
-    <div className="bg-ink/8 border border-ink/20 backdrop-blur-sm relative overflow-hidden">
-      {/* Background Texture */}
-      <div className="pointer-events-none opacity-[0.08] absolute inset-0 z-0">
-        <div
-          className="absolute inset-0 h-full"
-          style={{
-            backgroundImage: "url('/assets/Aztec%20Image_28.webp')",
-            backgroundPosition: 'center top',
-            backgroundRepeat: 'repeat'
-          }}
-        ></div>
-      </div>
+    <div className="card-light relative overflow-hidden">
 
       <div className="relative z-10">
         {/* Header - Clickable */}
@@ -76,7 +65,7 @@ export const TermsAndConditions = () => {
                         <p
                           key={pIndex}
                           dangerouslySetInnerHTML={{ __html: paragraph }}
-                          className="[&_b]:font-bold [&_a]:text-chartreuse [&_a]:underline hover:[&_a]:text-chartreuse/80"
+                          className="[&_b]:font-bold [&_a]:text-accent [&_a]:underline hover:[&_a]:text-accent/80"
                         />
                       ))}
                     </div>
@@ -91,7 +80,7 @@ export const TermsAndConditions = () => {
                       href={helpText.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-chartreuse hover:text-chartreuse/80 transition-colors underline"
+                      className="text-accent hover:text-accent/80 transition-colors underline"
                     >
                       {helpText.link}
                     </a>

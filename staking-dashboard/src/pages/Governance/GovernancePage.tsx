@@ -270,7 +270,7 @@ export default function GovernancePage() {
       />
 
       {/* Governance Overview */}
-      <div className="mb-6 p-4 border border-parchment/20 bg-parchment/5">
+      <div className="mb-6 p-4 glass">
         <div className={`grid gap-6 ${isConnected ? "md:grid-cols-3" : ""}`}>
           {/* Global Stats */}
           <div className="md:col-span-1">
@@ -312,7 +312,7 @@ export default function GovernancePage() {
                     {(currentVotingPower.directPower > 0n || currentVotingPower.stakerPowers.some((s) => s.power > 0n)) && (
                       <button
                         onClick={() => setIsWithdrawModalOpen(true)}
-                        className="px-2 py-0.5 text-sm border border-parchment/30 text-parchment/70 font-oracle-standard hover:border-parchment/50 hover:text-parchment"
+                        className="px-2 py-0.5 text-sm border border-parchment/30 text-parchment/70 font-oracle-standard hover:border-parchment/50 hover:text-parchment rounded-btn"
                       >
                         Withdraw
                       </button>
@@ -320,7 +320,7 @@ export default function GovernancePage() {
                     {delegationEligibleATPs.length > 0 && (
                       <button
                         onClick={() => setIsDelegateModalOpen(true)}
-                        className="px-2 py-0.5 text-sm border border-parchment/30 text-parchment/70 font-oracle-standard hover:border-parchment/50 hover:text-parchment"
+                        className="px-2 py-0.5 text-sm border border-parchment/30 text-parchment/70 font-oracle-standard hover:border-parchment/50 hover:text-parchment rounded-btn"
                       >
                         Delegate
                       </button>
@@ -336,7 +336,7 @@ export default function GovernancePage() {
                       </span>
                       <button
                         onClick={() => setIsDepositModalOpen(true)}
-                        className="px-2 py-0.5 text-sm bg-chartreuse text-ink font-oracle-standard hover:bg-chartreuse/90"
+                        className="px-2 py-0.5 text-sm btn-lime"
                       >
                         Deposit
                       </button>
