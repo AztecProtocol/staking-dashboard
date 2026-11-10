@@ -1,0 +1,16 @@
+{
+  "providerId": 106,
+  "providerName": "PathrockNetwork",
+  "providerDescription": "Independent Aztec mainnet operator running five self-staked sequencers since genesis. Developing public RPC, snapshot and infrastructure monitoring services.",
+  "providerEmail": "pathrock@pathrocknetwork.org",
+  "providerWebsite": "https://pathrocknetwork.org/",
+  "providerLogoUrl": "https://pathrocknetwork.org/images/logo/prn.png",
+  "discordUsername": "paddyson",
+  "providerSelfStake": [
+    "0xb11f11b6d91eb96c3bb076a93d13d20aa050fe8f",
+    "0x28f4570445189a254aeb3512bc15c1238a9ec614",
+    "0x0213e52ca5833009da625e7fdeb4fea78a39389a",
+    "0xa9495bc48185faab6cae587ed7abcc43556684df",
+    "0xe79e060a7bee6bae68c006826e9b98c3b8055b23"
+  ]
+}
