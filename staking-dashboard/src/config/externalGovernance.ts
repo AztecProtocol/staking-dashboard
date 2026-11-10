@@ -17,7 +17,7 @@ export interface ExternalFrontend {
 export const EXTERNAL_GOVERNANCE_FRONTENDS: ExternalFrontend[] = [
   {
     name: "Aztec Governance",
-    hostedBy: "Nethermind",
-    url: "http://aztecgov.nethermind.io/",
+    hostedBy: "BlackNodes",
+    url: "https://aztecgov.blacknodes.net/",
   },
 ];
