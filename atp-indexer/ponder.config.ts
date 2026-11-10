@@ -39,6 +39,13 @@ const FACTORY_START_BLOCKS = {
 // REGISTRY_START_BLOCK: the old id would pick the incomplete cache up again.
 const ROLLUP_FACTORY_START_BLOCK = Math.max(0, (config.REGISTRY_START_BLOCK || 0) - 1);
 
+// Same fix for the ATP factory, which feeds two handlers (Claimed and
+// StakerOperatorUpdated). On mainnet the indexer had no Claimed rows for ATPs
+// created since the single-instance box went live. One block before the
+// earliest ATP factory gives the factory a new id, so Ponder refetches the ATP
+// contracts' logs. Do not "tidy" this back to the earliest factory block.
+const ATP_FACTORY_START_BLOCK = Math.max(0, Math.min(...Object.values(FACTORY_START_BLOCKS)) - 1);
+
 let databaseConfig: DatabaseConfig | undefined;
 
 if (config.POSTGRES_CONNECTION_STRING) {
@@ -195,8 +202,8 @@ export default createConfig({
         event: ATPCreatedEvent,
         parameter: "atp",
       }),
-      // Use earliest factory start block to capture all ATP contracts
-      startBlock: Math.min(...Object.values(FACTORY_START_BLOCKS)),
+      // Just before the earliest factory, to capture all ATP contracts; see ATP_FACTORY_START_BLOCK
+      startBlock: ATP_FACTORY_START_BLOCK,
     },
 
     /**
