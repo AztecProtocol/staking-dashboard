@@ -23,8 +23,8 @@
   "dependencies": {
     "dotenv": "^17.2.3",
     "hono": "^4.5.0",
-    "ponder": "^0.15.7",
-    "viem": "^2.21.3",
+    "ponder": "^0.17.12",
+    "viem": "^2.35.0",
     "zod": "^3.25.76"
   },
   "devDependencies": {
@@ -37,10 +37,10 @@
     "pg": "^8.13.1",
     "ts-jest": "^29.4.5",
     "tsx": "^4.16.2",
-    "typescript": "^5.2.2"
+    "typescript": "^5.4.0"
   },
   "engines": {
-    "node": ">=18.14"
+    "node": ">=22"
   },
   "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }
