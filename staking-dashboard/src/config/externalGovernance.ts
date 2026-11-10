@@ -5,6 +5,8 @@
  * can be directed to. Update this list as new frontends become available.
  */
 
+import { GOVERNANCE_URL } from "./links";
+
 export interface ExternalFrontend {
   /** Display name of the frontend */
   name: string;
@@ -18,6 +20,6 @@ export const EXTERNAL_GOVERNANCE_FRONTENDS: ExternalFrontend[] = [
   {
     name: "Aztec Governance",
     hostedBy: "BlackNodes",
-    url: "https://aztecgov.blacknodes.net/",
+    url: GOVERNANCE_URL,
   },
 ];
