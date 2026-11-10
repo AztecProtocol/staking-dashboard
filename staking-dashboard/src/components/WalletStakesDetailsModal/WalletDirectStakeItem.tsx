@@ -69,7 +69,7 @@ export const WalletDirectStakeItem = ({
   const isInQueue = status === SequencerStatus.NONE && !stake.hasFailedDeposit && !isUnstaked
 
   return (
-    <div className="bg-parchment/5 border border-parchment/20 hover:border-chartreuse/40 transition-all">
+    <div className="glass transition-all">
       {/* Collapsible Header */}
       <button
         onClick={() => setIsExpanded(!isExpanded)}
@@ -120,7 +120,7 @@ export const WalletDirectStakeItem = ({
           <Icon
             name="chevronDown"
             size="lg"
-            className={`text-parchment/40 group-hover:text-chartreuse transition-all ${isExpanded ? 'rotate-180' : ''}`}
+            className={`text-parchment/40 group-hover:text-accent transition-all ${isExpanded ? 'rotate-180' : ''}`}
           />
         </div>
       </button>
@@ -189,7 +189,7 @@ export const WalletDirectStakeItem = ({
                           href={getValidatorDashboardValidatorUrl(stake.attesterAddress)}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-parchment/60 hover:text-chartreuse transition-colors"
+                          className="text-parchment/60 hover:text-accent transition-colors"
                           title="View sequencer on dashboard"
                         >
                           <Icon name="externalLink" size="sm" />
@@ -211,7 +211,7 @@ export const WalletDirectStakeItem = ({
                           href={getExplorerTxUrl(stake.txHash)}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-parchment/60 hover:text-chartreuse transition-colors"
+                          className="text-parchment/60 hover:text-accent transition-colors"
                           title="View on Etherscan"
                         >
                           <Icon name="externalLink" size="sm" />

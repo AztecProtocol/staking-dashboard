@@ -21,7 +21,7 @@ export const RegistrationStakeSequencerSummary = ({
   isLoading
 }: RegistrationStakeSequencerSummaryProps) => {
   return (
-    <div className="bg-parchment/5 border border-parchment/20 p-4 mb-6">
+    <div className="glass p-4 mb-6">
       {isLoading ? (
         <div className="text-center text-parchment/60 py-4">Loading stake details...</div>
       ) : (
@@ -29,7 +29,7 @@ export const RegistrationStakeSequencerSummary = ({
           <div className="grid grid-cols-2 gap-4">
             <div>
               <div className="text-xs font-oracle-standard text-parchment/60 uppercase tracking-wide mb-1">Sequencers</div>
-              <div className="text-xl font-mono font-bold text-chartreuse">
+              <div className="text-xl font-mono font-bold text-accent">
                 {numberOfAttesters}
               </div>
             </div>

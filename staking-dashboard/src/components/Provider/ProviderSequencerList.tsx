@@ -83,7 +83,7 @@ export const ProviderSequencerList = ({ stakes }: ProviderSequencerListProps) =>
     <div className="space-y-4">
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className="w-full flex items-center justify-between p-3 bg-parchment/5 border border-parchment/20 hover:bg-parchment/10 transition-colors"
+        className="w-full flex items-center justify-between p-3 glass hover:bg-parchment/10 transition-colors"
       >
         <h4 className="font-oracle-standard text-sm uppercase tracking-wider text-parchment/90 font-medium">
           Sequencer Registered ({stakes.length})
@@ -109,7 +109,7 @@ export const ProviderSequencerList = ({ stakes }: ProviderSequencerListProps) =>
               placeholder="Search by sequencer or split contract address..."
               value={searchQuery}
               onChange={(e) => handleSearchChange(e.target.value)}
-              className="w-full px-4 py-2 bg-parchment/5 border border-parchment/20 text-parchment placeholder-parchment/40 font-mono text-sm focus:outline-none focus:border-chartreuse/50 transition-colors"
+              className="w-full px-4 py-2 field text-parchment placeholder-parchment/40 font-mono text-sm transition-colors"
             />
             {searchQuery && (
               <button
@@ -164,7 +164,7 @@ export const ProviderSequencerList = ({ stakes }: ProviderSequencerListProps) =>
                                 href={getValidatorDashboardValidatorUrl(stake.attesterAddress)}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-parchment/60 hover:text-chartreuse transition-colors flex-shrink-0"
+                                className="text-parchment/60 hover:text-accent transition-colors flex-shrink-0"
                                 title="View in sequencer dashboard"
                               >
                                 <Icon name="externalLink" size="sm" />
@@ -181,7 +181,7 @@ export const ProviderSequencerList = ({ stakes }: ProviderSequencerListProps) =>
                               <CopyButton text={stake.splitContractAddress} size="sm" className="flex-shrink-0" />
                               <button
                                 onClick={() => openAddressInExplorer(stake.splitContractAddress)}
-                                className="text-parchment/60 hover:text-chartreuse transition-colors flex-shrink-0"
+                                className="text-parchment/60 hover:text-accent transition-colors flex-shrink-0"
                                 title="View in explorer"
                               >
                                 <Icon name="externalLink" size="sm" />
@@ -198,7 +198,7 @@ export const ProviderSequencerList = ({ stakes }: ProviderSequencerListProps) =>
                               <CopyButton text={stake.txHash} size="sm" className="flex-shrink-0" />
                               <button
                                 onClick={() => openTxInExplorer(stake.txHash)}
-                                className="text-parchment/60 hover:text-chartreuse transition-colors flex-shrink-0"
+                                className="text-parchment/60 hover:text-accent transition-colors flex-shrink-0"
                                 title="View transaction in explorer"
                               >
                                 <Icon name="externalLink" size="sm" />

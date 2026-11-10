@@ -233,14 +233,14 @@ export const WalletStakingFlow = ({
       </div>
 
       {/* Approval Amount Display */}
-      <div className="bg-parchment/5 border border-parchment/20 p-6">
+      <div className="glass p-6">
         {isLoading ? (
           <div className="text-center text-parchment/60">Loading approval details...</div>
         ) : (
           <div className="space-y-4">
             <div>
               <div className="text-xs font-oracle-standard text-parchment/60 mb-2 uppercase tracking-wide">Amount to Approve</div>
-              <div className="text-2xl font-mono font-bold text-chartreuse">
+              <div className="text-2xl font-mono font-bold text-accent">
                 {formatTokenAmount(totalAmount, decimals, symbol)}
               </div>
               <div className="text-sm text-parchment/50 mt-1">
@@ -252,7 +252,7 @@ export const WalletStakingFlow = ({
             {allowance !== undefined && (
               <div className="pt-4 border-t border-parchment/20">
                 <div className="text-xs font-oracle-standard text-parchment/60 mb-2 uppercase tracking-wide">Current Allowance</div>
-                <div className={`text-lg font-mono font-bold ${hasEnoughAllowance ? 'text-chartreuse' : 'text-parchment/70'}`}>
+                <div className={`text-lg font-mono font-bold ${hasEnoughAllowance ? 'text-accent' : 'text-parchment/70'}`}>
                   {formatTokenAmount(allowance, decimals, symbol)}
                   {hasEnoughAllowance && (
                     <span className="ml-2 text-sm">✓</span>
@@ -266,8 +266,8 @@ export const WalletStakingFlow = ({
 
       {/* Status Messages */}
       {hasEnoughAllowance && (
-        <div className="bg-chartreuse/10 border border-chartreuse/20 p-4">
-          <div className="flex items-center gap-2 text-chartreuse font-medium mb-1">
+        <div className="bg-parchment/5 border border-parchment/15 p-4 rounded-inset">
+          <div className="flex items-center gap-2 text-accent font-medium mb-1">
             <Icon name="check" size="lg" />
             <span className="font-oracle-standard text-sm uppercase tracking-wide">Tokens Already Approved</span>
           </div>
@@ -281,7 +281,7 @@ export const WalletStakingFlow = ({
       {!hasEnoughAllowance && (
         <button
           type="button"
-          className="w-full bg-chartreuse text-ink py-3 font-oracle-standard font-bold text-sm uppercase tracking-wider hover:bg-parchment hover:text-ink transition-all duration-300 border-2 border-chartreuse hover:border-parchment shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full btn-lime py-3 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
           onClick={handleAddApprovalToQueue}
           disabled={isLoading || isApprovalInQueue}
         >
@@ -293,16 +293,16 @@ export const WalletStakingFlow = ({
       <div className="flex gap-4">
         <button
           type="button"
-          className="flex-1 bg-parchment/10 text-parchment border-2 border-parchment/30 py-3 font-oracle-standard font-bold text-sm uppercase tracking-wider hover:bg-parchment/20 hover:border-parchment/50 transition-all"
+          className="flex-1 btn-glass py-3 text-sm"
           onClick={onBack}
         >
           Back
         </button>
         <button
           type="button"
-          className={`flex-1 py-3 font-oracle-standard font-bold text-sm uppercase tracking-wider transition-all border-2 ${
+          className={`flex-1 py-3 font-oracle-standard font-bold text-sm uppercase tracking-wider transition-all border-2 rounded-btn ${
             canProceedToStep2
-              ? "bg-chartreuse text-ink border-chartreuse hover:bg-parchment hover:text-ink hover:border-parchment shadow-lg"
+              ? "btn-lime"
               : "bg-parchment/10 text-parchment/50 border-parchment/30 cursor-not-allowed"
           }`}
           onClick={() => setCurrentStep(2)}
@@ -327,13 +327,13 @@ export const WalletStakingFlow = ({
       </div>
 
       {/* Stake details */}
-      <div className="bg-parchment/5 border border-parchment/20 p-6">
+      <div className="glass p-6">
         {isLoading ? (
           <div className="text-center text-parchment/60">Loading stake details...</div>
         ) : (
           <>
             <div className="text-center">
-              <div className="text-2xl font-mono font-bold text-chartreuse mb-2">
+              <div className="text-2xl font-mono font-bold text-accent mb-2">
                 {formatTokenAmount(totalAmount, decimals, symbol)}
               </div>
               <div className="text-sm font-oracle-standard text-parchment/60 mb-2 uppercase tracking-wide">Total Stake Amount</div>
@@ -347,9 +347,9 @@ export const WalletStakingFlow = ({
 
               <div className="space-y-2">
                 {/* Provider Name */}
-                <div className="flex items-center justify-between py-2 px-3 bg-parchment/5 border-l-2 border-chartreuse">
+                <div className="flex items-center justify-between py-2 px-3 bg-parchment/5 border-l-2 rounded-r-field border-accent">
                   <span className="text-xs font-oracle-standard text-parchment/60 uppercase tracking-wide">Provider</span>
-                  <span className="text-sm font-medium text-chartreuse">{provider.name}</span>
+                  <span className="text-sm font-medium text-accent">{provider.name}</span>
                 </div>
 
                 {/* Provider ID */}
@@ -369,7 +369,7 @@ export const WalletStakingFlow = ({
                 {/* Source */}
                 <div className="flex items-center justify-between py-2 px-3 bg-parchment/5">
                   <span className="text-xs font-oracle-standard text-parchment/60 uppercase tracking-wide">Source</span>
-                  <span className="text-sm text-chartreuse font-medium">Wallet</span>
+                  <span className="text-sm text-accent font-medium">Wallet</span>
                 </div>
               </div>
             </div>
@@ -379,7 +379,7 @@ export const WalletStakingFlow = ({
 
       {/* Error display */}
       {takeRateError && (
-        <div className="bg-vermillion/10 border border-vermillion/20 p-4">
+        <div className="bg-vermillion/10 border border-vermillion/20 p-4 rounded-inset">
           <div className="text-sm font-oracle-standard font-bold text-vermillion mb-1 uppercase tracking-wide">Provider Configuration Error</div>
           <div className="text-sm text-parchment/80">
             Failed to load provider take rate. Cannot proceed with staking.
@@ -389,8 +389,8 @@ export const WalletStakingFlow = ({
 
       {/* Success display */}
       {hasCompletedStaking && (
-        <div className="bg-chartreuse/10 border border-chartreuse/20 p-4 text-center">
-          <div className="text-sm font-oracle-standard font-bold text-chartreuse mb-2 uppercase tracking-wide">
+        <div className="bg-parchment/5 border border-parchment/15 p-4 text-center rounded-inset">
+          <div className="text-sm font-oracle-standard font-bold text-accent mb-2 uppercase tracking-wide">
             {stakeCount > 1 ? 'All Delegations Successful' : 'Staking Successful'}
           </div>
           <div className="text-sm text-parchment/60">
@@ -404,7 +404,7 @@ export const WalletStakingFlow = ({
       {/* Action Buttons */}
       <button
         type="button"
-        className="w-full bg-chartreuse text-ink py-3 font-oracle-standard font-bold text-sm uppercase tracking-wider hover:bg-parchment hover:text-ink transition-all duration-300 border-2 border-chartreuse hover:border-parchment shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full btn-lime py-3 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
         onClick={handleAddDelegationsToQueue}
         disabled={isLoading || !address || takeRateError !== null || hasCompletedStaking || allDelegationsInQueue}
       >
@@ -423,7 +423,7 @@ export const WalletStakingFlow = ({
       <div className="flex gap-4">
         <button
           type="button"
-          className="flex-1 bg-parchment/10 text-parchment border-2 border-parchment/30 py-3 font-oracle-standard font-bold text-sm uppercase tracking-wider hover:bg-parchment/20 hover:border-parchment/50 transition-all"
+          className="flex-1 btn-glass py-3 text-sm"
           onClick={() => setCurrentStep(1)}
         >
           Back

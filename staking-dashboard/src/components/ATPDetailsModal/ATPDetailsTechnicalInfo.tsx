@@ -71,7 +71,7 @@ export const ATPDetailsTechnicalInfo = ({ atp }: ATPDetailsTechnicalInfoProps) =
     <div className="mb-6 border-t border-parchment/10 pt-4">
       <button
         onClick={() => setIsTechnicalDetailsExpanded(!isTechnicalDetailsExpanded)}
-        className="w-full flex items-center justify-between p-3 bg-parchment/10 border border-parchment/20 hover:bg-parchment/20 transition-colors mb-3"
+        className="w-full flex items-center justify-between p-3 glass hover:bg-parchment/10 transition-colors mb-3"
       >
         <div className="text-sm text-parchment font-oracle-standard font-bold uppercase tracking-wide">
           Details
@@ -126,7 +126,7 @@ export const ATPDetailsTechnicalInfo = ({ atp }: ATPDetailsTechnicalInfoProps) =
                     <div className="text-sm text-parchment/50">Loading...</div>
                   ) : isOnLatestVersion ? (
                     <>
-                      <div className="text-sm text-chartreuse font-medium">Latest</div>
+                      <div className="text-sm text-accent font-medium">Latest</div>
                       <div className="text-xs text-parchment/60 mt-1">{currentDescription}</div>
                     </>
                   ) : (
@@ -134,7 +134,7 @@ export const ATPDetailsTechnicalInfo = ({ atp }: ATPDetailsTechnicalInfoProps) =
                       {isUpgradeQueued ? (
                         <button
                           onClick={openCart}
-                          className="bg-chartreuse/20 border border-chartreuse/40 text-chartreuse py-2 px-3 font-oracle-standard font-bold text-xs uppercase tracking-wider hover:bg-chartreuse/30 transition-all flex items-center gap-1"
+                          className="bg-parchment/10 border border-parchment/20 text-accent py-2 px-3 font-oracle-standard font-bold text-xs uppercase tracking-wider hover:bg-parchment/15 transition-all flex items-center gap-1 rounded-btn"
                         >
                           <Icon name="shoppingCart" size="sm" />
                           In Batch
@@ -143,7 +143,7 @@ export const ATPDetailsTechnicalInfo = ({ atp }: ATPDetailsTechnicalInfoProps) =
                         <button
                           onClick={handleUpgrade}
                           disabled={!upgradeEntry}
-                          className="bg-chartreuse text-ink py-2 px-3 font-oracle-standard font-bold text-xs uppercase tracking-wider hover:bg-parchment hover:text-ink transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                          className="btn-lime py-2 px-3 text-xs disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                           Upgrade to Latest
                         </button>

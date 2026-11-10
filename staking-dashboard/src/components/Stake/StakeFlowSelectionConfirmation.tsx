@@ -41,11 +41,11 @@ export const StakeFlowSelectionConfirmation = ({ onBack }: StakeFlowSelectionCon
 
   if (!selectedAtp) {
     return (
-      <div className="bg-parchment/5 border border-parchment/20 p-6 text-center">
+      <div className="glass p-6 text-center">
         <p className="text-parchment/70">No Token Vault selected. Please go back and select a vault.</p>
         <button
           onClick={onBack ?? handlePrevStep}
-          className="mt-4 bg-parchment/10 text-parchment border border-parchment/30 px-4 py-2 font-oracle-standard font-bold text-sm uppercase tracking-wider hover:bg-parchment/20 transition-all"
+          className="mt-4 btn-glass px-4 py-2 text-sm"
         >
           Go Back
         </button>
@@ -61,7 +61,7 @@ export const StakeFlowSelectionConfirmation = ({ onBack }: StakeFlowSelectionCon
           Your Vault Selection
         </h3>
 
-        <div className="bg-parchment/5 border border-parchment/20 p-4 space-y-4">
+        <div className="glass p-4 space-y-4">
           {/* Selected Vault */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -89,11 +89,11 @@ export const StakeFlowSelectionConfirmation = ({ onBack }: StakeFlowSelectionCon
           <div className="flex items-center justify-between pt-4 border-t border-parchment/10">
             <div>
               <div className="text-xs text-parchment/60 uppercase tracking-wide">Stakes to Create</div>
-              <div className="text-2xl font-mono font-bold text-chartreuse">{stakeCount}</div>
+              <div className="text-2xl font-mono font-bold text-accent">{stakeCount}</div>
             </div>
             <div className="text-right">
               <div className="text-xs text-parchment/60 uppercase tracking-wide">Total Amount</div>
-              <div className="text-sm font-mono text-chartreuse">
+              <div className="text-sm font-mono text-accent">
                 {formattedThreshold ? `${stakeCount} × ${formattedThreshold}` : "..."}
               </div>
             </div>
@@ -102,16 +102,16 @@ export const StakeFlowSelectionConfirmation = ({ onBack }: StakeFlowSelectionCon
       </div>
 
       {/* Staking Rules Notice */}
-      <div className="border border-parchment/20 bg-parchment/5 p-4">
+      <div className="glass p-4">
         <div className="flex items-center gap-2 mb-3">
           <Icon name="info" size="md" className="text-parchment/60 flex-shrink-0" />
           <p className="text-sm font-oracle-standard font-bold text-parchment">Staking Requirements</p>
         </div>
         <ul className="space-y-1.5 text-sm text-parchment/70 ml-7 list-disc">
-          <li>Requires exactly <span className="font-mono text-chartreuse">{formattedThreshold}</span> per sequencer</li>
+          <li>Requires exactly <span className="font-mono text-accent">{formattedThreshold}</span> per sequencer</li>
           <li>One Token Vault at a time</li>
           <li>Multiple transactions needed for additional stakes</li>
-          <li>Minimum <span className="font-mono text-chartreuse">{formattedThreshold}</span> required</li>
+          <li>Minimum <span className="font-mono text-accent">{formattedThreshold}</span> required</li>
         </ul>
       </div>
 
@@ -120,7 +120,7 @@ export const StakeFlowSelectionConfirmation = ({ onBack }: StakeFlowSelectionCon
         {onBack && (
           <button
             type="button"
-            className="flex-1 bg-parchment/10 text-parchment py-3 px-4 font-oracle-standard font-bold text-sm uppercase tracking-wider hover:bg-parchment/20 transition-all duration-300 border-2 border-parchment/30"
+            className="flex-1 btn-glass py-3 px-4 text-sm"
             onClick={onBack}
           >
             Back
@@ -128,7 +128,7 @@ export const StakeFlowSelectionConfirmation = ({ onBack }: StakeFlowSelectionCon
         )}
         <button
           type="button"
-          className="flex-1 bg-chartreuse text-ink py-3 px-4 font-oracle-standard font-bold text-sm uppercase tracking-wider hover:bg-parchment hover:text-ink transition-all duration-300 border-2 border-chartreuse hover:border-parchment"
+          className="flex-1 btn-lime py-3 px-4 text-sm"
           onClick={handleNextStep}
         >
           Continue

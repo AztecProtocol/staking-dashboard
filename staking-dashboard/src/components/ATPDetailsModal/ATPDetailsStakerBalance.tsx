@@ -42,7 +42,7 @@ export const ATPDetailsStakerBalance = ({ atp }: ATPDetailsStakerBalanceProps) =
   }
 
   return (
-    <div className="bg-parchment/5 border border-parchment/20 p-3 flex items-center justify-between">
+    <div className="glass p-3 flex items-center justify-between">
       <div className="flex items-center gap-2">
         <div className="text-xs text-parchment/60 uppercase tracking-wide">
           Staker Balance
@@ -62,7 +62,7 @@ export const ATPDetailsStakerBalance = ({ atp }: ATPDetailsStakerBalanceProps) =
             <button
               onClick={openCart}
               disabled={!isOperator}
-              className="px-3 py-1.5 bg-chartreuse/20 border border-chartreuse/40 text-chartreuse font-oracle-standard text-xs uppercase tracking-wider hover:bg-chartreuse/30 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-1"
+              className="px-3 py-1.5 bg-parchment/10 border border-parchment/20 text-accent font-oracle-standard text-xs uppercase tracking-wider hover:bg-parchment/15 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-1 rounded-btn"
             >
               <Icon name="shoppingCart" size="sm" />
               In Batch
@@ -71,7 +71,7 @@ export const ATPDetailsStakerBalance = ({ atp }: ATPDetailsStakerBalanceProps) =
             <button
               onClick={handleAddToBatch}
               disabled={!isOperator || !entry}
-              className="px-3 py-1.5 bg-chartreuse text-ink font-oracle-standard text-xs uppercase tracking-wider hover:bg-chartreuse/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="px-3 py-1.5 btn-lime text-xs disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Add to Batch
             </button>

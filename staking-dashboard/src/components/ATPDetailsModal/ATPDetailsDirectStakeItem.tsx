@@ -74,7 +74,7 @@ export const ATPDetailsDirectStakeItem = ({ stake, stakerAddress, atp, onClaimSu
   const isInQueue = status === SequencerStatus.NONE && !stake.hasFailedDeposit && !isUnstaked
 
   return (
-    <div className="bg-parchment/5 border border-parchment/20 hover:border-chartreuse/40 transition-all">
+    <div className="glass transition-all">
       {/* Collapsible Header */}
       <button
         onClick={() => setIsExpanded(!isExpanded)}
@@ -134,7 +134,7 @@ export const ATPDetailsDirectStakeItem = ({ stake, stakerAddress, atp, onClaimSu
           <Icon
             name="chevronDown"
             size="lg"
-            className={`text-parchment/40 group-hover:text-chartreuse transition-all ${isExpanded ? 'rotate-180' : ''}`}
+            className={`text-parchment/40 group-hover:text-accent transition-all ${isExpanded ? 'rotate-180' : ''}`}
           />
         </div>
       </button>
@@ -201,7 +201,7 @@ export const ATPDetailsDirectStakeItem = ({ stake, stakerAddress, atp, onClaimSu
                         href={getExplorerTxUrl(stake.txHash)}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-parchment/60 hover:text-chartreuse transition-colors"
+                        className="text-parchment/60 hover:text-accent transition-colors"
                         title="View on Etherscan"
                         onClick={(e) => e.stopPropagation()}
                       >
@@ -234,7 +234,7 @@ export const ATPDetailsDirectStakeItem = ({ stake, stakerAddress, atp, onClaimSu
                           href={getValidatorDashboardValidatorUrl(stake.attesterAddress)}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-parchment/60 hover:text-chartreuse transition-colors"
+                          className="text-parchment/60 hover:text-accent transition-colors"
                           title="View sequencer on dashboard"
                         >
                           <Icon name="externalLink" size="sm" />
@@ -279,7 +279,7 @@ export const ATPDetailsDirectStakeItem = ({ stake, stakerAddress, atp, onClaimSu
                           href={getExplorerTxUrl(stake.txHash)}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-parchment/60 hover:text-chartreuse transition-colors"
+                          className="text-parchment/60 hover:text-accent transition-colors"
                           title="View on Etherscan"
                           onClick={(e) => e.stopPropagation()}
                         >
@@ -314,7 +314,7 @@ export const ATPDetailsDirectStakeItem = ({ stake, stakerAddress, atp, onClaimSu
                     </div>
                   ) : (
                     <div className={`text-sm font-bold ${status === SequencerStatus.VALIDATING
-                        ? 'text-chartreuse'
+                        ? 'text-accent'
                         : status === SequencerStatus.EXITING
                           ? 'text-orchid'
                           : status === SequencerStatus.ZOMBIE
@@ -381,7 +381,7 @@ export const ATPDetailsDirectStakeItem = ({ stake, stakerAddress, atp, onClaimSu
                       <button
                         onClick={() => setIsClaimModalOpen(true)}
                         disabled={isRewardsClaimable === false}
-                        className="px-3 py-1.5 border font-oracle-standard text-xs font-bold uppercase tracking-wide whitespace-nowrap transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-parchment/10 disabled:border-parchment/30 disabled:text-parchment/60 border-chartreuse bg-chartreuse text-ink hover:bg-chartreuse/90"
+                        className="px-3 py-1.5 text-xs whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-parchment/10 disabled:border-parchment/30 disabled:text-parchment/60 btn-lime"
                         title={isRewardsClaimable === false ? "Rewards are currently locked by the network protocol" : "Claim self-stake rewards"}
                       >
                         Claim Rewards

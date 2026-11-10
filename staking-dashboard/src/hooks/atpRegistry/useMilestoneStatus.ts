@@ -100,9 +100,9 @@ export function getMilestoneStatusColors(status?: MilestoneStatus): {
       };
     case MilestoneStatus.Succeeded:
       return {
-        text: "text-chartreuse",
-        bg: "bg-chartreuse/10",
-        border: "border-chartreuse/40",
+        text: "text-accent",
+        bg: "bg-parchment/5",
+        border: "border-parchment/20",
         indicator: "bg-chartreuse",
       };
     default:

@@ -17,8 +17,8 @@ export function ExternalGovernanceModal({
   if (!isOpen) return null;
 
   return createPortal(
-    <div className="fixed inset-0 backdrop-blur-xs z-50 flex items-center justify-center p-4">
-      <div className="bg-ink border border-parchment/20 max-w-md w-full p-6 relative">
+    <div className="fixed inset-0 modal-scrim z-50 flex items-center justify-center p-4">
+      <div className="card-dark max-w-md w-full p-6 relative">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <h3 className="font-oracle-standard text-xl text-parchment">
@@ -49,7 +49,7 @@ export function ExternalGovernanceModal({
         {/* Close button */}
         <button
           onClick={onClose}
-          className="mt-6 w-full py-3 border border-parchment/20 text-parchment hover:border-parchment/40 transition-colors font-oracle-standard"
+          className="mt-6 w-full py-3 btn-glass text-xs"
         >
           Close
         </button>
@@ -63,7 +63,7 @@ function FrontendItem({ frontend }: { frontend: ExternalFrontend }) {
   const isComingSoon = !frontend.url;
 
   return (
-    <div className="p-4 border border-parchment/10 hover:border-parchment/20 transition-colors">
+    <div className="p-4 glass transition-colors">
       <div className="flex items-center justify-between">
         <div>
           {isComingSoon ? (
@@ -75,7 +75,7 @@ function FrontendItem({ frontend }: { frontend: ExternalFrontend }) {
               href={frontend.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="font-oracle-standard text-parchment hover:text-chartreuse transition-colors"
+              className="font-oracle-standard text-parchment hover:text-accent transition-colors"
             >
               {frontend.name}
               <Icon name="externalLink" className="w-4 h-4 inline ml-2" />
@@ -86,7 +86,7 @@ function FrontendItem({ frontend }: { frontend: ExternalFrontend }) {
           </p>
         </div>
         {isComingSoon && (
-          <span className="text-xs text-chartreuse font-oracle-standard px-2 py-1 border border-chartreuse/30">
+          <span className="text-xs text-accent font-oracle-standard px-2 py-1 border border-parchment/20 rounded-inset">
             Coming Soon
           </span>
         )}

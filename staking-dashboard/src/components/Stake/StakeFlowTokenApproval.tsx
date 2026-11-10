@@ -108,14 +108,14 @@ export const StakeFlowTokenApproval = () => {
       </div>
 
       {/* Approval Amount Display */}
-      <div className="bg-parchment/5 border border-parchment/20 p-6">
+      <div className="glass p-6">
         {isLoading ? (
           <div className="text-center text-parchment/60">Loading approval amount...</div>
         ) : (
           <div className="space-y-4">
             <div>
               <div className="text-xs font-oracle-standard text-parchment/60 mb-2 uppercase tracking-wide">Amount to Approve</div>
-              <div className="text-2xl font-mono font-bold text-chartreuse">
+              <div className="text-2xl font-mono font-bold text-accent">
                 {formatTokenAmount(approvalAmount, decimals, symbol)}
               </div>
               <div className="text-sm text-parchment/50 mt-1">
@@ -127,7 +127,7 @@ export const StakeFlowTokenApproval = () => {
             {allowance !== undefined && stakeCount !== 1 && (
               <div className="pt-4 border-t border-parchment/20">
                 <div className="text-xs font-oracle-standard text-parchment/60 mb-2 uppercase tracking-wide">Current Allowance</div>
-                <div className={`text-lg font-mono font-bold ${hasEnoughAllowance ? 'text-chartreuse' : 'text-parchment/70'}`}>
+                <div className={`text-lg font-mono font-bold ${hasEnoughAllowance ? 'text-accent' : 'text-parchment/70'}`}>
                   {formatTokenAmount(allowance, decimals, symbol)}
                   {hasEnoughAllowance && (
                     <span className="ml-2 text-sm">✓</span>
@@ -141,7 +141,7 @@ export const StakeFlowTokenApproval = () => {
 
       {/* Status Messages */}
       {!hasEnoughStakeable && !isLoading && (
-        <div className="bg-vermillion/10 border border-vermillion/20 p-4">
+        <div className="bg-vermillion/10 border border-vermillion/20 p-4 rounded-inset">
           <div className="flex items-center gap-2 text-vermillion font-medium mb-2">
             <Icon name="warning" size="lg" />
             <span className="font-oracle-standard text-sm uppercase tracking-wide">Not enough tokens to stake</span>
@@ -156,8 +156,8 @@ export const StakeFlowTokenApproval = () => {
       )}
 
       {hasEnoughAllowance && hasEnoughStakeable && (
-        <div className="bg-chartreuse/10 border border-chartreuse/20 p-4">
-          <div className="flex items-center gap-2 text-chartreuse font-medium mb-1">
+        <div className="bg-parchment/5 border border-parchment/15 p-4 rounded-inset">
+          <div className="flex items-center gap-2 text-accent font-medium mb-1">
             <Icon name="check" size="lg" />
             <span className="font-oracle-standard text-sm uppercase tracking-wide">Ready to Stake</span>
           </div>
@@ -172,7 +172,7 @@ export const StakeFlowTokenApproval = () => {
         <div className="space-y-3">
           <button
             type="button"
-            className="w-full bg-chartreuse text-ink py-3 font-oracle-standard font-bold text-sm uppercase tracking-wider hover:bg-parchment hover:text-ink transition-all duration-300 border-2 border-chartreuse hover:border-parchment shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full btn-lime py-3 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
             onClick={handleAddToQueue}
             disabled={!selectedAtp || isLoading || !hasEnoughStakeable || isInQueue}
           >
@@ -185,7 +185,7 @@ export const StakeFlowTokenApproval = () => {
       <div className="flex gap-4">
         <button
           type="button"
-          className="flex-1 bg-parchment/10 text-parchment border-2 border-parchment/30 py-3 font-oracle-standard font-bold text-sm uppercase tracking-wider hover:bg-parchment/20 hover:border-parchment/50 transition-all disabled:opacity-50"
+          className="flex-1 btn-glass py-3 text-sm disabled:opacity-50"
           onClick={handlePrevStep}
           disabled={isApproving}
         >
@@ -193,8 +193,8 @@ export const StakeFlowTokenApproval = () => {
         </button>
         <button
           type="button"
-          className={`flex-1 py-3 font-oracle-standard font-bold text-sm uppercase tracking-wider transition-all border-2 ${canContinue()
-              ? "bg-chartreuse text-ink border-chartreuse hover:bg-parchment hover:text-ink hover:border-parchment shadow-lg"
+          className={`flex-1 py-3 font-oracle-standard font-bold text-sm uppercase tracking-wider transition-all border-2 rounded-btn ${canContinue()
+              ? "btn-lime"
               : "bg-parchment/10 text-parchment/50 border-parchment/30 cursor-not-allowed"
             }`}
           onClick={handleNextStep}

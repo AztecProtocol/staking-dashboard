@@ -26,18 +26,18 @@ export const WalletConnectGuard = ({
 
   if (!isConnected) {
     return (
-      <div className={`text-center py-12 sm:py-16 ${className}`}>
-        <div className="mb-6 sm:mb-8 px-4">
-          <h3 className="font-md-thermochrome text-2xl sm:text-3xl mb-3 sm:mb-4 text-parchment">
+      <div className={`card-light text-center px-4 sm:px-8 py-12 sm:py-16 ${className}`}>
+        <div className="mb-8 sm:mb-10">
+          <h3 className="font-arizona-serif font-light text-3xl sm:text-4xl lg:text-5xl leading-none tracking-tight-5 mb-4 text-parchment">
             {title}
           </h3>
-          <p className="font-arizona-text text-base sm:text-lg text-parchment/70 font-light max-w-2xl mx-auto mb-6 sm:mb-8 px-4">
+          <p className="font-oracle-standard text-base sm:text-lg leading-snug text-parchment/70 max-w-2xl mx-auto">
             {description}
           </p>
         </div>
 
-        <div className="bg-parchment/5 border border-parchment/20 p-6 sm:p-8 max-w-md mx-auto mb-6 sm:mb-8">
-          <div className="mb-4 sm:mb-6">
+        <div className="glass p-6 sm:p-8 max-w-md mx-auto">
+          <div className="mb-4 sm:mb-5">
             <CustomConnectButton
               connectVariant="primary"
               accountVariant="outline"
@@ -45,7 +45,7 @@ export const WalletConnectGuard = ({
               fullWidth={true}
             />
           </div>
-          <p className="font-arizona-text text-sm text-parchment/60 px-2">
+          <p className="font-oracle-standard text-sm leading-snug text-parchment/60 px-2">
             {helpText}
           </p>
         </div>

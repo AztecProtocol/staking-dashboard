@@ -67,13 +67,13 @@ export const AddAddressForm = ({
           value={inputValue}
           onChange={handleInputChange}
           placeholder={placeholder}
-          className="flex-1 bg-parchment/5 border border-parchment/20 px-3 py-2 text-sm font-mono text-parchment placeholder:text-parchment/40 focus:outline-none focus:border-chartreuse/50"
+          className="flex-1 field px-3 py-2 text-sm font-mono text-parchment placeholder:text-parchment/40"
           disabled={isPending}
         />
         <button
           type="submit"
           disabled={isPending || !inputValue}
-          className="px-4 py-2 bg-chartreuse text-ink font-bold text-sm uppercase tracking-wide hover:bg-chartreuse/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="px-4 py-2 btn-lime text-sm disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isPending ? (
             <Icon name="loader" size="sm" className="animate-spin" />
@@ -85,14 +85,14 @@ export const AddAddressForm = ({
 
       {/* Error/Success Messages */}
       {(validationError || isError) && (
-        <div className="flex items-center gap-2 text-red-400 text-xs">
+        <div className="flex items-center gap-2 text-vermillion text-xs">
           <Icon name="alertCircle" size="sm" />
           <span>{validationError || error?.message || "Failed to add address"}</span>
         </div>
       )}
 
       {isSuccess && (
-        <div className="flex items-center gap-2 text-chartreuse text-xs">
+        <div className="flex items-center gap-2 text-accent text-xs">
           <Icon name="check" size="sm" />
           <span>Address added successfully</span>
         </div>

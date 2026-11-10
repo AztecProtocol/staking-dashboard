@@ -23,7 +23,7 @@ export const ATPStakingOverviewTotalStaked = forwardRef<HTMLDivElement, ATPStaki
     const delegatedPercent = totalStaked > 0n ? (Number(totalDelegated) / Number(totalStaked)) * 100 : 0
 
     return (
-      <div ref={ref} className="relative border border-parchment/20 p-4 hover:border-parchment/30 transition-colors">
+      <div ref={ref} className="relative glass p-4 transition-colors">
         <button
           onClick={onToggle}
           className="w-full flex items-start justify-between"
@@ -38,13 +38,13 @@ export const ATPStakingOverviewTotalStaked = forwardRef<HTMLDivElement, ATPStaki
                 maxWidth="max-w-xs"
               />
             </div>
-            <div className="font-mono text-2xl font-bold text-chartreuse mb-3">
+            <div className="font-mono text-2xl font-bold text-accent mb-3">
               {formatTokenAmountFull(totalStaked, decimals, symbol)}
             </div>
 
             {/* Visualization */}
             <div className="space-y-2">
-              <div className="flex h-6 overflow-hidden border border-parchment/20 bg-parchment/5">
+              <div className="flex h-6 overflow-hidden glass">
                 {totalStaked > 0n ? (
                   <>
                     {/* Self Stake */}
@@ -98,7 +98,7 @@ export const ATPStakingOverviewTotalStaked = forwardRef<HTMLDivElement, ATPStaki
         </button>
 
         {isExpanded && (
-          <div className="absolute top-full left-0 right-0 mt-2 bg-ink border border-parchment/20 p-4 space-y-4 z-10 shadow-lg">
+          <div className="absolute top-full left-0 right-0 mt-2 card-dark bg-coal rounded-panel p-4 space-y-4 z-10">
             <div>
               <div className="text-xs text-parchment/60 uppercase tracking-wide mb-1 font-oracle-standard">Self Stake</div>
               <div className="font-mono text-base font-bold text-parchment">

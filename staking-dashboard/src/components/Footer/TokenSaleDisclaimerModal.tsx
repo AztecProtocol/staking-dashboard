@@ -22,8 +22,8 @@ AZTEC tokens are not being offered or distributed to, as well as cannot be resol
 If such restricted person purchases AZTEC tokens, such restricted person has done so on an unlawful, unauthorized and fraudulent basis and in this regard shall bear negative consequences.`
 
   return createPortal(
-    <div className="fixed inset-0 backdrop-blur-sm bg-ink/50 z-50 flex items-center justify-center p-4">
-      <div className="bg-ink/95 border border-ink/20 backdrop-blur-sm max-w-3xl w-full max-h-[80vh] flex flex-col relative shadow-2xl">
+    <div className="fixed inset-0 modal-scrim z-50 flex items-center justify-center p-4">
+      <div className="card-dark max-w-3xl w-full max-h-[80vh] flex flex-col relative">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-parchment/10">
           <h3 className="font-arizona-text text-xl md:text-2xl font-light text-parchment">
@@ -51,7 +51,7 @@ If such restricted person purchases AZTEC tokens, such restricted person has don
         <div className="flex justify-end p-6 border-t border-parchment/10">
           <button
             onClick={onClose}
-            className="bg-chartreuse text-ink px-6 py-3 font-oracle-standard font-bold text-sm uppercase tracking-wider hover:bg-chartreuse/90 transition-all"
+            className="btn-lime px-6 py-3 text-sm"
           >
             Close
           </button>

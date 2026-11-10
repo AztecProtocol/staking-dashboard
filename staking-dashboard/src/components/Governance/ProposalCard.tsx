@@ -14,13 +14,13 @@ function isUrl(str: string): boolean {
 
 function getStateBadgeStyles(state: ProposalState): string {
   if (isVotingOpen(state)) {
-    return "bg-chartreuse/20 text-chartreuse border-chartreuse/30";
+    return "bg-parchment/10 text-accent border-parchment/20";
   }
   if (state === ProposalState.Pending) {
     return "bg-aqua/20 text-aqua border-aqua/30";
   }
   if (state === ProposalState.Executed) {
-    return "bg-chartreuse/20 text-chartreuse border-chartreuse/30";
+    return "bg-parchment/10 text-accent border-parchment/20";
   }
   if (isTerminalState(state)) {
     return "bg-orchid/20 text-orchid border-orchid/30";
@@ -36,9 +36,9 @@ export function ProposalCard({ proposal, isSelected, onClick }: ProposalCardProp
     <button
       onClick={onClick}
       className={`
-        flex-shrink-0 w-64 p-4 border transition-all text-left
+        flex-shrink-0 w-64 p-4 border rounded-inset transition-all text-left
         ${isSelected
-          ? "border-chartreuse bg-chartreuse/5"
+          ? "border-accent bg-parchment/5"
           : "border-parchment/20 bg-parchment/5 hover:border-parchment/40"
         }
       `}
@@ -47,7 +47,7 @@ export function ProposalCard({ proposal, isSelected, onClick }: ProposalCardProp
         <span className="font-oracle-standard text-sm text-parchment/70">
           Proposal #{proposal.id.toString()}
         </span>
-        <span className={`px-2 py-0.5 text-xs border ${badgeStyles}`}>
+        <span className={`px-2 py-0.5 text-xs border rounded-inset ${badgeStyles}`}>
           {stateLabel}
         </span>
       </div>

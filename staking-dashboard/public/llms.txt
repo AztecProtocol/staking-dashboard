@@ -1,0 +1,46 @@
+# Aztec Staking Dashboard
+
+> The official dashboard for staking $AZTEC, the token of Aztec Network, at https://stake.aztec.network.
+> Holders delegate to a staking provider or register their own sequencer, then track their positions and claim rewards.
+> The dashboard is a web app: it needs JavaScript and an Ethereum wallet, and every figure it shows is read live from the network.
+
+Aztec Network is the protocol: a decentralized Ethereum L2 for private apps. $AZTEC is its token.
+Aztec Foundation publishes this dashboard. Staking happens through smart contracts on Ethereum;
+the dashboard is an interface to them.
+
+## What you can do here
+
+- See the network's staking figures: total value staked, estimated APR, active sequencers and the minimum stake.
+- Compare staking providers by total stake, share of the network's stake and commission.
+- Delegate $AZTEC to a provider, the simplest way to earn staking rewards, with no infrastructure to run.
+- Register and stake your own sequencer by uploading its keys. This needs a running sequencer node.
+- Track your staked positions, see claimable rewards and claim them.
+- Stake from a wallet balance or from a Token Vault, with a browser wallet or a Safe multisig.
+
+## Facts worth getting right
+
+- Minimum stake: each stake position needs the network's minimum, currently 200,000 $AZTEC. The dashboard shows the live value.
+- Smaller amounts: holders with less than the minimum can use liquid staking with Olla (https://olla.finance/), which has no minimum.
+- Commission: each provider sets its own commission, shown in the provider list. It is taken from rewards.
+- APR: the figure on the dashboard is an estimate from current rewards and the number of sequencers. Actual returns vary.
+- Governance is not run from this dashboard. See https://aztec.network/token for how to take part.
+- Access is restricted in some jurisdictions. The terms of service apply: https://aztec.network/terms-of-service
+
+## Pages
+
+- [Stake $AZTEC](https://stake.aztec.network/): The dashboard: staking figures, the provider list and, with a wallet connected, your positions and rewards.
+
+## Related
+
+- [What $AZTEC does](https://aztec.network/token): What the token is for, including staking and governance.
+- [Governance](https://aztec.network/token/governance): How proposals, voting and upgrades work on Aztec.
+- [Liquid staking with Olla](https://olla.finance/): Stake any amount of $AZTEC, below the 200,000 minimum.
+- [Operator documentation](https://docs.aztec.network/operate/operators): Running a sequencer on Aztec.
+- [Become a staking provider](https://docs.aztec.network/operate/operators/setup/become_a_staking_provider): How operators accept delegated stake.
+- [Aztec](https://aztec.network/): The platform for unstoppable private apps. Its own guide is at https://aztec.network/llms.txt
+
+## Optional
+
+- [Source code](https://github.com/AztecProtocol/staking-dashboard): The dashboard and its indexer, open source.
+- [Terms of service](https://aztec.network/terms-of-service)
+- [Privacy policy](https://aztec.network/privacy-policy)

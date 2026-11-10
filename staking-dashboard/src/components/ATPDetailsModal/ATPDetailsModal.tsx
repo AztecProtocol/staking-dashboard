@@ -275,18 +275,18 @@ export const ATPDetailsModal = ({ atp, isOpen, onClose, onWithdrawSuccess, onRef
   return createPortal(
     <>
       <div
-        className="fixed inset-0 backdrop-blur-sm z-50 flex items-center justify-center p-4 pt-16"
+        className="fixed inset-0 modal-scrim z-50 flex items-center justify-center p-4 pt-16"
         onClick={handleBackdropClick}
       >
-        <div className="bg-ink border border-parchment/20 w-full max-w-4xl max-h-[80vh] overflow-y-auto relative custom-scrollbar">
+        <div className="card-dark w-full max-w-4xl max-h-[80vh] overflow-y-auto relative custom-scrollbar">
           <div className="p-6 relative z-10">
             <ATPDetailsHeader atp={atp} onClose={onClose} />
 
             {/* Combined Alert Messages */}
             {alertMessages.length > 0 && (
               <div className={`flex items-start gap-2 mb-6 p-4 ${alertType === 'error'
-                ? 'bg-vermillion/10 border border-vermillion/30 text-vermillion'
-                : 'bg-aqua/10 border border-aqua/30 text-aqua'
+                ? 'bg-vermillion/10 border border-vermillion/30 text-vermillion rounded-inset'
+                : 'bg-aqua/10 border border-aqua/30 text-aqua rounded-inset'
                 }`}>
                 <Icon
                   name={alertType === 'error' ? 'warning' : 'info'}
@@ -341,7 +341,7 @@ export const ATPDetailsModal = ({ atp, isOpen, onClose, onWithdrawSuccess, onRef
                   {hasFailedDirectStakes && stakerBalance > 0n && (
                     <button
                       onClick={() => setHideFailedDirectStakes(!hideFailedDirectStakes)}
-                      className={`flex items-center gap-1.5 px-2 py-0.5 border text-xs font-oracle-standard font-bold uppercase tracking-wide transition-all
+                      className={`flex items-center gap-1.5 px-2 py-0.5 border rounded-btn text-xs font-oracle-standard font-bold uppercase tracking-wide transition-all
                         ${hideFailedDirectStakes
                           ? 'bg-vermillion/10 border-vermillion/30 text-vermillion/60 hover:bg-vermillion/20 hover:border-vermillion/40'
                           : 'bg-parchment/10 border-parchment/30 text-parchment/60 hover:bg-parchment/20 hover:border-parchment/40'
@@ -357,13 +357,13 @@ export const ATPDetailsModal = ({ atp, isOpen, onClose, onWithdrawSuccess, onRef
               </div>
               {filteredDirectStakes.length > 0 ? (
                 !stakerAddress ? (
-                  <div className="bg-vermillion/10 border border-vermillion/30 p-4 text-center">
+                  <div className="bg-vermillion/10 border border-vermillion/30 p-4 text-center rounded-inset">
                     <div className="text-sm text-vermillion">
                       Error: Staker contract address not found
                     </div>
                   </div>
                 ) : rollupVersion === undefined ? (
-                  <div className="bg-parchment/5 border border-parchment/20 p-4 text-center">
+                  <div className="glass p-4 text-center">
                     <div className="text-sm text-parchment/60">
                       Loading stake details...
                     </div>
@@ -385,7 +385,7 @@ export const ATPDetailsModal = ({ atp, isOpen, onClose, onWithdrawSuccess, onRef
                   </div>
                 )
               ) : (
-                <div className="bg-parchment/5 border border-parchment/20 p-6 text-center">
+                <div className="glass p-6 text-center">
                   <div className="flex flex-col items-center gap-3">
                     <Icon name="server" className="w-8 h-8 text-parchment/40" />
                     <div>
@@ -411,7 +411,7 @@ export const ATPDetailsModal = ({ atp, isOpen, onClose, onWithdrawSuccess, onRef
                   {hasFailedDelegations && stakerBalance > 0n && (
                     <button
                       onClick={() => setHideFailedDelegations(!hideFailedDelegations)}
-                      className={`flex items-center gap-1.5 px-2 py-0.5 border text-xs font-oracle-standard font-bold uppercase tracking-wide transition-all 
+                      className={`flex items-center gap-1.5 px-2 py-0.5 border rounded-btn text-xs font-oracle-standard font-bold uppercase tracking-wide transition-all 
                         ${hideFailedDelegations 
                           ? 'bg-vermillion/10 border-vermillion/30 text-vermillion/60 hover:bg-vermillion/20 hover:border-vermillion/40'
                           : 'bg-parchment/10 border-parchment/30 text-parchment/60 hover:bg-parchment/20 hover:border-parchment/40'
@@ -447,13 +447,13 @@ export const ATPDetailsModal = ({ atp, isOpen, onClose, onWithdrawSuccess, onRef
               </div>
               {filteredDelegations.length > 0 ? (
                 !stakerAddress ? (
-                  <div className="bg-vermillion/10 border border-vermillion/30 p-4 text-center">
+                  <div className="bg-vermillion/10 border border-vermillion/30 p-4 text-center rounded-inset">
                     <div className="text-sm text-vermillion">
                       Error: Staker contract address not found
                     </div>
                   </div>
                 ) : rollupVersion === undefined ? (
-                  <div className="bg-parchment/5 border border-parchment/20 p-4 text-center">
+                  <div className="glass p-4 text-center">
                     <div className="text-sm text-parchment/60">
                       Loading delegation details...
                     </div>
@@ -484,7 +484,7 @@ export const ATPDetailsModal = ({ atp, isOpen, onClose, onWithdrawSuccess, onRef
                   </div>
                 )
               ) : (
-                <div className="bg-parchment/5 border border-parchment/20 p-6 text-center">
+                <div className="glass p-6 text-center">
                   <div className="flex flex-col items-center gap-3">
                     <Icon name="users" className="w-8 h-8 text-parchment/40" />
                     <div>

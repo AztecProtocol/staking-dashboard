@@ -101,8 +101,8 @@ export const WalletWithdrawalActions = ({
             disabled={!canInitiateUnstake && !isInitiateQueued}
             className={`w-full py-1.5 px-3 font-oracle-standard font-bold text-xs uppercase tracking-wider transition-all disabled:opacity-50 ${
               isInitiateQueued
-                ? "bg-aqua/20 border border-aqua/40 text-aqua hover:bg-aqua/30"
-                : "bg-aqua text-ink hover:bg-aqua/90"
+                ? "bg-aqua/20 border border-aqua/40 text-aqua hover:bg-aqua/30 rounded-btn"
+                : "btn-glass"
             }`}
           >
             {isInitiateQueued ? (
@@ -131,8 +131,8 @@ export const WalletWithdrawalActions = ({
             disabled={!canFinalize && !isFinalizeQueued}
             className={`w-full py-1.5 px-3 font-oracle-standard font-bold text-xs uppercase tracking-wider transition-all disabled:opacity-50 ${
               isFinalizeQueued
-                ? "bg-chartreuse/20 border border-chartreuse/40 text-chartreuse hover:bg-chartreuse/30"
-                : "bg-chartreuse text-ink hover:bg-chartreuse/90"
+                ? "bg-parchment/10 border border-parchment/20 text-accent hover:bg-parchment/15 rounded-btn"
+                : "btn-lime"
             }`}
           >
             {isFinalizeQueued ? (

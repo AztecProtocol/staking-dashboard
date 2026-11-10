@@ -520,26 +520,26 @@ export const ATPStakingCard = ({
   const showUpgradeGlow = hasUpgradeAvailable && !showSetupRequired
 
   return (
-    <div className={`relative bg-parchment/5 border p-8 hover:bg-parchment/8 transition-all ${
+    <div className={`relative bg-parchment/5 border rounded-inset p-8 hover:bg-parchment/8 transition-all ${
       showUpgradeGlow
-        ? 'border-chartreuse/60 animate-pulse-glow'
-        : 'border-parchment/20 hover:border-chartreuse/40'
+        ? 'border-parchment/30 animate-pulse-glow'
+        : 'border-parchment/20 hover:border-parchment/20'
     }`}>
       {/* Upgrade Available Badge - positioned on top border */}
       {showUpgradeGlow && (
-        <span className="absolute -top-2.5 right-[15%] px-2 py-0.5 text-[10px] font-oracle-standard font-bold uppercase tracking-wider border border-chartreuse/60 bg-ink text-chartreuse">
+        <span className="absolute -top-2.5 right-[15%] px-2 py-0.5 text-[10px] font-oracle-standard font-bold uppercase tracking-wider card-dark text-accent">
           Upgrade Available
         </span>
       )}
 
       {/* Setup Required Overlay */}
       {showSetupRequired && (
-        <div className="absolute inset-0 bg-ink/90 backdrop-blur-sm flex items-center justify-center z-10 border border-vermillion/30">
+        <div className="on-dark absolute inset-0 bg-ink/90 backdrop-blur-sm flex items-center justify-center z-10 rounded-card">
           <div className="text-center p-6 max-w-xs">
-            <div className="w-12 h-12 mx-auto mb-4 flex items-center justify-center border border-chartreuse/40 bg-chartreuse/10">
-              <Icon name="shield" className="w-6 h-6 text-chartreuse" />
+            <div className="w-12 h-12 mx-auto mb-4 flex items-center justify-center border border-parchment/20 bg-parchment/5 rounded-inset">
+              <Icon name="shield" className="w-6 h-6 text-accent" />
             </div>
-            <h3 className="font-md-thermochrome text-lg text-chartreuse mb-2">
+            <h3 className="font-arizona-serif text-lg text-accent mb-2">
               Setup Required
             </h3>
             <p className="text-parchment/70 text-sm mb-4">
@@ -548,7 +548,7 @@ export const ATPStakingCard = ({
             </p>
             <button
               onClick={handleSetupTokenVault}
-              className="bg-chartreuse text-ink px-6 py-2 font-oracle-standard font-bold text-sm uppercase tracking-wider hover:bg-parchment transition-all"
+              className="btn-lime px-6 py-2 text-sm"
             >
               Setup Token Vault
             </button>
@@ -560,16 +560,16 @@ export const ATPStakingCard = ({
       <div className="flex items-center gap-3 mb-6">
         {/* Left: Title + Status */}
         <div className="flex items-center gap-2 flex-wrap">
-          <h3 className="font-md-thermochrome text-2xl font-medium text-chartreuse">
+          <h3 className="font-arizona-serif text-2xl font-medium text-accent">
             Token Vault #{data.sequentialNumber || "?"}
           </h3>
           <span
-            className={`px-2 py-1 text-xs font-oracle-standard font-bold uppercase tracking-wider border ${
+            className={`px-2 py-1 text-xs font-oracle-standard font-bold uppercase tracking-wider border rounded-btn ${
               isFullyWithdrawn
                 ? "bg-parchment/10 text-parchment/50 border-parchment/20"
                 : isLocked
                   ? "bg-parchment/20 text-parchment border-parchment/40"
-                  : "bg-chartreuse/20 text-chartreuse border-chartreuse/40"
+                  : "bg-parchment/10 text-accent border-parchment/20"
             }`}
           >
             {isFullyWithdrawn ? "WITHDRAWN" : isLocked ? "LOCKED" : "UNLOCKED"}
@@ -601,7 +601,7 @@ export const ATPStakingCard = ({
         {/* Right: Details button */}
         <button
           onClick={() => setIsModalOpen(true)}
-          className="flex items-center gap-1 border border-parchment/40 bg-parchment/10 hover:bg-parchment/20 hover:border-parchment/60 text-parchment font-oracle-standard font-bold text-xs uppercase tracking-wider px-3 py-1.5 transition-all"
+          className="flex items-center gap-1 btn-glass text-xs px-3 py-1.5 transition-all rounded-btn"
         >
           <span>Details</span>
           <Icon name="arrowRight" size="sm" />
@@ -613,7 +613,7 @@ export const ATPStakingCard = ({
           actionable from this dashboard. The button opens the same
           external-frontends modal the Navbar's Governance button does. */}
       {hasGovernanceAllocation && (
-        <div className="mb-6 p-3 border border-amber-400/40 bg-amber-400/10 flex items-start gap-3">
+        <div className="mb-6 p-3 border border-amber-400/40 bg-amber-400/10 flex items-start gap-3 rounded-inset">
           <Icon
             name="info"
             size="md"
@@ -707,7 +707,7 @@ export const ATPStakingCard = ({
         {remainingAllocation > 0n && data.typeString === "LATP" && (
           <div className="space-y-2">
             {/* Stacked Bar Chart */}
-            <div className="flex h-12 overflow-hidden border border-parchment/20">
+            <div className="flex h-12 overflow-hidden glass">
               {/* Locked */}
               {locked > 0n && (
                 <div
@@ -739,7 +739,7 @@ export const ATPStakingCard = ({
             {/* Legend */}
             <div className="flex items-center justify-between text-xs">
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-parchment/20 border border-parchment/30"></div>
+                <div className="w-3 h-3 bg-parchment/20 border border-parchment/30 rounded-inset"></div>
                 <span className="text-parchment/70 font-oracle-standard">
                   Locked
                 </span>
@@ -752,7 +752,7 @@ export const ATPStakingCard = ({
                 <span className="text-parchment/70 font-oracle-standard">
                   Available to Withdraw
                 </span>
-                <span className="text-chartreuse font-mono font-bold">
+                <span className="text-accent font-mono font-bold">
                   {formatTokenAmount(claimable, decimals, symbol)}
                 </span>
               </div>
@@ -779,7 +779,7 @@ export const ATPStakingCard = ({
             />
           </div>
           <div className="flex items-center gap-3">
-            <div className="font-mono text-lg font-bold text-chartreuse">
+            <div className="font-mono text-lg font-bold text-accent">
               {isLoadingToken || stakeableAmountProp === undefined
                 ? "Loading..."
                 : formatTokenAmount(stakeableAmount, decimals, symbol)}
@@ -800,7 +800,7 @@ export const ATPStakingCard = ({
             ) : (
               <button
                 onClick={() => onStakeClick(data)}
-                className="font-oracle-standard font-bold text-xs uppercase tracking-wider px-2 py-1 transition-all flex-shrink-0 bg-chartreuse text-ink hover:bg-chartreuse/90"
+                className="text-xs px-2 py-1 flex-shrink-0 btn-lime"
               >
                 Stake
               </button>
@@ -834,7 +834,7 @@ export const ATPStakingCard = ({
             />
           </div>
           <div className="flex items-center gap-3 flex-nowrap">
-            <div className="font-mono text-lg font-bold text-chartreuse whitespace-nowrap">
+            <div className="font-mono text-lg font-bold text-accent whitespace-nowrap">
               {formatTokenAmount(
                 isFullyWithdrawn ? 0n : claimable,
                 decimals,
@@ -850,7 +850,7 @@ export const ATPStakingCard = ({
                 <button
                   onClick={() => approveStaker(claimable)}
                   disabled={isApproveProcessing || isLoadingAllowance}
-                  className="font-oracle-standard font-bold text-xs uppercase tracking-wider px-2 py-1 transition-all flex-shrink-0 bg-chartreuse text-ink hover:bg-chartreuse/90 disabled:bg-parchment/20 disabled:text-parchment/40 disabled:cursor-not-allowed"
+                  className="text-xs px-2 py-1 flex-shrink-0 btn-lime disabled:bg-parchment/20 disabled:text-parchment/40 disabled:cursor-not-allowed"
                 >
                   {isApprovePending
                     ? "Approving..."
@@ -883,7 +883,7 @@ export const ATPStakingCard = ({
             ) : (
               <button
                 onClick={claim}
-                className="font-oracle-standard font-bold text-xs uppercase tracking-wider px-2 py-1 transition-all flex-shrink-0 bg-chartreuse text-ink hover:bg-chartreuse/90"
+                className="text-xs px-2 py-1 flex-shrink-0 btn-lime"
               >
                 {isNCATP ? "Withdraw Tokens" : "Withdraw"}
               </button>

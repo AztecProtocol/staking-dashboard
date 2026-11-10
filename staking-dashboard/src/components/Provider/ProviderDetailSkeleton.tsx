@@ -13,7 +13,7 @@ export const ProviderDetailSkeleton = () => {
       </div>
 
       {/* OperatorOverview Skeleton */}
-      <div className="bg-parchment/5 border border-parchment/20 p-6">
+      <div className="glass p-6">
         <div className="animate-pulse space-y-4">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 bg-parchment/20 rounded-full"></div>
@@ -36,7 +36,7 @@ export const ProviderDetailSkeleton = () => {
       {/* Two Column Grid Skeleton */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Left Column - OperatorInfo Skeleton */}
-        <div className="bg-parchment/5 border border-parchment/20 p-6">
+        <div className="glass p-6">
           <div className="animate-pulse space-y-6">
             <div className="h-6 bg-parchment/20 rounded w-32"></div>
             <div className="space-y-4">
@@ -51,7 +51,7 @@ export const ProviderDetailSkeleton = () => {
         </div>
 
         {/* Right Column - OperatorStakingFlow Skeleton */}
-        <div className="bg-parchment/5 border border-parchment/20 p-6">
+        <div className="glass p-6">
           <div className="animate-pulse space-y-6">
             <div className="h-6 bg-parchment/20 rounded w-40"></div>
             <div className="space-y-4">
@@ -62,7 +62,7 @@ export const ProviderDetailSkeleton = () => {
               <div className="h-10 bg-parchment/20 rounded w-full"></div>
               <div className="h-10 bg-parchment/20 rounded w-full"></div>
             </div>
-            <div className="h-12 bg-chartreuse/20 rounded w-full"></div>
+            <div className="h-12 bg-parchment/10 rounded w-full"></div>
           </div>
         </div>
       </div>

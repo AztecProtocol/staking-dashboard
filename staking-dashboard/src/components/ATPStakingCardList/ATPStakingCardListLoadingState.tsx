@@ -17,7 +17,7 @@ export const ATPStakingCardListLoadingState = ({ itemsPerPage }: ATPStakingCardL
       {/* Skeleton for ATP Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
         {[...Array(itemsPerPage)].map((_, index) => (
-          <div key={index} className="bg-parchment/5 border border-parchment/20 p-4 sm:p-6">
+          <div key={index} className="glass p-4 sm:p-6">
             {/* Header skeleton */}
             <div className="flex flex-col sm:flex-row sm:justify-between gap-4 mb-6">
               <div className="flex-1">
@@ -38,7 +38,7 @@ export const ATPStakingCardListLoadingState = ({ itemsPerPage }: ATPStakingCardL
             </div>
 
             {/* Lock status skeleton */}
-            <div className="bg-parchment/8 border border-parchment/30 p-4 mb-6">
+            <div className="glass p-4 mb-6">
               <div className="h-4 w-48 bg-parchment/10 rounded animate-pulse"></div>
             </div>
 

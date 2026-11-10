@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { StakingTermsModal } from "./StakingTermsModal"
+import { ParticipateLinks } from "./ParticipateLinks"
 
 /**
  * Footer component with legal links
@@ -10,10 +11,12 @@ export const Footer = () => {
 
   return (
     <>
-      <footer className="border-t border-parchment/10 bg-ink/50 backdrop-blur-sm mt-auto">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-8">
+      <ParticipateLinks />
+
+      <footer className="bg-ink text-parchment mt-auto">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Legal Links */}
-          <div className="flex flex-wrap gap-x-6 gap-y-2 mb-6 font-md-thermochrome text-sm text-parchment/60">
+          <div className="flex flex-wrap gap-x-6 gap-y-2 mb-6 font-oracle-standard text-sm text-parchment/60">
             <button
               onClick={() => setIsStakingTermsOpen(true)}
               className="hover:text-parchment transition-colors underline"
@@ -51,10 +54,10 @@ export const Footer = () => {
 
           {/* Copyright and UK Notice */}
           <div className="space-y-4">
-            <p className="font-md-thermochrome text-sm text-parchment/60">
-              © 2025 Aztec Foundation
+            <p className="font-oracle-standard text-sm text-parchment/60">
+              © 2026 Aztec Foundation
             </p>
-            <p className="font-md-thermochrome text-xs text-parchment/50 max-w-4xl leading-relaxed">
+            <p className="font-oracle-standard text-xs text-parchment/50 max-w-4xl leading-relaxed">
               <span className="font-semibold">Information for Persons in the UK:</span> Communications relating to the Aztec token and the Aztec token sale made by Aztec Foundation are directed only at persons outside the UK. Persons in the UK are not permitted to participate in the Aztec token sale and must not act upon any communications made by Aztec Foundation in relation to it or the Aztec token.
             </p>
           </div>

@@ -77,19 +77,19 @@ export const WalletConnectionAlertModal = ({ isSafeWarningShown }: WalletConnect
 
   return createPortal(
     <div
-      className="fixed inset-0 backdrop-blur-xs z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 modal-scrim z-50 flex items-center justify-center p-4"
       onClick={handleBackdropClick}
     >
-      <div className="bg-ink border-2 border-chartreuse/40 w-full max-w-lg relative">
+      <div className="card-dark w-full max-w-lg relative">
         <div className="p-6">
           {/* Header */}
           <div className="mb-6">
             <div className="flex items-start gap-4 mb-4">
               <div className="flex-shrink-0">
-                <Icon name="info" size="lg" className="text-chartreuse w-8 h-8" />
+                <Icon name="info" size="lg" className="text-accent w-8 h-8" />
               </div>
               <div className="flex-1">
-                <h2 className="font-md-thermochrome text-3xl text-parchment">
+                <h2 className="font-arizona-serif text-3xl text-parchment">
                   Staking Required
                 </h2>
               </div>
@@ -107,11 +107,11 @@ export const WalletConnectionAlertModal = ({ isSafeWarningShown }: WalletConnect
           </div>
 
           {/* Warning Message */}
-          <div className="bg-chartreuse/10 border border-chartreuse/30 p-4 mb-6">
+          <div className="bg-parchment/5 border border-parchment/20 p-4 mb-6 rounded-inset">
             <div className="space-y-3 text-sm text-parchment/90">
               <div className="flex items-start gap-2">
                 <div className="flex-shrink-0 mt-1">
-                  <Icon name="info" size="sm" className="text-chartreuse" />
+                  <Icon name="info" size="sm" className="text-accent" />
                 </div>
                 <div>
                   <span className="font-bold text-parchment">Important:</span> You must stake your tokens before you can withdraw them.
@@ -119,7 +119,7 @@ export const WalletConnectionAlertModal = ({ isSafeWarningShown }: WalletConnect
               </div>
               <div className="flex items-start gap-2">
                 <div className="flex-shrink-0 mt-1">
-                  <Icon name="info" size="sm" className="text-chartreuse" />
+                  <Icon name="info" size="sm" className="text-accent" />
                 </div>
                 <div>
                   Withdrawals are not possible until you stake at least {formattedThreshold}.
@@ -138,7 +138,7 @@ export const WalletConnectionAlertModal = ({ isSafeWarningShown }: WalletConnect
                   onChange={(e) => setIsChecked(e.target.checked)}
                   className="sr-only"
                 />
-                <div className={`w-4 h-4 border-2 transition-all ${
+                <div className={`w-4 h-4 border-2 rounded-[3px] transition-all ${
                   isChecked
                     ? 'bg-chartreuse border-chartreuse'
                     : 'border-parchment/40 bg-transparent'
@@ -159,7 +159,7 @@ export const WalletConnectionAlertModal = ({ isSafeWarningShown }: WalletConnect
             <button
               onClick={handleClose}
               disabled={!isChecked}
-              className="bg-chartreuse text-ink py-3 px-6 font-oracle-standard font-bold text-sm uppercase tracking-wider hover:bg-parchment hover:text-ink transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-chartreuse"
+              className="btn-lime py-3 px-6 text-sm disabled:cursor-not-allowed"
             >
               I Understand
             </button>

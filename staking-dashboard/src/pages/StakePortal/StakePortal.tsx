@@ -20,14 +20,14 @@ export default function StakePortal() {
       {/* Options Container */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-6 mb-4 sm:mb-5">
         {/* Delegate Option */}
-        <div className="group bg-transparent border-2 border-parchment/20 p-3 sm:p-6 transition-all duration-200 hover:border-parchment/30">
+        <div className="group glass p-3 sm:p-6 transition-all duration-200">
 
           {/* Card Header */}
           <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
-            <div className="w-8 h-8 sm:w-10 sm:h-10 border-2 border-parchment/30 flex items-center justify-center flex-shrink-0">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 glass flex items-center justify-center flex-shrink-0">
               <Icon name="users" className="w-4 h-4 sm:w-5 sm:h-5 text-parchment" />
             </div>
-            <h3 className="text-lg sm:text-xl font-md-thermochrome text-parchment">
+            <h3 className="text-lg sm:text-xl font-arizona-serif text-parchment">
               Delegate to Provider
             </h3>
           </div>
@@ -40,15 +40,15 @@ export default function StakePortal() {
           {/* Features */}
           <div className="space-y-1.5 mb-3">
             <div className="flex items-center gap-2 text-sm text-parchment/60">
-              <Icon name="check" size="sm" className="text-chartreuse flex-shrink-0" />
+              <Icon name="check" size="sm" className="text-accent flex-shrink-0" />
               <span>No technical setup required</span>
             </div>
             <div className="flex items-center gap-2 text-sm text-parchment/60">
-              <Icon name="check" size="sm" className="text-chartreuse flex-shrink-0" />
+              <Icon name="check" size="sm" className="text-accent flex-shrink-0" />
               <span>Choose from trusted providers</span>
             </div>
             <div className="flex items-center gap-2 text-sm text-parchment/60">
-              <Icon name="check" size="sm" className="text-chartreuse flex-shrink-0" />
+              <Icon name="check" size="sm" className="text-accent flex-shrink-0" />
               <span>Earn staking rewards passively</span>
             </div>
           </div>
@@ -57,7 +57,7 @@ export default function StakePortal() {
           <div className="pt-3 mt-3 border-t border-parchment/10">
             <button
               onClick={() => navigate("/providers")}
-              className="w-full bg-aqua text-ink py-3 px-4 font-oracle-standard font-bold text-sm uppercase tracking-wider hover:bg-aqua/90 transition-colors border-2 border-aqua"
+              className="w-full btn-glass py-3 px-4 text-sm"
             >
               Choose Provider →
             </button>
@@ -65,14 +65,14 @@ export default function StakePortal() {
         </div>
 
         {/* Run Own Node Option */}
-        <div className="group bg-transparent border-2 border-parchment/20 p-3 sm:p-6 transition-all duration-200 hover:border-parchment/30">
+        <div className="group glass p-3 sm:p-6 transition-all duration-200">
 
           {/* Card Header */}
           <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
-            <div className="w-8 h-8 sm:w-10 sm:h-10 border-2 border-parchment/30 flex items-center justify-center flex-shrink-0">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 glass flex items-center justify-center flex-shrink-0">
               <Icon name="server" className="w-4 h-4 sm:w-5 sm:h-5 text-parchment" />
             </div>
-            <h3 className="text-lg sm:text-xl font-md-thermochrome text-parchment">
+            <h3 className="text-lg sm:text-xl font-arizona-serif text-parchment">
               Run your own Sequencer
             </h3>
           </div>
@@ -85,15 +85,15 @@ export default function StakePortal() {
           {/* Features */}
           <div className="space-y-1.5 mb-3">
             <div className="flex items-center gap-2 text-sm text-parchment/60">
-              <Icon name="check" size="sm" className="text-chartreuse flex-shrink-0" />
+              <Icon name="check" size="sm" className="text-accent flex-shrink-0" />
               <span>Full control over your node</span>
             </div>
             <div className="flex items-center gap-2 text-sm text-parchment/60">
-              <Icon name="check" size="sm" className="text-chartreuse flex-shrink-0" />
+              <Icon name="check" size="sm" className="text-accent flex-shrink-0" />
               <span>Potentially higher rewards</span>
             </div>
             <div className="flex items-center gap-2 text-sm text-parchment/60">
-              <Icon name="check" size="sm" className="text-chartreuse flex-shrink-0" />
+              <Icon name="check" size="sm" className="text-accent flex-shrink-0" />
               <span>Contribute to network security</span>
             </div>
           </div>
@@ -102,7 +102,7 @@ export default function StakePortal() {
           <div className="pt-3 mt-3 border-t border-parchment/10">
             <button
               onClick={() => navigate("/register-validator")}
-              className="w-full bg-chartreuse text-ink py-3 px-4 font-oracle-standard font-bold text-sm uppercase tracking-wider hover:bg-chartreuse/90 transition-colors border-2 border-chartreuse"
+              className="w-full btn-lime py-3 px-4 text-sm"
             >
               Register Sequencer →
             </button>

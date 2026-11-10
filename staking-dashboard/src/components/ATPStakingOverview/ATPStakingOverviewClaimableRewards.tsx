@@ -35,7 +35,7 @@ export const ATPStakingOverviewClaimableRewards = forwardRef<HTMLDivElement, ATP
 
     return (
       <>
-        <div ref={ref} className="relative border border-parchment/20 p-4 hover:border-parchment/30 transition-colors">
+        <div ref={ref} className="relative glass p-4 transition-colors">
           <button
             onClick={onToggle}
             className="w-full flex items-start justify-between"
@@ -50,7 +50,7 @@ export const ATPStakingOverviewClaimableRewards = forwardRef<HTMLDivElement, ATP
                   maxWidth="max-w-xs"
                 />
               </div>
-              <div className="font-mono text-2xl font-bold text-chartreuse">
+              <div className="font-mono text-2xl font-bold text-accent">
                 {formatTokenAmountFull(combinedTotalRewards, decimals, symbol)}
               </div>
 
@@ -63,7 +63,7 @@ export const ATPStakingOverviewClaimableRewards = forwardRef<HTMLDivElement, ATP
           </button>
 
           {isExpanded && (
-            <div className="absolute top-full left-0 right-0 mt-2 bg-ink border border-parchment/20 p-4 z-10 shadow-lg">
+            <div className="absolute top-full left-0 right-0 mt-2 card-dark bg-coal rounded-panel p-4 z-10">
               {/* Delegation Rewards Section — breaks the total into the two
                   states delegation rewards can sit in:
                     • pending distribute — the user's share of (rollup +
@@ -131,7 +131,7 @@ export const ATPStakingOverviewClaimableRewards = forwardRef<HTMLDivElement, ATP
               {/* Rewards Locked Warning */}
               {!isRewardsClaimable && (
                 <div className="mt-4 pt-4 border-t border-parchment/10">
-                  <div className="flex items-center gap-2 bg-amber-500/10 border border-amber-500/30 p-2">
+                  <div className="flex items-center gap-2 bg-amber-500/10 border border-amber-500/30 p-2 rounded-inset">
                     <Icon name="lock" size="sm" className="text-amber-500 flex-shrink-0" />
                     <span className="text-xs text-amber-200">
                       Rewards are currently locked
@@ -144,7 +144,7 @@ export const ATPStakingOverviewClaimableRewards = forwardRef<HTMLDivElement, ATP
               {combinedTotalRewards === 0n && (
                 <div className="mt-4 pt-4 border-t border-parchment/10">
                   <div className="flex items-start gap-2 text-xs text-parchment/60">
-                    <Icon name="info" size="sm" className="flex-shrink-0 mt-0.5 text-chartreuse/60" />
+                    <Icon name="info" size="sm" className="flex-shrink-0 mt-0.5 text-accent/60" />
                     <p>
                       Rewards will appear here once earned from delegations or sequencer coinbase addresses.
                     </p>
@@ -161,7 +161,7 @@ export const ATPStakingOverviewClaimableRewards = forwardRef<HTMLDivElement, ATP
                     setIsClaimAllModalOpen(true)
                   }}
                   disabled={!isRewardsClaimable || combinedTotalRewards === 0n}
-                  className="w-full py-2 bg-chartreuse text-ink text-sm font-bold uppercase tracking-wide hover:bg-chartreuse/90 transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full py-2 btn-lime text-sm flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <Icon name="gift" size="sm" />
                   Claim All Rewards
@@ -173,7 +173,7 @@ export const ATPStakingOverviewClaimableRewards = forwardRef<HTMLDivElement, ATP
                     e.stopPropagation()
                     setIsManageModalOpen(true)
                   }}
-                  className="w-full py-2 bg-parchment/10 border border-parchment/20 text-parchment text-sm font-bold uppercase tracking-wide hover:bg-parchment/20 transition-colors flex items-center justify-center gap-2"
+                  className="w-full py-2 btn-glass text-sm flex items-center justify-center gap-2"
                 >
                   <Icon name="settings" size="sm" />
                   Manage Addresses

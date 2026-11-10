@@ -10,10 +10,10 @@ interface RegistrationPreInfoProps {
  */
 export const RegistrationPreInfo = ({ onStartRegistration }: RegistrationPreInfoProps) => {
   return (
-    <div className="relative bg-parchment/5 border border-parchment/20 p-8">
+    <div className="relative glass p-8">
       {/* Header */}
       <div className="mb-8">
-        <h2 className="font-md-thermochrome text-2xl text-parchment mb-2">
+        <h2 className="font-arizona-serif text-2xl text-parchment mb-2">
           Sequencer Registration
         </h2>
         <p className="text-parchment/70 text-sm">
@@ -70,7 +70,7 @@ export const RegistrationPreInfo = ({ onStartRegistration }: RegistrationPreInfo
           href="https://docs.aztec.network/the_aztec_network/setup/sequencer_management"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-4 py-2 border border-chartreuse text-chartreuse hover:bg-chartreuse/10 font-oracle-standard font-bold text-xs uppercase tracking-wide transition-colors"
+          className="inline-flex items-center gap-2 px-4 py-2 btn-glass text-xs"
         >
           View Setup Guide
           <Icon name="externalLink" size="md" />
@@ -84,7 +84,7 @@ export const RegistrationPreInfo = ({ onStartRegistration }: RegistrationPreInfo
         </p>
         <button
           onClick={onStartRegistration}
-          className="bg-chartreuse text-ink px-8 py-3 font-oracle-standard font-bold text-sm uppercase tracking-wide hover:bg-chartreuse/90 transition-colors"
+          className="btn-lime px-8 py-3 text-sm"
         >
           Start Registration
         </button>

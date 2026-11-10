@@ -136,7 +136,7 @@ export default function MyPositionPage() {
             {totalErc20Staked && totalErc20Staked > 0n ? (
               <button
                 onClick={() => setIsWalletStakesModalOpen(true)}
-                className="font-oracle-standard font-bold text-sm uppercase tracking-wider px-4 py-2 transition-all border border-parchment/40 text-parchment hover:bg-parchment/10"
+                className="text-sm px-4 py-2 btn-glass"
               >
                 Manage
               </button>
@@ -154,7 +154,7 @@ export default function MyPositionPage() {
                   position="top"
                 />
               </div>
-              <div className="font-mono text-xl font-bold text-chartreuse">
+              <div className="font-mono text-xl font-bold text-accent">
                 {isWalletDataLoading
                   ? "Loading..."
                   : formatTokenAmount(
@@ -182,7 +182,7 @@ export default function MyPositionPage() {
             ) : (
               <button
                 onClick={() => setIsModalOpen(true)}
-                className="font-oracle-standard font-bold text-sm uppercase tracking-wider px-4 py-2 transition-all bg-chartreuse text-ink hover:bg-chartreuse/90"
+                className="text-sm px-4 py-2 btn-lime"
               >
                 Stake
               </button>
@@ -192,7 +192,7 @@ export default function MyPositionPage() {
 
         {/* Info box when below activation threshold */}
         {!canStake && !isWalletDataLoading && (
-          <div className="flex items-center gap-3 p-3 bg-aqua/10 border border-aqua/30">
+          <div className="flex items-center gap-3 p-3 bg-aqua/10 border border-aqua/30 rounded-inset">
             <Icon name="info" size="md" className="text-aqua flex-shrink-0" />
             <p className="text-sm font-oracle-standard text-aqua">
               Your wallet balance is below the activation threshold of {formattedThreshold}. You cannot stake directly from your wallet.
@@ -202,7 +202,7 @@ export default function MyPositionPage() {
 
         {/* Progress bar - only show when user can stake */}
         {canStake ? (
-          <div className="flex h-6 overflow-hidden border border-parchment/20 bg-parchment/5">
+          <div className="flex h-6 overflow-hidden glass">
             {stakedPercent > 0 && (
               <div
                 className="bg-parchment/30 relative flex items-center justify-center"

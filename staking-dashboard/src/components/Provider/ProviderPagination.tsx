@@ -21,7 +21,7 @@ export const ProviderPagination = ({
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className="px-3 py-2 border border-parchment/20 text-parchment hover:bg-parchment/5 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+        className="px-3 py-2 border border-parchment/20 text-parchment hover:bg-parchment/5 disabled:opacity-40 disabled:cursor-not-allowed transition-colors rounded-btn"
       >
         <Icon name="chevronLeft" size="md" />
       </button>
@@ -33,8 +33,8 @@ export const ProviderPagination = ({
             onClick={() => onPageChange(page)}
             className={`px-3 py-2 font-oracle-standard text-xs uppercase tracking-wide transition-colors ${
               currentPage === page
-                ? 'bg-chartreuse text-ink'
-                : 'border border-parchment/20 text-parchment hover:bg-parchment/5'
+                ? 'btn-lime'
+                : 'border border-parchment/20 text-parchment hover:bg-parchment/5 rounded-btn'
             }`}
           >
             {page}
@@ -45,7 +45,7 @@ export const ProviderPagination = ({
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className="px-3 py-2 border border-parchment/20 text-parchment hover:bg-parchment/5 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+        className="px-3 py-2 border border-parchment/20 text-parchment hover:bg-parchment/5 disabled:opacity-40 disabled:cursor-not-allowed transition-colors rounded-btn"
       >
         <Icon name="chevronRight" size="md" />
       </button>

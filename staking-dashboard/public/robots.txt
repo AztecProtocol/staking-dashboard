@@ -1,0 +1,29 @@
+# Aztec Staking Dashboard (https://stake.aztec.network)
+#
+# Search and answer engines are welcome. The app is one page that needs
+# JavaScript; /llms.txt is a plain-text guide to what it does.
+
+User-agent: *
+Allow: /
+Content-Signal: search=yes, ai-input=yes, ai-train=yes
+
+# The AI search and assistant crawlers, named so the answer is explicit.
+User-agent: GPTBot
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: ClaudeBot
+User-agent: Claude-SearchBot
+User-agent: Claude-User
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: Google-Extended
+User-agent: GoogleOther
+User-agent: Applebot-Extended
+User-agent: Amazonbot
+User-agent: Meta-ExternalAgent
+User-agent: DuckAssistBot
+User-agent: MistralAI-User
+User-agent: CCBot
+Allow: /
+
+Sitemap: https://stake.aztec.network/sitemap.xml

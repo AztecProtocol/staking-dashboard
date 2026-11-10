@@ -29,9 +29,9 @@ export const Alert = () => {
         const isVisible = visibleAlerts.has(alert.id)
         const colors = {
           success: {
-            bg: "bg-chartreuse/10",
-            border: "border-chartreuse/30",
-            text: "text-chartreuse",
+            bg: "bg-parchment/5",
+            border: "border-parchment/20",
+            text: "text-accent",
             icon: "check"
           },
           error: {
@@ -59,7 +59,7 @@ export const Alert = () => {
         return (
           <div
             key={alert.id}
-            className={`bg-ink border-2 ${style.border} p-4 min-w-[300px] max-w-md shadow-2xl pointer-events-auto transition-all duration-300 ${
+            className={`card-dark bg-coal rounded-inset border ${style.border} p-4 min-w-[300px] max-w-md shadow-2xl pointer-events-auto transition-all duration-300 ${
               isVisible
                 ? 'translate-x-0 opacity-100 scale-100'
                 : 'translate-x-full opacity-0 scale-95'

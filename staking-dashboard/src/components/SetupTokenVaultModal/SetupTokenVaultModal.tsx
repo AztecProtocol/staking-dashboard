@@ -198,10 +198,10 @@ export const SetupTokenVaultModal = ({
           onClick={(e) => e.stopPropagation()}
         >
           <div className="p-8 text-center">
-            <div className="w-16 h-16 mx-auto mb-6 flex items-center justify-center border-2 border-chartreuse bg-chartreuse/10 rounded-full">
-              <Icon name="check" className="w-8 h-8 text-chartreuse" />
+            <div className="w-16 h-16 mx-auto mb-6 flex items-center justify-center border-2 border-accent bg-parchment/5 rounded-full">
+              <Icon name="check" className="w-8 h-8 text-accent" />
             </div>
-            <h2 className="font-md-thermochrome text-2xl font-medium text-chartreuse mb-2">
+            <h2 className="font-arizona-serif text-2xl font-medium text-accent mb-2">
               Setup Complete!
             </h2>
             <p className="text-sm text-parchment/70 mb-4">
@@ -229,7 +229,7 @@ export const SetupTokenVaultModal = ({
         <div className="p-6 space-y-6">
           {/* Header */}
           <div>
-            <h2 className="font-md-thermochrome text-2xl font-medium text-chartreuse mb-2">
+            <h2 className="font-arizona-serif text-2xl font-medium text-accent mb-2">
               Setup Token Vault
             </h2>
             <p className="text-sm text-parchment/70">
@@ -238,7 +238,7 @@ export const SetupTokenVaultModal = ({
           </div>
 
           {/* ATP Info */}
-          <div className="bg-parchment/5 border border-parchment/20 p-4 space-y-3">
+          <div className="glass p-4 space-y-3">
             <div className="flex justify-between items-center">
               <span className="text-xs text-parchment/60 uppercase tracking-wide font-oracle-standard">
                 Token Vault
@@ -277,15 +277,15 @@ export const SetupTokenVaultModal = ({
               </div>
 
               {/* Step 1: Staker Version */}
-              <div className={`border p-4 ${
+              <div className={`border rounded-inset p-4 ${
                 !needsStakerUpgrade
-                  ? "bg-chartreuse/5 border-chartreuse/30"
+                  ? "bg-parchment/5 border-parchment/20"
                   : isUpgradeInQueue
                   ? "bg-aqua/5 border-aqua/30"
                   : "bg-parchment/5 border-parchment/20"
               }`}>
                 <div className="flex items-start gap-3">
-                  <div className={`w-5 h-5 flex items-center justify-center border ${
+                  <div className={`w-5 h-5 flex items-center justify-center border rounded-[3px] ${
                     !needsStakerUpgrade
                       ? "border-chartreuse bg-chartreuse"
                       : isUpgradeInQueue
@@ -307,7 +307,7 @@ export const SetupTokenVaultModal = ({
                       />
                     </div>
                     {!needsStakerUpgrade ? (
-                      <p className="text-xs text-chartreuse">
+                      <p className="text-xs text-accent">
                         Already on v{currentVersion?.toString()} ({latestDescription})
                       </p>
                     ) : (
@@ -329,15 +329,15 @@ export const SetupTokenVaultModal = ({
               </div>
 
               {/* Step 2: Operator */}
-              <div className={`border p-4 ${
+              <div className={`border rounded-inset p-4 ${
                 !needsOperatorUpdate
-                  ? "bg-chartreuse/5 border-chartreuse/30"
+                  ? "bg-parchment/5 border-parchment/20"
                   : isOperatorInQueue
                   ? "bg-aqua/5 border-aqua/30"
                   : "bg-parchment/5 border-parchment/20"
               }`}>
                 <div className="flex items-start gap-3">
-                  <div className={`w-5 h-5 flex items-center justify-center border ${
+                  <div className={`w-5 h-5 flex items-center justify-center border rounded-[3px] ${
                     !needsOperatorUpdate
                       ? "border-chartreuse bg-chartreuse"
                       : isOperatorInQueue
@@ -359,7 +359,7 @@ export const SetupTokenVaultModal = ({
                       />
                     </div>
                     {!needsOperatorUpdate ? (
-                      <p className="text-xs text-chartreuse">
+                      <p className="text-xs text-accent">
                         Operator set to {formatAddress(currentOperator as Address)}
                       </p>
                     ) : (
@@ -387,7 +387,7 @@ export const SetupTokenVaultModal = ({
             <button
               onClick={handleAddToBatch}
               disabled={allInQueue || !connectedAddress}
-              className="w-full bg-chartreuse text-ink py-3 px-4 font-oracle-standard font-bold text-sm uppercase tracking-wider hover:bg-chartreuse/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full btn-lime py-3 px-4 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {allInQueue ? "All Steps in Batch" : "Add All to Batch"}
             </button>
@@ -395,8 +395,8 @@ export const SetupTokenVaultModal = ({
 
           {/* Already Complete Message */}
           {!isLoading && !hasAnyPending && (
-            <div className="bg-chartreuse/10 border border-chartreuse/40 p-4 text-center">
-              <span className="text-chartreuse font-oracle-standard font-bold text-sm">
+            <div className="bg-parchment/5 border border-parchment/20 p-4 text-center rounded-inset">
+              <span className="text-accent font-oracle-standard font-bold text-sm">
                 Setup already complete
               </span>
             </div>

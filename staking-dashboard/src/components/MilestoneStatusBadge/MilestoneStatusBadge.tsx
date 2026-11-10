@@ -18,7 +18,7 @@ export const MilestoneStatusBadge = ({
 }: MilestoneStatusBadgeProps) => {
   if (isLoading) {
     return (
-      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-oracle-standard font-bold uppercase tracking-wider border border-parchment/20 bg-parchment/5 text-parchment/60">
+      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-oracle-standard font-bold uppercase tracking-wider glass text-parchment/60">
         Loading...
       </span>
     );
@@ -40,7 +40,7 @@ export const MilestoneStatusBadge = ({
 
   const badge = (
     <span
-      className={`inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-oracle-standard font-bold uppercase tracking-wider border ${colors.border} ${colors.bg} ${colors.text}`}
+      className={`inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-oracle-standard font-bold uppercase tracking-wider border rounded-btn ${colors.border} ${colors.bg} ${colors.text}`}
       aria-label={`Milestone status: ${statusText}`}
     >
       <span className={`w-1.5 h-1.5 rounded-full ${colors.indicator}`} />

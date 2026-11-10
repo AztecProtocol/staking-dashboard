@@ -33,11 +33,11 @@ export const StepIndicator = ({
           <button
             onClick={() => isStepClickable(step) && onStepClick!(step)}
             disabled={!isStepClickable(step)}
-            className={`flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 font-mono font-bold text-xs sm:text-sm transition-all flex-shrink-0 ${
+            className={`flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 font-mono font-bold text-xs sm:text-sm transition-all flex-shrink-0 rounded-full ${
               currentStep >= step
                 ? "bg-chartreuse text-ink"
                 : "bg-parchment/20 text-parchment/50"
-            } ${isStepClickable(step) ? "cursor-pointer hover:bg-chartreuse/80" : "cursor-default"}`}
+            } ${isStepClickable(step) ? "cursor-pointer hover:bg-chartreuse-light" : "cursor-default"}`}
           >
             {step}
           </button>

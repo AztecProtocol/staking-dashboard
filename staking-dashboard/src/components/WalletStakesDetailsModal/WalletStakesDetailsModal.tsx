@@ -76,16 +76,16 @@ export const WalletStakesDetailsModal = ({
   return createPortal(
     <>
       <div
-        className="fixed inset-0 backdrop-blur-sm z-50 flex items-center justify-center p-4 pt-16"
+        className="fixed inset-0 modal-scrim z-50 flex items-center justify-center p-4 pt-16"
         onClick={handleBackdropClick}
       >
-        <div className="bg-ink border border-parchment/20 w-full max-w-4xl max-h-[80vh] overflow-y-auto relative custom-scrollbar">
+        <div className="card-dark w-full max-w-4xl max-h-[80vh] overflow-y-auto relative custom-scrollbar">
           <div className="p-6 relative z-10">
             {/* Header */}
             <div className="flex items-start justify-between mb-6">
               <div>
                 <div className="flex items-center gap-2 mb-2">
-                  <Icon name="wallet" size="lg" className="text-chartreuse" />
+                  <Icon name="wallet" size="lg" className="text-accent" />
                   <h2 className="font-oracle-standard text-lg font-bold uppercase tracking-wider text-parchment">
                     Wallet Stakes
                   </h2>
@@ -104,7 +104,7 @@ export const WalletStakesDetailsModal = ({
             </div>
 
             {/* Summary */}
-            <div className="grid grid-cols-3 gap-4 mb-6 p-4 bg-parchment/5 border border-parchment/10">
+            <div className="grid grid-cols-3 gap-4 mb-6 p-4 glass">
               <div>
                 <div className="text-xs text-parchment/60 uppercase tracking-wide mb-1">Total Staked</div>
                 <div className="font-mono text-lg font-bold text-parchment">
@@ -113,7 +113,7 @@ export const WalletStakesDetailsModal = ({
               </div>
               <div>
                 <div className="text-xs text-parchment/60 uppercase tracking-wide mb-1">Delegation Rewards</div>
-                <div className="font-mono text-lg font-bold text-chartreuse">
+                <div className="font-mono text-lg font-bold text-accent">
                   {formatTokenAmount(totalRewards, decimals, symbol)}
                 </div>
               </div>
@@ -126,7 +126,7 @@ export const WalletStakesDetailsModal = ({
             </div>
 
             {/* Info Banner */}
-            <div className="flex items-start gap-2 mb-6 p-4 bg-aqua/10 border border-aqua/30 text-aqua">
+            <div className="flex items-start gap-2 mb-6 p-4 bg-aqua/10 border border-aqua/30 text-aqua rounded-inset">
               <Icon name="info" size="md" className="flex-shrink-0 mt-0.5" />
               <div className="text-sm">
                 These are stakes made directly from your wallet using ERC20 tokens.
@@ -195,7 +195,7 @@ export const WalletStakesDetailsModal = ({
 
             {/* Empty State */}
             {activeDelegations.length === 0 && activeDirectStakes.length === 0 && (
-              <div className="bg-parchment/5 border border-parchment/20 p-6 text-center">
+              <div className="glass p-6 text-center">
                 <div className="flex flex-col items-center gap-3">
                   <Icon name="wallet" className="w-8 h-8 text-parchment/40" />
                   <div>

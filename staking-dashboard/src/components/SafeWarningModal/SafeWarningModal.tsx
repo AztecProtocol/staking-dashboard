@@ -13,11 +13,11 @@ export const SafeWarningModal = ({ isOpen, onClose }: SafeWarningModalProps) => 
   if (!isOpen) return null;
 
   return createPortal(
-    <div className="fixed inset-0 backdrop-blur-xs z-50 flex items-center justify-center p-4">
-      <div className="bg-ink border border-ink/20 max-w-2xl w-full p-8 relative shadow-2xl">
+    <div className="fixed inset-0 modal-scrim z-50 flex items-center justify-center p-4">
+      <div className="card-dark max-w-2xl w-full p-8 relative">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
-          <h3 className="font-md-thermochrome text-2xl text-parchment">
+          <h3 className="font-arizona-serif text-2xl text-parchment">
             Batch Staking with Safe
           </h3>
           <button
@@ -31,7 +31,7 @@ export const SafeWarningModal = ({ isOpen, onClose }: SafeWarningModalProps) => 
 
         {/* Content */}
         <div className="mb-8">
-          <div className="bg-chartreuse/5 border border-chartreuse/20 p-5 mb-6">
+          <div className="bg-parchment/5 border border-parchment/15 p-5 mb-6 rounded-inset">
             <p className="font-oracle-standard text-base text-parchment/90 leading-relaxed">
               It will be tedious to batch stake/delegate without a gnosis safe. You will have to do <strong>3 + n transactions</strong>, where n is the number of times you can stake.
             </p>
@@ -48,14 +48,14 @@ export const SafeWarningModal = ({ isOpen, onClose }: SafeWarningModalProps) => 
             href="https://app.safe.global"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 bg-chartreuse text-ink px-6 py-3 font-oracle-standard font-bold text-xs uppercase tracking-wider hover:bg-chartreuse/90 transition-all"
+            className="inline-flex items-center gap-2 btn-lime px-6 py-3 text-xs"
           >
             <span>View Guide</span>
             <Icon name="externalLink" size="sm" />
           </a>
           <a
             href="#contact"
-            className="inline-flex items-center gap-2 bg-parchment/10 border border-parchment/30 text-parchment px-6 py-3 font-oracle-standard font-bold text-xs uppercase tracking-wider hover:bg-parchment/20 transition-all"
+            className="inline-flex items-center gap-2 btn-glass px-6 py-3 text-xs"
           >
             <span>Contact Us</span>
           </a>

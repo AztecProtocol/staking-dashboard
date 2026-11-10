@@ -131,10 +131,10 @@ export const ClaimSelfStakeRewardsModal = ({
 
   return createPortal(
     <div
-      className="fixed inset-0 backdrop-blur-xs z-[200] flex items-center justify-center p-4 pt-20"
+      className="fixed inset-0 modal-scrim z-[200] flex items-center justify-center p-4 pt-20"
       onClick={handleBackdropClick}
     >
-      <div className="bg-ink border-2 border-chartreuse/40 w-full max-w-lg relative max-h-[calc(100vh-5rem)] overflow-y-auto custom-scrollbar">
+      <div className="card-dark w-full max-w-lg relative max-h-[calc(100vh-5rem)] overflow-y-auto custom-scrollbar">
         {/* Close button */}
         <button
           onClick={handleClose}
@@ -147,7 +147,7 @@ export const ClaimSelfStakeRewardsModal = ({
           {/* Header */}
           <div className="flex items-start gap-4 mb-6">
             <div className="flex-shrink-0 mt-1">
-              <Icon name="gift" size="lg" className="text-chartreuse w-8 h-8" />
+              <Icon name="gift" size="lg" className="text-accent w-8 h-8" />
             </div>
             <div className="flex-1">
               <h2 className="font-arizona-serif text-2xl font-medium text-parchment mb-2">
@@ -160,7 +160,7 @@ export const ClaimSelfStakeRewardsModal = ({
           </div>
 
           {/* Stake Details */}
-          <div className="bg-parchment/5 border border-parchment/20 p-4 mb-6">
+          <div className="glass p-4 mb-6">
             <div className="space-y-3 text-sm">
               <div>
                 <div className="text-xs text-parchment/60 uppercase tracking-wide mb-1">Token Vault</div>
@@ -196,14 +196,14 @@ export const ClaimSelfStakeRewardsModal = ({
               value={coinbaseAddress}
               onChange={(e) => setCoinbaseAddress(e.target.value)}
               placeholder="0x..."
-              className="w-full bg-ink border border-parchment/20 text-parchment px-3 py-2 font-mono text-sm focus:outline-none focus:border-chartreuse/40"
+              className="w-full field text-parchment px-3 py-2 font-mono text-sm"
             />
             {!isValidAddress && coinbaseAddress.length > 0 && (
               <p className="text-xs text-vermillion mt-2">Invalid address format</p>
             )}
             {(isDebouncing || isLoadingRewards) && (
               <div className="flex items-center gap-2 mt-2 text-xs text-parchment/60">
-                <div className="w-3 h-3 border border-parchment/30 border-t-parchment rounded-full animate-spin"></div>
+                <div className="w-3 h-3 pill border-t-parchment animate-spin"></div>
                 <span>{isDebouncing ? "Waiting..." : "Checking rewards..."}</span>
               </div>
             )}
@@ -217,7 +217,7 @@ export const ClaimSelfStakeRewardsModal = ({
                   <div className="flex items-baseline justify-between">
                     <div className="text-xs text-parchment/60 uppercase tracking-wide">Available Rewards</div>
                     <div className="font-mono text-sm text-parchment/80">
-                      Total: <span className="text-chartreuse font-bold">
+                      Total: <span className="text-accent font-bold">
                         {decimals && symbol ? formatTokenAmount(totalCoinbaseRewards, decimals, symbol) : "-"}
                       </span>
                     </div>
@@ -242,7 +242,7 @@ export const ClaimSelfStakeRewardsModal = ({
                   })}
                 </div>
               ) : (
-                <div className="bg-parchment/5 border border-parchment/20 p-4">
+                <div className="glass p-4">
                   <div className="text-xs text-parchment/60 uppercase tracking-wide mb-2">Available Rewards</div>
                   <p className="text-sm text-parchment/80">
                     No rewards found for this coinbase address on any known rollup.
@@ -256,7 +256,7 @@ export const ClaimSelfStakeRewardsModal = ({
           <div className="flex justify-end gap-3">
             <button
               onClick={handleClose}
-              className="px-6 py-3 border border-parchment/30 text-parchment font-oracle-standard font-bold text-sm uppercase tracking-wider hover:bg-parchment/10 transition-all"
+              className="px-6 py-3 btn-glass text-sm"
             >
               Close
             </button>

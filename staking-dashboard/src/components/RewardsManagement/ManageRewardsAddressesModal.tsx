@@ -128,10 +128,10 @@ export const ManageRewardsAddressesModal = ({
 
   return createPortal(
     <div
-      className="fixed inset-0 backdrop-blur-xs z-[200] flex items-center justify-center p-4 pt-20"
+      className="fixed inset-0 modal-scrim z-[200] flex items-center justify-center p-4 pt-20"
       onClick={handleBackdropClick}
     >
-      <div className="bg-ink border-2 border-chartreuse/40 w-full max-w-lg relative max-h-[calc(100vh-5rem)] overflow-y-auto custom-scrollbar">
+      <div className="card-dark w-full max-w-lg relative max-h-[calc(100vh-5rem)] overflow-y-auto custom-scrollbar">
         {/* Close button */}
         <button
           onClick={handleClose}
@@ -144,7 +144,7 @@ export const ManageRewardsAddressesModal = ({
           {/* Header */}
           <div className="flex items-start gap-4 mb-6">
             <div className="flex-shrink-0 mt-1">
-              <Icon name="settings" size="lg" className="text-chartreuse w-8 h-8" />
+              <Icon name="settings" size="lg" className="text-accent w-8 h-8" />
             </div>
             <div className="flex-1">
               <h2 className="font-arizona-serif text-2xl font-medium text-parchment mb-2">
@@ -167,7 +167,7 @@ export const ManageRewardsAddressesModal = ({
               onClick={() => setActiveTab("coinbase")}
               className={`flex-1 py-3 text-sm font-bold uppercase tracking-wide transition-colors ${
                 activeTab === "coinbase"
-                  ? "text-chartreuse border-b-2 border-chartreuse"
+                  ? "text-accent border-b-2 border-accent"
                   : "text-parchment/60 hover:text-parchment"
               }`}
             >
@@ -177,7 +177,7 @@ export const ManageRewardsAddressesModal = ({
               onClick={() => setActiveTab("splits")}
               className={`flex-1 py-3 text-sm font-bold uppercase tracking-wide transition-colors ${
                 activeTab === "splits"
-                  ? "text-chartreuse border-b-2 border-chartreuse"
+                  ? "text-accent border-b-2 border-accent"
                   : "text-parchment/60 hover:text-parchment"
               }`}
             >

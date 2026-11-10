@@ -174,11 +174,11 @@ export default function RegisterValidatorPage() {
           tooltip="Register your own sequencer node to participate in network consensus and earn rewards."
         />
 
-        <div className="bg-parchment/5 border border-parchment/20 p-8 text-center">
-          <div className="w-16 h-16 mx-auto mb-6 flex items-center justify-center bg-chartreuse/20 text-chartreuse rounded-full">
+        <div className="glass p-8 text-center">
+          <div className="w-16 h-16 mx-auto mb-6 flex items-center justify-center bg-parchment/10 text-accent rounded-full">
             <Icon name="check" className="w-8 h-8" />
           </div>
-          <h3 className="font-md-thermochrome text-2xl text-parchment mb-4">
+          <h3 className="font-arizona-serif text-2xl text-parchment mb-4">
             Staking Request Complete!
           </h3>
           <p className="text-parchment/70 mb-6">
@@ -187,13 +187,13 @@ export default function RegisterValidatorPage() {
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <button
               onClick={openCart}
-              className="bg-chartreuse text-ink px-6 py-3 font-oracle-standard font-bold text-sm uppercase tracking-wider hover:bg-parchment hover:text-ink transition-all"
+              className="btn-lime px-6 py-3 text-sm"
             >
               View Cart
             </button>
             <button
               onClick={handleResetFlow}
-              className="border border-parchment/30 text-parchment px-6 py-3 font-oracle-standard font-bold text-sm uppercase tracking-wider hover:bg-parchment/10 transition-all"
+              className="btn-glass px-6 py-3 text-sm"
             >
               Register Another
             </button>
@@ -228,7 +228,7 @@ export default function RegisterValidatorPage() {
           description="Connect your wallet to register as a sequencer and start staking your own node on the network."
           helpText="After connecting, you'll be able to select your staking source, configure your sequencer settings, and register your sequencer node."
         >
-          <div className="bg-parchment/5 border border-parchment/20 p-4 sm:p-6">
+          <div className="glass p-4 sm:p-6">
             <h4 className="font-arizona-serif text-xl font-medium text-parchment mb-6">
               Register Sequencer
             </h4>
@@ -238,7 +238,7 @@ export default function RegisterValidatorPage() {
               <>
                 <button
                   onClick={handleOpenModal}
-                  className="w-full bg-chartreuse text-ink py-4 font-oracle-standard font-bold text-sm uppercase tracking-wider hover:bg-parchment hover:text-ink transition-all duration-300 border-2 border-chartreuse hover:border-parchment shadow-lg flex items-center justify-center gap-2"
+                  className="w-full btn-lime py-4 text-sm flex items-center justify-center gap-2"
                 >
                   <Icon name="plus" size="lg" />
                   <span>Select Staking Source</span>

@@ -36,7 +36,7 @@ export const ATPDetailsHeader = ({ atp, onClose }: ATPDetailsHeaderProps) => {
             href={getExplorerAddressUrl(atp.atpAddress)}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-parchment/60 hover:text-chartreuse transition-colors p-1"
+            className="text-parchment/60 hover:text-accent transition-colors p-1"
             title="View on Etherscan"
           >
             <Icon name="externalLink" size="md" />

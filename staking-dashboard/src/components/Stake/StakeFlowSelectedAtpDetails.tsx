@@ -44,7 +44,7 @@ export const StakeFlowSelectedAtpDetails = forwardRef<StakeFlowSelectedAtpDetail
   const toggleExpanded = () => setIsExpanded(!isExpanded)
 
   return (
-    <div className={`bg-parchment/5 border border-parchment/20 rounded ${className}`}>
+    <div className={`glass ${className}`}>
       {/* Header - Always visible */}
       <div
         className="px-4 py-3 cursor-pointer hover:bg-parchment/10 transition-colors"

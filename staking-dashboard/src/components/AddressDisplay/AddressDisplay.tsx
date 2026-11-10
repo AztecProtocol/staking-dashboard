@@ -49,7 +49,7 @@ export const AddressDisplay = ({
         {showExplorerLink && (
           <button
             onClick={handleExplorerClick}
-            className="p-1 text-parchment/60 hover:text-chartreuse transition-colors"
+            className="p-1 text-parchment/60 hover:text-accent transition-colors"
             title="View in explorer"
           >
             <Icon name="externalLink" size="md" />

@@ -9,7 +9,7 @@ interface RewardsLockedBannerProps {
  */
 export const RewardsLockedBanner = ({ className = "" }: RewardsLockedBannerProps) => {
   return (
-    <div className={`bg-amber-500/10 border border-amber-500/30 p-3 ${className}`}>
+    <div className={`bg-amber-500/10 border border-amber-500/30 p-3 rounded-inset ${className}`}>
       <div className="flex items-center gap-2">
         <Icon name="lock" size="sm" className="text-amber-500 flex-shrink-0" />
         <div className="text-sm text-amber-200">

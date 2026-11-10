@@ -62,7 +62,7 @@ export const ClaimAllRewardsSummary = ({
           their own gating, so claims on other rollups may still succeed; failed tasks
           surface via the engine's retry flow. */}
       {!isRewardsClaimable && (
-        <div className="bg-amber-500/10 border border-amber-500/30 p-4">
+        <div className="bg-amber-500/10 border border-amber-500/30 p-4 rounded-inset">
           <div className="flex items-start gap-3">
             <Icon name="warning" size="md" className="text-amber-500 flex-shrink-0 mt-0.5" />
             <div>
@@ -77,11 +77,11 @@ export const ClaimAllRewardsSummary = ({
       )}
 
       {/* Total */}
-      <div className="bg-chartreuse/10 border border-chartreuse/30 p-4">
+      <div className="bg-parchment/5 border border-parchment/20 p-4 rounded-inset">
         <div className="text-xs text-parchment/60 uppercase tracking-wide mb-1">
           Total to Claim
         </div>
-        <div className="font-mono text-2xl font-bold text-chartreuse">
+        <div className="font-mono text-2xl font-bold text-accent">
           {formatTokenAmountFull(totalRewards, decimals, symbol)}
         </div>
       </div>
@@ -113,11 +113,11 @@ export const ClaimAllRewardsSummary = ({
               return (
                 <div
                   key={delegation.splitContract}
-                  className="bg-parchment/5 border border-parchment/20 p-3"
+                  className="glass p-3"
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-chartreuse/20 text-chartreuse text-xs font-bold uppercase tracking-wide">
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-parchment/10 text-accent text-xs font-bold uppercase tracking-wide">
                         <Icon name="users" size="sm" />
                         {delegation.providerName || `Provider ${delegation.providerId}`}
                       </span>
@@ -136,7 +136,7 @@ export const ClaimAllRewardsSummary = ({
                           rel="noopener noreferrer"
                           title="Operator distributes future rewards out of protocol. Claim sweeps remaining on-chain balance."
                           onClick={(e) => e.stopPropagation()}
-                          className="inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-oracle-standard uppercase tracking-wider bg-aqua/10 border border-aqua/40 text-aqua hover:bg-aqua/20 transition-colors"
+                          className="inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-oracle-standard uppercase tracking-wider bg-aqua/10 border border-aqua/40 text-aqua hover:bg-aqua/20 transition-colors rounded-btn"
                         >
                           <Icon name="info" size="sm" />
                           Manual payout next
@@ -144,7 +144,7 @@ export const ClaimAllRewardsSummary = ({
                       )}
                     </div>
                     <div className="text-right">
-                      <div className="font-mono text-sm font-bold text-chartreuse">
+                      <div className="font-mono text-sm font-bold text-accent">
                         {formatTokenAmountFull(delegation.rewards, decimals, symbol)}
                       </div>
                       {estimatedTotal > delegation.rewards && (
@@ -179,7 +179,7 @@ export const ClaimAllRewardsSummary = ({
             {manualPayoutDelegations.map((delegation) => (
               <div
                 key={delegation.splitContract}
-                className="bg-aqua/5 border border-aqua/30 p-3 flex items-center justify-between gap-3"
+                className="bg-aqua/5 border border-aqua/30 p-3 flex items-center justify-between gap-3 rounded-inset"
               >
                 <div className="flex items-center gap-2 flex-wrap">
                   <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-aqua/20 text-aqua text-xs font-bold uppercase tracking-wide">
@@ -216,7 +216,7 @@ export const ClaimAllRewardsSummary = ({
             {coinbasesWithRewards.map((coinbase) => (
               <div
                 key={`${coinbase.address}-${coinbase.rollupAddress}`}
-                className="bg-parchment/5 border border-parchment/20 p-3"
+                className="glass p-3"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2 flex-wrap">
@@ -229,14 +229,14 @@ export const ClaimAllRewardsSummary = ({
                     </span>
                     {coinbase.rollupVersion !== undefined && (
                       <span
-                        className="font-oracle-standard text-[10px] uppercase tracking-wide bg-aqua/15 border border-aqua/30 text-aqua px-2 py-0.5"
+                        className="font-oracle-standard text-[10px] uppercase tracking-wide bg-aqua/15 border border-aqua/30 text-aqua px-2 py-0.5 rounded-inset"
                         title={`Rollup contract: ${coinbase.rollupAddress}`}
                       >
                         Rollup v{coinbase.rollupVersion}
                       </span>
                     )}
                   </div>
-                  <div className="font-mono text-sm font-bold text-chartreuse">
+                  <div className="font-mono text-sm font-bold text-accent">
                     {formatTokenAmountFull(coinbase.rewards, decimals, symbol)}
                   </div>
                 </div>
@@ -255,7 +255,7 @@ export const ClaimAllRewardsSummary = ({
           <div className="text-xs text-parchment/40 uppercase tracking-wide mb-3">
             Pending Withdrawal
           </div>
-          <div className="bg-amber-500/10 border border-amber-500/30 p-3">
+          <div className="bg-amber-500/10 border border-amber-500/30 p-3 rounded-inset">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Icon name="wallet" size="sm" className="text-amber-500" />
@@ -263,7 +263,7 @@ export const ClaimAllRewardsSummary = ({
                   Ready to withdraw
                 </span>
               </div>
-              <div className="font-mono text-sm font-bold text-chartreuse">
+              <div className="font-mono text-sm font-bold text-accent">
                 {formatTokenAmountFull(warehouseWithdrawal, decimals, symbol)}
               </div>
             </div>
@@ -287,7 +287,7 @@ export const ClaimAllRewardsSummary = ({
       <button
         onClick={onStartClaiming}
         disabled={isDisabled || !hasRewards}
-        className="w-full py-4 bg-chartreuse text-ink font-oracle-standard font-bold text-sm uppercase tracking-wider hover:bg-chartreuse/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full py-4 btn-lime text-sm disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {!hasRewards ? "No Rewards to Claim" : "Add All to Batch"}
       </button>

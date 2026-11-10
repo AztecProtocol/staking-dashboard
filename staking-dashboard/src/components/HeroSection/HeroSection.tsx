@@ -25,9 +25,8 @@ export const HeroSection = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Format the data from API. We show active stake prominently; the
-  // exiting/zombie portion is surfaced as a smaller subline so the
-  // primary number reflects productive sequencers only.
+  // Format the data from API. The number shown is the active stake, so it
+  // reflects productive sequencers only.
   const totalStakedFallback = stakingData?.totalValueLocked
     ? BigInt(stakingData.totalValueLocked)
     : undefined;
@@ -41,34 +40,10 @@ export const HeroSection = () => {
 
   const activeStakesCount =
     stakingData?.stats.activeStakes ?? stakingData?.totalStakers;
-  const exitingStakesCount = stakingData?.stats.exitingStakes ?? 0;
-  const zombieStakesCount = stakingData?.stats.zombieStakes ?? 0;
-  const legacyActiveStakesCount = stakingData?.stats.legacyActiveStakes ?? 0;
 
   const activeSequencers = activeStakesCount !== undefined
     ? new Intl.NumberFormat("en-US").format(activeStakesCount)
     : "---";
-
-  // Subline shown beneath the main numbers when there are any non-active
-  // sequencers. Format: "+12 exiting · +4 zombie · +50 on older rollups"
-  // — only the non-zero buckets render.
-  const buildSequencerSubline = () => {
-    const parts: string[] = [];
-    if (exitingStakesCount > 0) parts.push(`+${exitingStakesCount} exiting`);
-    if (zombieStakesCount > 0) parts.push(`+${zombieStakesCount} zombie`);
-    if (legacyActiveStakesCount > 0) parts.push(`+${legacyActiveStakesCount} on older rollups`);
-    return parts.length > 0 ? parts.join(" · ") : undefined;
-  };
-
-  const buildStakeSubline = () => {
-    if (!stakingData) return undefined;
-    const totalVL = totalStakedFallback;
-    const activeVL = activeStakedRaw;
-    if (totalVL === undefined || activeVL === undefined) return undefined;
-    const inactiveValue = totalVL - activeVL;
-    if (inactiveValue <= 0n) return undefined;
-    return `${formatTokenAmount(inactiveValue, decimals, symbol)} ${legacyActiveStakesCount > 0 ? "exiting, zombie or on older rollups" : "exiting or zombie"}`;
-  };
 
   const currentAPR = stakingData?.currentAPR
     ? `${stakingData.currentAPR.toFixed(1)}%`
@@ -78,59 +53,77 @@ export const HeroSection = () => {
     {
       title: "Total Value Staked",
       value: isLoading ? "..." : totalValueStaked,
-      description: "Locked in currently-active sequencers",
-      subline: isLoading ? undefined : buildStakeSubline(),
+      tooltip: "Tokens staked with currently active sequencers.",
     },
     {
       title: "Estimated APR",
       value: isLoading ? "..." : currentAPR,
-      description: "Adjusted for queued attesters",
-      subline: undefined,
+      tooltip: "Estimated yearly return at current reward rates. Actual returns may vary.",
     },
     {
       title: "Active Sequencers",
       value: isLoading ? "..." : activeSequencers,
-      description: "Currently validating on canonical rollup",
-      subline: isLoading ? undefined : buildSequencerSubline(),
+      tooltip: "Sequencers currently validating on the network.",
     },
     {
       title: "Minimum Stake Required",
       value: isLoadingThreshold ? "..." : formattedThreshold,
-      description: "Per stake position",
-      subline: undefined,
+      tooltip: "The minimum number of tokens needed for one stake position.",
     },
   ];
 
   return (
-    <section className="pt-20 sm:pt-24 md:pt-28 lg:pt-32 pb-24 sm:pb-32 md:pb-40 relative overflow-hidden">
-      {/* Parallax Background */}
+    <section
+      data-nav-surface="dark"
+      className="on-dark text-paper pt-24 sm:pt-28 md:pt-32 lg:pt-36 pb-12 sm:pb-16 md:pb-20 lg:min-h-[660px] lg:flex lg:flex-col lg:justify-center relative overflow-hidden"
+    >
+      {/* Parallax background: the brand picture, as supplied */}
       <div
         className="absolute inset-0"
         style={{
-          background: `
-              linear-gradient(180deg, rgba(46, 7, 0, 0.85) 0%, rgba(26, 20, 0, 0.95) 100%),
-              url('/assets/Aztec%20Image_15.png')
-            `,
+          backgroundImage: "url('/assets/herd.webp')",
           backgroundSize: "cover",
-          backgroundPosition: "center",
+          backgroundPosition: "center 92%",
           transform: `translateY(${scrollY * 0.5}px)`,
           willChange: "transform",
         }}
       ></div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      {/* Ink scrim: paper type needs it to read on the picture. It is heavier
+          on the left, under the copy, and at the top, under the navigation. */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: `
+            linear-gradient(180deg, rgba(20, 25, 0, 0.35) 0%, rgba(20, 25, 0, 0) 22%),
+            linear-gradient(90deg, rgba(20, 25, 0, 0.45) 0%, rgba(20, 25, 0, 0.2) 55%, rgba(20, 25, 0, 0.2) 100%)
+          `,
+        }}
+      ></div>
+
+      {/* Below the desktop layout the copy is centred, over the brightest part
+          of the picture, so it gets a scrim of its own. */}
+      <div
+        className="lg:hidden absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(20, 25, 0, 0.5) 0%, rgba(20, 25, 0, 0.42) 45%, rgba(20, 25, 0, 0.15) 100%)",
+        }}
+      ></div>
+
+      <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-12 items-center">
           {/* Left: Title and Description */}
           <div className="text-center lg:text-left py-10">
-            <h1 className="font-arizona-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-normal leading-125 sm:leading-90 tracking-tight-5 mb-4 sm:mb-6 opacity-0 animate-fade-up relative text-parchment drop-shadow-lg">
-              Stak<em className="italic">ing</em>
+            <h1 className="font-arizona-serif text-[2.75rem] sm:text-5xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-normal leading-none sm:leading-90 tracking-tight-5 mb-4 sm:mb-6 opacity-0 animate-fade-up relative text-parchment">
+              Stake $AZTEC
             </h1>
             <p
               className="font-arizona-text text-base sm:text-lg lg:text-xl xl:text-2xl font-light text-parchment/90 opacity-0 animate-fade-up leading-relaxed sm:leading-140"
               style={{ animationDelay: "200ms" }}
             >
-              Stake your AZTEC tokens to secure the network and earn rewards
-              while participating for decentralization.
+              Stake your $AZTEC tokens to earn rewards and power the leading
+              platform for unstoppable private apps.
             </p>
           </div>
 
@@ -142,40 +135,22 @@ export const HeroSection = () => {
             {stats.map((stat, index) => (
               <div
                 key={index}
-                className="bg-ink/20 backdrop-blur-lg border border-parchment/20 p-4 sm:p-5 xl:p-6 hover:bg-parchment/10 hover:border-chartreuse/50 transition-all duration-300"
+                className="glass-picture p-4 sm:p-5 xl:p-6 lg:min-h-[168px] flex flex-col justify-between"
               >
-                <div className="flex items-start justify-between gap-1 mb-2 sm:mb-3">
-                  <div className="font-francesco text-xs sm:text-sm lg:text-xs xl:text-sm uppercase tracking-wider text-chartreuse">
+                <div className="flex items-start justify-between gap-1 mb-4 sm:mb-5">
+                  <div className="eyebrow text-[0.6875rem] sm:text-xs text-parchment/80">
                     {stat.title}
                   </div>
                   <TooltipIcon
-                    content={
-                      stat.title === "Total Value Staked"
-                        ? "Value locked by currently-active sequencers only. Stake from exiting and zombie sequencers, and from sequencers still on an older rollup, is excluded from this number — see the subline for the leftover."
-                        : stat.title === "Estimated APR"
-                          ? "Estimated annual return based on current rewards and total sequencers (including queued). Actual returns may vary."
-                          : stat.title === "Active Sequencers"
-                            ? "Currently-validating sequencers on the canonical rollup. Excludes queued, exiting, and zombie (slashed-below-threshold) sequencers — see the subline for those counts."
-                            : stat.title === "Minimum Stake Required"
-                              ? "The minimum amount of tokens required to create a single stake position"
-                              : "Total tokens distributed as rewards to all sequencers."
-                    }
+                    content={stat.tooltip}
                     size="md"
                     maxWidth="max-w-sm"
                   />
                 </div>
                 <div
-                  className={`font-arizona-serif text-xl sm:text-2xl lg:text-xl xl:text-2xl 2xl:text-3xl font-semibold mb-1 text-parchment ${isLoading ? "animate-pulse" : ""}`}
+                  className={`font-arizona-serif text-2xl sm:text-3xl lg:text-[1.75rem] xl:text-[2.125rem] font-light leading-none tracking-tight-2 text-parchment ${isLoading ? "animate-pulse" : ""}`}
                 >
                   {stat.value}
-                </div>
-                {stat.subline && (
-                  <div className="font-mono text-[10px] sm:text-xs text-parchment/50 mb-1">
-                    {stat.subline}
-                  </div>
-                )}
-                <div className="font-md-thermochrome text-xs sm:text-sm lg:text-xs xl:text-sm text-aqua">
-                  {stat.description}
                 </div>
               </div>
             ))}

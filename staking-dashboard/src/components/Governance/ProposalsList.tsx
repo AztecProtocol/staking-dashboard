@@ -66,7 +66,7 @@ export function ProposalsList({
         {[1, 2, 3].map((i) => (
           <div
             key={i}
-            className="flex-shrink-0 w-64 h-32 bg-parchment/5 border border-parchment/10 animate-pulse"
+            className="flex-shrink-0 w-64 h-32 glass animate-pulse"
           />
         ))}
       </div>
@@ -75,7 +75,7 @@ export function ProposalsList({
 
   if (proposals.length === 0) {
     return (
-      <div className="p-8 text-center border border-parchment/20 bg-parchment/5">
+      <div className="p-8 text-center glass">
         <p className="text-parchment/70 font-arizona-text">No proposals found</p>
       </div>
     );
@@ -110,7 +110,7 @@ export function ProposalsList({
             onLoadMore();
           }}
           disabled={isLoadingMore}
-          className="flex-shrink-0 w-48 h-32 border border-parchment/20 bg-parchment/5 hover:bg-parchment/10 hover:border-parchment/30 transition-colors flex items-center justify-center"
+          className="flex-shrink-0 w-48 h-32 border border-parchment/20 bg-parchment/5 hover:bg-parchment/10 hover:border-parchment/30 transition-colors flex items-center justify-center rounded-btn"
         >
           <span className="text-parchment/70 font-oracle-standard">
             {isLoadingMore ? "Loading..." : "Load More"}

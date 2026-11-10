@@ -136,7 +136,7 @@ export function ProposalTimeline({ proposal }: ProposalTimelineProps) {
         {/* Current time indicator - vertical line */}
         {currentPosition !== null && (
           <div
-            className="absolute top-0 bottom-0 w-0.5 bg-[#251f0b]"
+            className="absolute top-0 bottom-0 w-0.5 bg-ink"
             style={{
               left: `${currentPosition}%`,
               transform: 'translateX(-50%)',

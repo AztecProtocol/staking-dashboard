@@ -22,7 +22,7 @@ export const TooltipIcon = ({
 }: TooltipIconProps) => {
   return (
     <Tooltip content={content} position={position} className={className} maxWidth={maxWidth}>
-      <div className="inline-flex items-center justify-center text-parchment/60 hover:text-chartreuse transition-colors cursor-help">
+      <div className="inline-flex items-center justify-center text-parchment/60 hover:text-accent transition-colors cursor-help">
         <Icon name="question" size={size} />
       </div>
     </Tooltip>

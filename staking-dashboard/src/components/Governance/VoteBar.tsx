@@ -37,7 +37,7 @@ export function VoteBar({ ballot, showLabels = true, size = "default" }: VoteBar
     <div className="w-full">
       {showLabels && (
         <div className="flex justify-between text-sm mb-2">
-          <span className="text-chartreuse">
+          <span className="text-accent">
             Yes: {yeaPct.toFixed(1)}% ({formatCompact(ballot.yea)})
           </span>
           <span className="text-orchid">

@@ -120,15 +120,15 @@ export const ATPStakingOverviewBreakdownSection = ({
     <div className="mt-8">
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className="w-full flex items-center justify-between px-4 py-3 bg-parchment/5 border border-parchment/20 hover:border-chartreuse/40 hover:bg-parchment/8 transition-all cursor-pointer group"
+        className="w-full flex items-center justify-between px-4 py-3 glass hover:bg-parchment/8 transition-colors cursor-pointer group"
       >
-        <div className="text-sm text-parchment font-oracle-standard font-bold uppercase tracking-wide group-hover:text-chartreuse transition-colors">
+        <div className="text-sm text-parchment font-oracle-standard font-bold uppercase tracking-wide group-hover:text-accent transition-colors">
           Stake Breakdown
         </div>
         <Icon
           name="chevronDown"
           size="lg"
-          className={`text-parchment/60 group-hover:text-chartreuse transition-all ${isExpanded ? 'rotate-180' : ''}`}
+          className={`text-parchment/60 group-hover:text-accent transition-all ${isExpanded ? 'rotate-180' : ''}`}
         />
       </button>
 
@@ -145,7 +145,7 @@ export const ATPStakingOverviewBreakdownSection = ({
                   {failedSelfStakesCount > 0 && (
                     <button
                       onClick={() => setShowFailedSelfStakes(!showFailedSelfStakes)}
-                      className={`flex items-center gap-1.5 px-2 py-0.5 border text-xs font-oracle-standard font-bold uppercase tracking-wide transition-all
+                      className={`flex items-center gap-1.5 px-2 py-0.5 border rounded-btn text-xs font-oracle-standard font-bold uppercase tracking-wide transition-all
                         ${!showFailedSelfStakes
                           ? 'bg-vermillion/10 border-vermillion/30 text-vermillion/60 hover:bg-vermillion/20 hover:border-vermillion/40'
                           : 'bg-parchment/10 border-parchment/30 text-parchment/60 hover:bg-parchment/20 hover:border-parchment/40'
@@ -209,7 +209,7 @@ export const ATPStakingOverviewBreakdownSection = ({
                   {failedDelegationsCount > 0 && (
                     <button
                       onClick={() => setShowFailedDelegations(!showFailedDelegations)}
-                      className={`flex items-center gap-1.5 px-2 py-0.5 border text-xs font-oracle-standard font-bold uppercase tracking-wide transition-all
+                      className={`flex items-center gap-1.5 px-2 py-0.5 border rounded-btn text-xs font-oracle-standard font-bold uppercase tracking-wide transition-all
                         ${!showFailedDelegations
                           ? 'bg-vermillion/10 border-vermillion/30 text-vermillion/60 hover:bg-vermillion/20 hover:border-vermillion/40'
                           : 'bg-parchment/10 border-parchment/30 text-parchment/60 hover:bg-parchment/20 hover:border-parchment/40'

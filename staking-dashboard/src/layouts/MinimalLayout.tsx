@@ -12,10 +12,11 @@ export default function MinimalLayout() {
   const { isTermsModalOpen, closeTermsModal, acceptTerms } = useTermsModal()
 
   return (
-    <div className="bg-ink text-parchment font-body font-smoothing min-h-screen flex flex-col">
+    <div className="bg-cream text-parchment font-body font-smoothing min-h-screen flex flex-col">
       <Navbar />
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-8 pb-16 flex-1 w-full pt-32">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 relative isolate flex-1 w-full pt-32">
+        <div aria-hidden="true" className="page-glow" />
         <Outlet />
       </div>
 

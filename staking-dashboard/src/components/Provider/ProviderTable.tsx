@@ -58,7 +58,7 @@ function DecentralizationBarRow() {
   return (
     <tr>
       <td colSpan={6} className="p-0">
-        <div className="bg-chartreuse text-ink text-center py-0.5 px-4 text-xs font-oracle-standard font-medium">
+        <div className="bg-chartreuse text-ink text-center rounded-full my-2 py-1.5 px-4 text-xs font-oracle-standard font-medium">
           Improve decentralization and network health by staking with a group below ↓
         </div>
       </td>
@@ -93,7 +93,7 @@ function ProviderRow({
           <div>
             <button
               onClick={() => navigate(`/providers/${provider.id}`)}
-              className="font-oracle-triple-book font-medium text-parchment hover:text-chartreuse transition-colors text-left"
+              className="font-arizona-serif text-xl leading-tight tracking-tight-2 text-parchment hover:text-accent transition-colors text-left"
             >
               {provider.name}
             </button>
@@ -108,10 +108,10 @@ function ProviderRow({
       </TableCell>
       <TableCell>
         <div className="font-mono text-sm text-left">
-          <div className="text-chartreuse font-bold text-base whitespace-nowrap">
+          <div className="text-accent font-medium text-base whitespace-nowrap">
             {isLoadingTokenDetails ? (
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 border border-chartreuse/30 border-t-chartreuse rounded-full animate-spin"></div>
+                <div className="w-3 h-3 border border-parchment/20 border-t-accent rounded-full animate-spin"></div>
                 <span className="text-parchment/60">Loading...</span>
               </div>
             ) : decimals ? (
@@ -132,14 +132,14 @@ function ProviderRow({
           </div>
           <div className="w-full bg-parchment/10 h-1.5 rounded-full overflow-hidden">
             <div
-              className="bg-parchment/30 h-full rounded-full"
+              className="bg-chartreuse h-full rounded-full"
               style={{ width: provider.cumulativePercentage }}
             />
           </div>
         </div>
       </TableCell>
       <TableCell>
-        <div className="font-mono font-bold text-parchment">
+        <div className="font-mono font-medium text-parchment">
           {config?.providerTakeRate !== undefined
             ? `${formatBipsToPercentage(config.providerTakeRate)}%`
             : `${formatBipsToPercentage(provider.commission)}%`}
@@ -149,7 +149,7 @@ function ProviderRow({
         {(() => {
           const myDelegation = myDelegations?.get(Number(provider.id)) || 0n
           return myDelegation > 0n ? (
-            <div className="font-mono text-sm font-bold text-aqua">
+            <div className="font-mono text-sm font-medium text-parchment">
               {isLoadingTokenDetails ? "..." : decimals ? formatTokenAmount(myDelegation, decimals, symbol) : "-"}
             </div>
           ) : (
@@ -164,9 +164,9 @@ function ProviderRow({
 
           return (
             <button
-              className={`px-3 py-1.5 font-oracle-standard font-bold text-xs uppercase tracking-wider transition-colors ${hasSequencerKeys
-                ? 'bg-chartreuse text-ink hover:bg-chartreuse/90'
-                : 'bg-parchment/20 text-parchment/40 cursor-not-allowed'
+              className={`px-[18px] py-[9px] min-h-[36px] text-[0.6875rem] leading-none ${hasSequencerKeys
+                ? 'btn-lime'
+                : 'btn-glass'
                 }`}
               onClick={(e) => hasSequencerKeys && onStakeClick(provider, e)}
               disabled={!hasSequencerKeys}
@@ -239,13 +239,13 @@ export const ProviderTable = ({
 
   return (
     <Table>
-      <TableHeader className="bg-parchment/8">
+      <TableHeader>
         <TableRow>
           <TableHead>
             <div className="flex items-center gap-2">
               <button
                 onClick={() => onSort('name')}
-                className="flex items-center gap-1 hover:text-chartreuse transition-colors font-oracle-triple-medium uppercase tracking-wider text-xs text-parchment/60 whitespace-nowrap"
+                className="eyebrow flex items-center gap-1 text-accent hover:text-parchment transition-colors whitespace-nowrap"
               >
                 Provider
                 {sortField === 'name' && (
@@ -267,7 +267,7 @@ export const ProviderTable = ({
             <div className="flex items-center gap-2">
               <button
                 onClick={() => onSort('totalStaked')}
-                className="flex items-center gap-1 hover:text-chartreuse transition-colors font-oracle-triple-medium uppercase tracking-wider text-xs text-parchment/60 whitespace-nowrap"
+                className="eyebrow flex items-center gap-1 text-accent hover:text-parchment transition-colors whitespace-nowrap"
               >
                 Total Stake
                 {sortField === 'totalStaked' && (
@@ -287,7 +287,7 @@ export const ProviderTable = ({
           </TableHead>
           <TableHead>
             <div className="flex items-center gap-2">
-              <span className="font-oracle-triple-medium uppercase tracking-wider text-xs text-parchment/60 whitespace-nowrap">
+              <span className="eyebrow text-accent whitespace-nowrap">
                 Cumulative
               </span>
               <TooltipIcon
@@ -301,7 +301,7 @@ export const ProviderTable = ({
             <div className="flex items-center gap-2">
               <button
                 onClick={() => onSort('commission')}
-                className="flex items-center gap-1 hover:text-chartreuse transition-colors font-oracle-triple-medium uppercase tracking-wider text-xs text-parchment/60 whitespace-nowrap"
+                className="eyebrow flex items-center gap-1 text-accent hover:text-parchment transition-colors whitespace-nowrap"
               >
                 Commission
                 {sortField === 'commission' && (
@@ -321,7 +321,7 @@ export const ProviderTable = ({
           </TableHead>
           <TableHead>
             <div className="flex items-center gap-2">
-              <span className="font-oracle-triple-medium uppercase tracking-wider text-xs text-parchment/60 whitespace-nowrap">
+              <span className="eyebrow text-accent whitespace-nowrap">
                 My Stake
               </span>
               <TooltipIcon
@@ -333,7 +333,7 @@ export const ProviderTable = ({
           </TableHead>
           <TableHead>
             <div className="flex items-center gap-2">
-              <span className="font-oracle-triple-medium uppercase tracking-wider text-xs text-parchment/60 whitespace-nowrap">
+              <span className="eyebrow text-accent whitespace-nowrap">
                 Actions
               </span>
               <TooltipIcon
@@ -402,7 +402,7 @@ export const ProviderTable = ({
                         {groupProviders.slice(0, 3).map((p, i) => (
                           <div
                             key={p.id}
-                            className="rounded-full border-2 border-parchment/10"
+                            className="pill"
                             style={{ marginLeft: i > 0 ? '-8px' : '0', zIndex: 3 - i, position: 'relative' }}
                           >
                             <AvatarImage src={p.logo_url} alt={p.name} size="sm" />
@@ -422,7 +422,7 @@ export const ProviderTable = ({
                         <div className="text-xs text-parchment/50 font-oracle-triple-medium tracking-wide">
                           1–{topGroupSize}
                         </div>
-                        <div className="font-oracle-triple-book font-medium text-parchment">
+                        <div className="font-arizona-serif text-xl leading-tight tracking-tight-2 text-parchment">
                           Top {topGroupSize} providers
                         </div>
                       </div>
@@ -438,10 +438,10 @@ export const ProviderTable = ({
                   {/* Combined total stake */}
                   <TableCell>
                     <div className="font-mono text-sm text-left">
-                      <div className="text-chartreuse font-bold text-base whitespace-nowrap">
+                      <div className="text-accent font-medium text-base whitespace-nowrap">
                         {isLoadingTokenDetails ? (
                           <div className="flex items-center gap-2">
-                            <div className="w-3 h-3 border border-chartreuse/30 border-t-chartreuse rounded-full animate-spin"></div>
+                            <div className="w-3 h-3 border border-parchment/20 border-t-accent rounded-full animate-spin"></div>
                             <span className="text-parchment/60">Loading...</span>
                           </div>
                         ) : decimals ? (
@@ -462,7 +462,7 @@ export const ProviderTable = ({
                       </div>
                       <div className="w-full bg-parchment/10 h-1.5 rounded-full overflow-hidden">
                         <div
-                          className="bg-parchment/30 h-full rounded-full"
+                          className="bg-chartreuse h-full rounded-full"
                           style={{ width: groupCumulativePercentage }}
                         />
                       </div>
@@ -477,7 +477,7 @@ export const ProviderTable = ({
                   {/* My combined stake across group providers */}
                   <TableCell>
                     {groupMyStake > 0n ? (
-                      <div className="font-mono text-sm font-bold text-aqua">
+                      <div className="font-mono text-sm font-medium text-parchment">
                         {isLoadingTokenDetails ? "..." : decimals ? formatTokenAmount(groupMyStake, decimals, symbol) : "–"}
                       </div>
                     ) : (
@@ -560,7 +560,7 @@ export const ProviderTable = ({
               <div className="flex flex-col items-center gap-4">
                 <Icon name="search" className="w-12 h-12 text-parchment/30" />
                 <div>
-                  <div className="font-md-thermochrome text-lg text-parchment/70 mb-2">
+                  <div className="font-oracle-standard text-lg text-parchment/70 mb-2">
                     No providers found
                   </div>
                   <div className="font-arizona-text text-sm text-parchment/50">
@@ -574,16 +574,16 @@ export const ProviderTable = ({
 
         {/* Not Associated Stake Footer Row */}
         {notAssociatedStake && providers.length > 0 && (
-          <TableRow className="bg-parchment/5">
+          <TableRow className="hover:bg-transparent">
             <TableCell>
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 flex items-center justify-center bg-parchment/10">
+                <div className="w-10 h-10 flex items-center justify-center rounded-full bg-parchment/10">
                   <Icon name="users" size="md" className="text-parchment/60" />
                 </div>
                 <div className="flex items-center gap-2">
                   <div>
                     <div className="flex gap-1.5 items-center">
-                      <div className="font-oracle-triple-book font-medium text-parchment">
+                      <div className="font-arizona-serif text-xl leading-tight tracking-tight-2 text-parchment">
                         Other
                       </div>
                       <TooltipIcon
@@ -601,10 +601,10 @@ export const ProviderTable = ({
             </TableCell>
             <TableCell>
               <div className="font-mono text-sm text-left">
-                <div className="text-parchment/80 font-bold text-base whitespace-nowrap">
+                <div className="text-parchment/80 font-medium text-base whitespace-nowrap">
                   {isLoadingTokenDetails ? (
                     <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 border border-parchment/30 border-t-parchment rounded-full animate-spin"></div>
+                      <div className="w-3 h-3 pill border-t-parchment animate-spin"></div>
                       <span className="text-parchment/60">Loading...</span>
                     </div>
                   ) : decimals ? (
@@ -626,7 +626,7 @@ export const ProviderTable = ({
                 {/* Cumulative progress bar */}
                 <div className="w-full bg-parchment/10 h-1.5 rounded-full overflow-hidden">
                   <div
-                    className="bg-parchment/30 h-full rounded-full"
+                    className="bg-chartreuse h-full rounded-full"
                     style={{ width: notAssociatedStake.cumulativePercentage }}
                   />
                 </div>

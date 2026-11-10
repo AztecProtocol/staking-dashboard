@@ -4,55 +4,103 @@
     <title>Access Restricted - Aztec Staking Dashboard</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="preload" href="/fonts/ABCOracle-Medium.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <meta name="robots" content="noindex" />
+    <meta name="theme-color" content="#F8F1E7" />
     <style>
+      /* A visitor who sees this page cannot load other files from the site, so
+         everything is inline and the brand faces come from the font CDN, with
+         system faces behind them. */
+      @font-face {
+        font-family: "Arizona Serif";
+        src: url("https://cdn.prod.website-files.com/6847005bc403085c1aa846e0/68a4949a4a2b7324ce9c388a_ArizonaSerifLight.woff2") format("woff2");
+        font-weight: 300;
+        font-style: normal;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: "Oracle Standard";
+        src: url("https://cdn.prod.website-files.com/6847005bc403085c1aa846e0/68a4ad383cba3c5264504dfc_ABCOracle-Medium.woff2") format("woff2");
+        font-weight: 500;
+        font-style: normal;
+        font-display: swap;
+      }
+      * {
+        box-sizing: border-box;
+      }
       body {
-        background: #2e0026;
-        color: #222;
-        font-family: 'ABCOracle-Medium', Arial, sans-serif;
+        /* The page: cream, with the lime glow from aztec.network behind the card */
+        background:
+          radial-gradient(60% 55% at 78% 12%, rgba(200, 250, 0, 0.55) 0%, rgba(227, 255, 155, 0.35) 34%, rgba(248, 241, 231, 0) 72%),
+          #f8f1e7;
+        color: #141900;
+        font-family: "Oracle Standard", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+        font-weight: 500;
+        -webkit-font-smoothing: antialiased;
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 100vh;
+        min-height: 100vh;
         margin: 0;
+        padding: 24px;
       }
+      /* A light glass card: paper fill, a highlight for an edge, no border */
       .blocked-message-container {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        background: #fff;
-        border-radius: 6px;
-        padding: 2rem 2rem;
+        background-color: rgba(255, 249, 242, 0.62);
+        background-image: linear-gradient(155deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.18) 36%, rgba(255, 255, 255, 0) 58%, rgba(255, 255, 255, 0.42) 100%);
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.95),
+          inset 1px 0 0 rgba(255, 255, 255, 0.55),
+          inset -1px 0 0 rgba(255, 255, 255, 0.55),
+          inset 0 -1px 0 rgba(255, 255, 255, 0.3),
+          0 0 0 1px rgba(20, 25, 0, 0.05),
+          0 28px 56px -36px rgba(20, 25, 0, 0.28);
+        -webkit-backdrop-filter: blur(14px) saturate(1.15);
+        backdrop-filter: blur(14px) saturate(1.15);
+        border-radius: 20px;
+        padding: 44px 36px 40px;
         text-align: center;
-        max-width: 360px;
-        box-shadow: 0 2px 16px 0 rgba(34, 34, 34, 0.1);
+        max-width: 420px;
       }
       .logo {
-        width: 80px;
-        height: 80px;
-        margin-bottom: 20px;
+        width: 64px;
+        height: 64px;
+        margin-bottom: 28px;
       }
       .blocked-message-title {
-        font-size: 1.5rem;
-        font-weight: 600;
-        margin-bottom: 16px;
+        font-family: "Arizona Serif", Georgia, "Times New Roman", serif;
+        font-size: 2.25rem;
+        font-weight: 300;
+        line-height: 1;
+        letter-spacing: -0.05em;
+        margin-bottom: 18px;
       }
       .blocked-message-text {
         font-size: 1rem;
         line-height: 1.4;
+        letter-spacing: -0.01em;
+        color: #4d4d3e;
+      }
+      .blocked-message-text a {
+        color: #141900;
+        text-underline-offset: 3px;
       }
     </style>
   </head>
   <body>
     <div class="blocked-message-container">
       <div class="logo">
-        <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 360 360" fill="none">
+        <!-- Inline on purpose: a visitor who sees this page cannot load other files from the site. -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 207.161 207.161" fill="none">
+          <title>Aztec</title>
           <path
             fill-rule="evenodd"
             clip-rule="evenodd"
-            d="M180 0L360 180L180 360L0 180L180 0ZM180 45.0014L315 180.001L180 315.001L45 180.001L180 45.0014ZM270 179.997L180 89.9966L90 179.997L180 269.997L270 179.997ZM225 179.998L180 134.998L135 179.998L180 224.998L225 179.998Z"
-            fill="#2e0026"
+            d="M103.581 0L207.161 103.581L103.581 207.161L0 103.581L103.581 0ZM103.581 25.896L181.266 103.581L103.581 181.267L25.8951 103.581L103.581 25.896ZM155.371 103.579L103.581 51.7883L51.7903 103.579L103.581 155.369L155.371 103.579ZM129.476 103.579L103.581 77.6843L77.6854 103.579L103.581 129.475L129.476 103.579Z"
+            fill="#141900"
           />
         </svg>
       </div>

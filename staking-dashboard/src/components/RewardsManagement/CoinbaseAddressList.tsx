@@ -117,7 +117,7 @@ export const CoinbaseAddressList = ({
         return (
           <div
             key={rowKey}
-            className="bg-parchment/5 border border-parchment/20 p-4"
+            className="glass p-4"
           >
             <div className="flex items-start justify-between gap-3">
               <div className="flex-1 min-w-0">
@@ -129,7 +129,7 @@ export const CoinbaseAddressList = ({
                   <CopyButton text={item.address} size="sm" />
                   {item.rollupVersion !== undefined && (
                     <span
-                      className="font-oracle-standard text-[10px] uppercase tracking-wide bg-aqua/15 border border-aqua/30 text-aqua px-2 py-0.5"
+                      className="font-oracle-standard text-[10px] uppercase tracking-wide bg-aqua/15 border border-aqua/30 text-aqua px-2 py-0.5 rounded-inset"
                       title={`Rollup contract: ${item.rollupAddress}`}
                     >
                       Rollup v{item.rollupVersion}
@@ -141,7 +141,7 @@ export const CoinbaseAddressList = ({
                 <div className="text-xs text-parchment/60 uppercase tracking-wide mb-1">
                   Accumulated Rewards
                 </div>
-                <div className="font-mono text-lg font-bold text-chartreuse">
+                <div className="font-mono text-lg font-bold text-accent">
                   {formatTokenAmountFull(item.rewards, decimals, symbol)}
                 </div>
               </div>
@@ -151,7 +151,7 @@ export const CoinbaseAddressList = ({
                 <button
                   onClick={() => handleRemove(item.address)}
                   disabled={isRemoving}
-                  className="p-2 text-parchment/60 hover:text-red-400 transition-colors disabled:opacity-50"
+                  className="p-2 text-parchment/60 hover:text-vermillion transition-colors disabled:opacity-50"
                   title="Remove address"
                 >
                   <Icon name="trash2" size="sm" />
@@ -166,7 +166,7 @@ export const CoinbaseAddressList = ({
                   isInBatch ? (
                     <button
                       onClick={openCart}
-                      className="w-full py-2 bg-chartreuse/20 border border-chartreuse/40 text-chartreuse font-bold text-sm uppercase tracking-wide hover:bg-chartreuse/30 transition-colors"
+                      className="w-full py-2 bg-parchment/10 border border-parchment/20 text-accent font-bold text-sm uppercase tracking-wide hover:bg-parchment/15 transition-colors rounded-btn"
                     >
                       <span className="flex items-center justify-center gap-2">
                         <Icon name="shoppingCart" size="sm" />
@@ -176,7 +176,7 @@ export const CoinbaseAddressList = ({
                   ) : (
                     <button
                       onClick={() => handleAddToBatch(item.address, item.rollupAddress, item.rollupVersion, item.rewards)}
-                      className="w-full py-2 bg-chartreuse text-ink font-bold text-sm uppercase tracking-wide hover:bg-chartreuse/90 transition-colors"
+                      className="w-full py-2 btn-lime text-sm"
                     >
                       Add to batch
                     </button>

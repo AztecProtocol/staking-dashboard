@@ -16,17 +16,17 @@ export const SuccessAlert = ({ isOpen, title, message, onClose }: SuccessAlertPr
   if (!isOpen) return null
 
   return createPortal(
-    <div className="fixed inset-0 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-up">
-      <div className="bg-ink border border-chartreuse/30 max-w-md w-full p-8 relative overflow-hidden bg-card-texture">
+    <div className="fixed inset-0 modal-scrim z-50 flex items-center justify-center p-4 animate-fade-up">
+      <div className="card-dark max-w-md w-full p-8 relative overflow-hidden">
         {/* Success Icon */}
         <div className="flex justify-center mb-6 relative z-10">
-          <div className="w-20 h-20 bg-chartreuse/10 border border-chartreuse/30 flex items-center justify-center">
-            <Icon name="check" className="w-10 h-10 text-chartreuse" />
+          <div className="w-20 h-20 bg-parchment/5 border border-parchment/20 flex items-center justify-center rounded-inset">
+            <Icon name="check" className="w-10 h-10 text-accent" />
           </div>
         </div>
 
         {/* Title */}
-        <h3 className="font-md-thermochrome text-2xl text-chartreuse text-center mb-4 relative z-10">
+        <h3 className="font-arizona-serif text-2xl text-accent text-center mb-4 relative z-10">
           {title}
         </h3>
 
@@ -38,7 +38,7 @@ export const SuccessAlert = ({ isOpen, title, message, onClose }: SuccessAlertPr
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="w-full bg-chartreuse text-ink py-3 px-6 font-oracle-standard font-bold text-xs uppercase tracking-wider hover:bg-chartreuse/90 transition-colors border border-chartreuse relative z-10"
+          className="w-full btn-lime py-3 px-6 text-xs relative z-10"
         >
           Close
         </button>

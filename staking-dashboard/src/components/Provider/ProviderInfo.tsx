@@ -32,7 +32,7 @@ export const ProviderInfo = ({ provider }: ProviderInfoProps) => {
         <div>
           <div className="text-xs text-parchment/60 uppercase tracking-wide mb-1">Website</div>
           {provider.website ? (
-            <a href={provider.website} className="font-mono text-sm text-chartreuse hover:underline">
+            <a href={provider.website} className="font-mono text-sm text-accent hover:underline">
               {provider.website}
             </a>
           ) : (
@@ -75,7 +75,7 @@ export const ProviderInfo = ({ provider }: ProviderInfoProps) => {
             href={getValidatorDashboardProviderUrl(provider.id)}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-sm text-chartreuse hover:underline"
+            className="inline-flex items-center gap-2 text-sm text-accent hover:underline"
           >
             View on dashboard
             <Icon name="externalLink" size="sm" />

@@ -34,7 +34,7 @@ export const MulticallBatchHeader = ({
       aria-expanded={isExpanded}
     >
       <div className="flex items-center gap-3 min-w-0">
-        <div className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center bg-aqua/20 border border-aqua/40 flex-shrink-0">
+        <div className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center bg-aqua/20 border border-aqua/40 flex-shrink-0 rounded-inset">
           <Icon name="shield" className="w-4 h-4 sm:w-5 sm:h-5 text-aqua" />
         </div>
         <div className="min-w-0">

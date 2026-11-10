@@ -1,12 +1,12 @@
 import { Link, Outlet, useLocation } from "react-router-dom"
 import { useEffect, useRef, useState } from "react"
-import { applyHeroItalics } from "@/utils/typographyUtils"
 import { ProvidersSection } from "./ProvidersSection"
 import { WalletConnectGuard } from "@/components/WalletConnectGuard"
 import { WalletConnectionAlertModal } from "../WalletConnectionAlert"
 import { TermsAcceptanceModal } from "@/components/TermsAcceptanceModal/TermsAcceptanceModal"
 import { useTermsModal } from "@/contexts/TermsModalContext"
 import { useConnectedOperatorIdentities } from "@/hooks/operator"
+import { POSITIONS_SECTION_ID } from "@/config/links"
 
 /**
  * Main content area with tab navigation
@@ -34,6 +34,12 @@ export const MainContent = () => {
   }
 
   const activeTab = getActiveTab()
+
+  const tabs = [
+    { id: 'my-position', to: '/', label: 'My Position' },
+    { id: 'stake', to: '/stake', label: 'Stake' },
+    ...(isOperator ? [{ id: 'operator', to: '/operator', label: 'Operator Tools' }] : []),
+  ]
 
   useEffect(() => {
     if (isInitialLoad) {
@@ -78,11 +84,11 @@ export const MainContent = () => {
   }, [location.pathname, activeTab, isInitialLoad])
 
   return (
-    <div className="w-full -mt-20 sm:-mt-24 md:-mt-32">
+    <div className="w-full">
     <div
       className="transition-all duration-700 ease-in-out overflow-hidden"
       style={{
-        maxHeight: activeTab === 'my-position' ? '2000px' : '0px',
+        maxHeight: activeTab === 'my-position' ? '3000px' : '0px',
         opacity: activeTab === 'my-position' ? 1 : 0,
         transform: activeTab === 'my-position' ? 'translateY(0)' : 'translateY(-100px)',
       }}
@@ -95,68 +101,29 @@ export const MainContent = () => {
       description="Connect your wallet to stake tokens and manage your positions."
       helpText="After connecting, you'll be able to stake tokens, delegate to providers, and manage your positions."
     >
-      <div ref={tabContainerRef} className={`bg-ink/8 border border-ink/20 relative backdrop-blur-sm flex flex-col transition-[margin] duration-700 ease-in-out ${activeTab === 'my-position' ? 'mt-8' : ''}`}>
-        {/* Background Texture */}
-        <div className="pointer-events-none opacity-[0.08] absolute inset-0 z-0">
-          <div
-            className="absolute inset-0 h-full"
-            style={{
-              backgroundImage: "url('/assets/Aztec%20Image_28.webp')",
-              backgroundPosition: 'center top',
-              backgroundRepeat: 'repeat'
-            }}
-          ></div>
-        </div>
-
-
-        {/* Sticky Navigation Tabs - Outside scrollable area */}
-        <div className={`relative z-20 px-4 sm:px-6 lg:px-10 transition-[padding] duration-700 ease-in-out pt-8 sm:pt-10 lg:pt-12`}>
-          <div className="flex border-b border-parchment/10 overflow-x-auto sm:overflow-x-visible">
-            <Link
-              to="/"
-              className={`relative px-4 sm:px-6 md:px-8 py-3 sm:py-4 font-arizona-text text-base sm:text-xl md:text-2xl font-light transition-colors whitespace-nowrap min-h-[48px] sm:min-h-[56px] flex items-center ${activeTab === 'my-position'
-                ? 'text-parchment'
-                : 'text-parchment/60 hover:text-parchment'
-                }`}
-            >
-              <div className="absolute left-0 top-1/2 -translate-y-1/2 w-px h-1/2 bg-parchment/20"></div>
-              <div className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 w-2/3 transition-colors ${activeTab === 'my-position'
-                ? 'bg-chartreuse'
-                : 'bg-transparent group-hover:bg-parchment/30'
-                }`}></div>
-              {applyHeroItalics("My Position")}
-            </Link>
-            <Link
-              to="/stake"
-              className={`relative px-4 sm:px-6 md:px-8 py-3 sm:py-4 font-arizona-text text-base sm:text-xl md:text-2xl font-light transition-colors whitespace-nowrap min-h-[48px] sm:min-h-[56px] flex items-center ${activeTab === 'stake'
-                ? 'text-parchment'
-                : 'text-parchment/60 hover:text-parchment'
-                }`}
-            >
-              <div className="absolute left-0 top-1/2 -translate-y-1/2 w-px h-1/2 bg-parchment/20"></div>
-              <div className="absolute right-0 top-1/2 -translate-y-1/2 w-px h-1/2 bg-parchment/20"></div>
-              <div className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 w-2/3 transition-colors ${activeTab === 'stake'
-                ? 'bg-chartreuse'
-                : 'bg-transparent group-hover:bg-parchment/30'
-                }`}></div>
-              {applyHeroItalics("Stake")}
-            </Link>
-            {isOperator && (
-              <Link
-                to="/operator"
-                className={`relative px-4 sm:px-6 md:px-8 py-3 sm:py-4 font-arizona-text text-base sm:text-xl md:text-2xl font-light transition-colors whitespace-nowrap min-h-[48px] sm:min-h-[56px] flex items-center ${activeTab === 'operator'
-                  ? 'text-parchment'
-                  : 'text-chartreuse/80 hover:text-chartreuse'
-                  }`}
-              >
-                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-px h-1/2 bg-parchment/20"></div>
-                <div className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 w-2/3 transition-colors ${activeTab === 'operator'
-                  ? 'bg-chartreuse'
-                  : 'bg-transparent group-hover:bg-parchment/30'
-                  }`}></div>
-                {applyHeroItalics("Operator Tools")}
-              </Link>
-            )}
+      <div
+        ref={tabContainerRef}
+        id={POSITIONS_SECTION_ID}
+        className={`card-light relative flex flex-col scroll-mt-28 transition-[margin] duration-700 ease-in-out ${activeTab === 'my-position' ? 'mt-8' : ''}`}
+      >
+        {/* Section tabs: a dark pill with the current view lit in lime */}
+        <div className="relative z-20 px-4 sm:px-6 lg:px-10 pt-6 sm:pt-8 lg:pt-10">
+          <div className="overflow-x-auto -mx-1 px-1">
+            <div className="bg-coal inline-flex items-center gap-1 p-1.5 rounded-full">
+              {tabs.map((tab) => (
+                <Link
+                  key={tab.id}
+                  to={tab.to}
+                  aria-current={activeTab === tab.id ? 'page' : undefined}
+                  className={`eyebrow px-4 sm:px-5 py-2.5 rounded-full whitespace-nowrap transition-colors ${activeTab === tab.id
+                    ? 'bg-chartreuse text-ink'
+                    : 'text-parchment/80 hover:text-parchment hover:bg-parchment/10'
+                    }`}
+                >
+                  {tab.label}
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
 

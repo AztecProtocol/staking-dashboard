@@ -23,8 +23,8 @@ export const TransactionCartDetailsExpanded = ({ transaction }: TransactionCartD
           </div>
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <div className={`px-2 py-1 border text-[10px] font-oracle-standard uppercase tracking-wide ${
-                transaction.status === 'completed' ? 'bg-chartreuse/10 border-chartreuse/30 text-chartreuse' :
+              <div className={`px-2 py-1 border rounded-btn text-[10px] font-oracle-standard uppercase tracking-wide ${
+                transaction.status === 'completed' ? 'bg-parchment/5 border-parchment/20 text-accent' :
                 transaction.status === 'failed' ? 'bg-vermillion/10 border-vermillion/30 text-vermillion' :
                 transaction.status === 'executing' ? 'bg-aqua/10 border-aqua/30 text-aqua' :
                 'bg-parchment/10 border-parchment/30 text-parchment/60'
@@ -36,13 +36,13 @@ export const TransactionCartDetailsExpanded = ({ transaction }: TransactionCartD
               <div>
                 <div className="text-[10px] text-parchment/50 mb-1">Transaction Hash</div>
                 <div className="flex items-center gap-2">
-                  <code className="text-[10px] font-mono text-chartreuse break-all">
+                  <code className="text-[10px] font-mono text-accent break-all">
                     {transaction.txHash}
                   </code>
                   <CopyButton text={transaction.txHash} size="sm" />
                   <button
                     onClick={() => openTxInExplorer(transaction.txHash!)}
-                    className="p-1 text-parchment/60 hover:text-chartreuse transition-colors"
+                    className="p-1 text-parchment/60 hover:text-accent transition-colors"
                     title="View on explorer"
                   >
                     <Icon name="externalLink" size="sm" />
@@ -71,7 +71,7 @@ export const TransactionCartDetailsExpanded = ({ transaction }: TransactionCartD
           <div>
             <div className="text-[10px] text-parchment/50 mb-1">To Address</div>
             <div className="flex items-center gap-2">
-              <code className="text-[10px] font-mono text-chartreuse break-all">
+              <code className="text-[10px] font-mono text-accent break-all">
                 {transaction.transaction.to}
               </code>
               <CopyButton text={transaction.transaction.to} size="sm" />
@@ -120,7 +120,7 @@ export const TransactionCartDetailsExpanded = ({ transaction }: TransactionCartD
                   <div>
                     <div className="text-[10px] text-parchment/50 mb-1">Token Vault Address</div>
                     <div className="flex items-center gap-2">
-                      <code className="text-[10px] font-mono text-chartreuse break-all">
+                      <code className="text-[10px] font-mono text-accent break-all">
                         {transaction.metadata.atpAddress}
                       </code>
                       <CopyButton text={transaction.metadata.atpAddress} size="sm" />
@@ -151,7 +151,7 @@ export const TransactionCartDetailsExpanded = ({ transaction }: TransactionCartD
                   <div>
                     <div className="text-[10px] text-parchment/50 mb-1">Coinbase Address</div>
                     <div className="flex items-center gap-2">
-                      <code className="text-[10px] font-mono text-chartreuse break-all">
+                      <code className="text-[10px] font-mono text-accent break-all">
                         {transaction.metadata.coinbase}
                       </code>
                       <CopyButton text={transaction.metadata.coinbase} size="sm" />
@@ -162,7 +162,7 @@ export const TransactionCartDetailsExpanded = ({ transaction }: TransactionCartD
                   <div>
                     <div className="text-[10px] text-parchment/50 mb-1">Split Contract</div>
                     <div className="flex items-center gap-2">
-                      <code className="text-[10px] font-mono text-chartreuse break-all">
+                      <code className="text-[10px] font-mono text-accent break-all">
                         {transaction.metadata.splitContract}
                       </code>
                       <CopyButton text={transaction.metadata.splitContract} size="sm" />
@@ -175,7 +175,7 @@ export const TransactionCartDetailsExpanded = ({ transaction }: TransactionCartD
                       Rollup{transaction.metadata.rollupVersion ? ` v${transaction.metadata.rollupVersion}` : ""}
                     </div>
                     <div className="flex items-center gap-2">
-                      <code className="text-[10px] font-mono text-chartreuse break-all">
+                      <code className="text-[10px] font-mono text-accent break-all">
                         {transaction.metadata.rollupAddress}
                       </code>
                       <CopyButton text={transaction.metadata.rollupAddress} size="sm" />
@@ -206,7 +206,7 @@ export const TransactionCartDetailsExpanded = ({ transaction }: TransactionCartD
                   <div>
                     <div className="text-[10px] text-parchment/50 mb-1">Attester</div>
                     <div className="flex items-center gap-2">
-                      <code className="text-[10px] font-mono text-chartreuse break-all">
+                      <code className="text-[10px] font-mono text-accent break-all">
                         {transaction.metadata.attesterAddress}
                       </code>
                       <CopyButton text={transaction.metadata.attesterAddress} size="sm" />
@@ -217,7 +217,7 @@ export const TransactionCartDetailsExpanded = ({ transaction }: TransactionCartD
                   <div>
                     <div className="text-[10px] text-parchment/50 mb-1">Recipient</div>
                     <div className="flex items-center gap-2">
-                      <code className="text-[10px] font-mono text-chartreuse break-all">
+                      <code className="text-[10px] font-mono text-accent break-all">
                         {transaction.metadata.recipient}
                       </code>
                       <CopyButton text={transaction.metadata.recipient} size="sm" />
@@ -228,7 +228,7 @@ export const TransactionCartDetailsExpanded = ({ transaction }: TransactionCartD
                   <div>
                     <div className="text-[10px] text-parchment/50 mb-1">Rollup</div>
                     <div className="flex items-center gap-2">
-                      <code className="text-[10px] font-mono text-chartreuse break-all">
+                      <code className="text-[10px] font-mono text-accent break-all">
                         {transaction.metadata.rollupAddress}
                       </code>
                       <CopyButton text={transaction.metadata.rollupAddress} size="sm" />
@@ -239,7 +239,7 @@ export const TransactionCartDetailsExpanded = ({ transaction }: TransactionCartD
                   <div>
                     <div className="text-[10px] text-parchment/50 mb-1">Staker Contract</div>
                     <div className="flex items-center gap-2">
-                      <code className="text-[10px] font-mono text-chartreuse break-all">
+                      <code className="text-[10px] font-mono text-accent break-all">
                         {transaction.metadata.stakerAddress}
                       </code>
                       <CopyButton text={transaction.metadata.stakerAddress} size="sm" />
@@ -286,7 +286,7 @@ export const TransactionCartDetailsExpanded = ({ transaction }: TransactionCartD
                   <div>
                     <div className="text-[10px] text-parchment/50 mb-1">Contract</div>
                     <div className="flex items-center gap-2">
-                      <code className="text-[10px] font-mono text-chartreuse break-all">
+                      <code className="text-[10px] font-mono text-accent break-all">
                         {transaction.metadata.contractAddress}
                       </code>
                       <CopyButton text={transaction.metadata.contractAddress} size="sm" />
@@ -297,7 +297,7 @@ export const TransactionCartDetailsExpanded = ({ transaction }: TransactionCartD
                   <div>
                     <div className="text-[10px] text-parchment/50 mb-1">Token Vault Address</div>
                     <div className="flex items-center gap-2">
-                      <code className="text-[10px] font-mono text-chartreuse break-all">
+                      <code className="text-[10px] font-mono text-accent break-all">
                         {transaction.metadata.atpAddress}
                       </code>
                       <CopyButton text={transaction.metadata.atpAddress} size="sm" />
@@ -320,7 +320,7 @@ export const TransactionCartDetailsExpanded = ({ transaction }: TransactionCartD
                   <div>
                     <div className="text-[10px] text-parchment/50 mb-1">Token Vault Address</div>
                     <div className="flex items-center gap-2">
-                      <code className="text-[10px] font-mono text-chartreuse break-all">
+                      <code className="text-[10px] font-mono text-accent break-all">
                         {transaction.metadata.atpAddress}
                       </code>
                       <CopyButton text={transaction.metadata.atpAddress} size="sm" />
@@ -339,7 +339,7 @@ export const TransactionCartDetailsExpanded = ({ transaction }: TransactionCartD
                   <div>
                     <div className="text-[10px] text-parchment/50 mb-1">Operator Address</div>
                     <div className="flex items-center gap-2">
-                      <code className="text-[10px] font-mono text-chartreuse break-all">
+                      <code className="text-[10px] font-mono text-accent break-all">
                         {transaction.metadata.operatorAddress}
                       </code>
                       <CopyButton text={transaction.metadata.operatorAddress} size="sm" />

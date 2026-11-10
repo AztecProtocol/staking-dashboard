@@ -37,7 +37,7 @@ export const ValidatorStatsDisplay = ({
   if (totalValidatorCount === 0) return null
 
   return (
-    <div className="border border-parchment/20 p-3 mb-3">
+    <div className="glass p-3 mb-3">
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
           <div className="w-2 h-2 bg-parchment" />

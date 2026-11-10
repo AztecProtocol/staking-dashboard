@@ -47,7 +47,7 @@ export const CopyButton = ({
       title={title}
     >
       {copied ? (
-        <Icon name="check" size={size} className="text-chartreuse" />
+        <Icon name="check" size={size} className="text-accent" />
       ) : (
         <Icon name="copy" size={size} className="text-parchment/40 group-hover:text-parchment/70" />
       )}

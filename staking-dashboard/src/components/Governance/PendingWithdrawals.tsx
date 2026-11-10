@@ -120,7 +120,7 @@ export function PendingWithdrawals({
             href={governanceExplorerUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-chartreuse hover:underline"
+            className="text-accent hover:underline"
           >
             Etherscan
           </a>
@@ -165,7 +165,7 @@ function WithdrawalRow({
         isQueued ? (
           <button
             onClick={onOpenCart}
-            className="px-2 py-0.5 text-sm bg-chartreuse/20 border border-chartreuse/40 text-chartreuse font-oracle-standard hover:bg-chartreuse/30 ml-auto flex items-center gap-1"
+            className="px-2 py-0.5 text-sm bg-parchment/10 border border-parchment/20 text-accent font-oracle-standard hover:bg-parchment/15 ml-auto flex items-center gap-1 rounded-btn"
           >
             <Icon name="shoppingCart" size="sm" />
             In Batch
@@ -173,7 +173,7 @@ function WithdrawalRow({
         ) : (
           <button
             onClick={onAddToBatch}
-            className="px-2 py-0.5 text-sm bg-chartreuse text-ink font-oracle-standard hover:bg-chartreuse/90 ml-auto"
+            className="px-2 py-0.5 text-sm btn-lime ml-auto"
           >
             Add Finalize
           </button>

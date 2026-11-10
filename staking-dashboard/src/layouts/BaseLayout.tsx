@@ -10,13 +10,14 @@ import { Footer } from "@/components/Footer/Footer"
  */
 export default function BaseLayout() {
   return (
-    <div className="bg-ink text-parchment font-body font-smoothing min-h-screen flex flex-col">
+    <div className="bg-cream text-parchment font-body font-smoothing min-h-screen flex flex-col">
       <Navbar />
       <HeroSection />
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-8 pb-16 flex-1">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 lg:pt-20 pb-16 relative isolate flex-1 w-full">
+        <div aria-hidden="true" className="page-glow" />
         <Outlet />
-      </div>
+      </main>
 
       <Footer />
       <TransactionCart />

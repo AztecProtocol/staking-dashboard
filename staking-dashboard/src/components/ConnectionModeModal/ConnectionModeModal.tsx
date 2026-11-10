@@ -50,8 +50,8 @@ export function ConnectionModeModal({ isOpen, onClose, onDirectConnect }: Connec
   };
 
   const modalContent = (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-ink/70 backdrop-blur-sm">
-      <div className="bg-parchment border border-ink/20 max-w-2xl w-full relative">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 modal-scrim">
+      <div className="card-light bg-paper max-w-2xl w-full relative">
         {/* Close button */}
         <button
           onClick={handleClose}
@@ -74,14 +74,14 @@ export function ConnectionModeModal({ isOpen, onClose, onDirectConnect }: Connec
               {/* Safe Option */}
               <button
                 onClick={handleSafeOption}
-                className="group p-6 border border-ink/20 hover:border-ink/40 transition-all duration-200 text-center bg-parchment hover:bg-ink/5"
+                className="group p-6 border border-ink/20 hover:border-ink/40 transition-all duration-200 text-center bg-paper hover:bg-ink/5 rounded-inset flex flex-col items-center"
               >
-                <div className="w-12 h-12 flex items-center justify-center bg-ink/10 mx-auto mb-4">
+                <div className="w-12 h-12 flex items-center justify-center bg-ink/10 rounded-field mx-auto mb-4">
                   <svg className="w-6 h-6 text-ink" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
                   </svg>
                 </div>
-                <h3 className="text-lg font-oracle-triple-medium text-ink mb-2">
+                <h3 className="text-xl font-arizona-serif text-ink mb-2">
                   Open in Safe
                 </h3>
                 <p className="text-sm font-oracle-standard text-ink/60 mb-3 leading-relaxed">
@@ -95,14 +95,14 @@ export function ConnectionModeModal({ isOpen, onClose, onDirectConnect }: Connec
               {/* Direct Wallet Option */}
               <button
                 onClick={handleDirectConnect}
-                className="group p-6 border border-ink/20 hover:border-ink/40 transition-all duration-200 text-center bg-parchment hover:bg-ink/5"
+                className="group p-6 border border-ink/20 hover:border-ink/40 transition-all duration-200 text-center bg-paper hover:bg-ink/5 rounded-inset flex flex-col items-center"
               >
-                <div className="w-12 h-12 flex items-center justify-center bg-ink/10 mx-auto mb-4">
+                <div className="w-12 h-12 flex items-center justify-center bg-ink/10 rounded-field mx-auto mb-4">
                   <svg className="w-6 h-6 text-ink" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/>
                   </svg>
                 </div>
-                <h3 className="text-lg font-oracle-triple-medium text-ink mb-2">
+                <h3 className="text-xl font-arizona-serif text-ink mb-2">
                   Browser Wallet
                 </h3>
                 <p className="text-sm font-oracle-standard text-ink/60 mb-3 leading-relaxed">
@@ -126,7 +126,7 @@ export function ConnectionModeModal({ isOpen, onClose, onDirectConnect }: Connec
                   value={safeAddress}
                   onChange={(e) => setSafeAddress(e.target.value)}
                   placeholder="0x..."
-                  className="w-full px-4 py-3 border border-ink/20 bg-parchment text-ink font-oracle-standard text-sm focus:border-ink/40 focus:outline-none transition-colors"
+                  className="w-full px-4 py-3 border border-ink/20 bg-paper text-ink font-oracle-standard text-sm focus:border-ink/40 focus:outline-none transition-colors rounded-field"
                 />
                 <p className="mt-2 text-xs font-oracle-standard text-ink/50">
                   Opens through Safe's official interface on{" "}
@@ -137,7 +137,7 @@ export function ConnectionModeModal({ isOpen, onClose, onDirectConnect }: Connec
 
                 {/* URL Preview */}
                 {previewUrl && (
-                  <div className="mt-3 p-3 bg-ink/5 border border-ink/10">
+                  <div className="mt-3 p-3 bg-ink/5 border border-ink/10 rounded-inset">
                     <p className="text-xs font-oracle-triple-medium text-ink mb-1">Preview URL:</p>
                     <p className="text-xs font-oracle-standard text-ink/60 break-all leading-relaxed">
                       {previewUrl}
@@ -167,7 +167,7 @@ export function ConnectionModeModal({ isOpen, onClose, onDirectConnect }: Connec
                 </Button>
               </div>
 
-              <div className="p-4 bg-ink/5 border border-ink/10">
+              <div className="p-4 bg-ink/5 border border-ink/10 rounded-inset">
                 <div className="flex gap-3">
                   <svg className="w-5 h-5 text-ink/60 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />

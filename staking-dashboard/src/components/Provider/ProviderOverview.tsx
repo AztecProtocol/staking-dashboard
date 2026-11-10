@@ -70,7 +70,7 @@ export const ProviderOverview = ({ provider }: ProviderOverviewProps) => {
     inactiveDelegatorParts.length > 0 ? inactiveDelegatorParts.join(' · ') : undefined;
 
   return (
-    <div className="bg-parchment/5 border border-parchment/20 p-4 sm:p-6 overflow-x-auto">
+    <div className="card-dark p-5 sm:p-7 overflow-x-auto">
       {/* Provider Header */}
       <div className="flex items-center space-x-4 mb-6">
         <AvatarImage
@@ -90,7 +90,7 @@ export const ProviderOverview = ({ provider }: ProviderOverviewProps) => {
             <CopyButton text={provider.address} size="sm" className="p-0.5" />
             <button
               onClick={() => openAddressInExplorer(provider.address)}
-              className="p-1 text-parchment/60 hover:text-chartreuse transition-colors"
+              className="p-1 text-parchment/60 hover:text-accent transition-colors"
               title="View in explorer"
             >
               <Icon name="externalLink" size="sm" />
@@ -101,7 +101,7 @@ export const ProviderOverview = ({ provider }: ProviderOverviewProps) => {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-        <div className="bg-parchment/5 border border-parchment/20 p-3 sm:p-4">
+        <div className="glass p-3 sm:p-4">
           <div className="flex items-center gap-1 mb-2">
             <div className="text-xs text-parchment/60 uppercase tracking-wide">
               Current Stake
@@ -113,9 +113,9 @@ export const ProviderOverview = ({ provider }: ProviderOverviewProps) => {
             />
           </div>
           {isTokenLoading ? (
-            <div className="h-6 w-32 bg-chartreuse/20 animate-pulse rounded"></div>
+            <div className="h-6 w-32 bg-parchment/10 animate-pulse rounded"></div>
           ) : (
-            <div className="font-mono text-chartreuse font-bold text-lg">
+            <div className="font-mono text-accent font-bold text-lg">
               {currentStake}
             </div>
           )}
@@ -125,7 +125,7 @@ export const ProviderOverview = ({ provider }: ProviderOverviewProps) => {
           )}
         </div>
 
-        <div className="bg-parchment/5 border border-parchment/20 p-3 sm:p-4">
+        <div className="glass p-3 sm:p-4">
           <div className="flex items-center gap-1 mb-2">
             <div className="text-xs text-parchment/60 uppercase tracking-wide">
               Commission
@@ -136,12 +136,12 @@ export const ProviderOverview = ({ provider }: ProviderOverviewProps) => {
               maxWidth="max-w-xs"
             />
           </div>
-          <div className="font-mono text-chartreuse font-bold text-lg">
+          <div className="font-mono text-accent font-bold text-lg">
             {provider.commission}
           </div>
         </div>
 
-        <div className="bg-parchment/5 border border-parchment/20 p-3 sm:p-4">
+        <div className="glass p-3 sm:p-4">
           <div className="flex items-center gap-1 mb-2">
             <div className="text-xs text-parchment/60 uppercase tracking-wide">
               Keys Available
@@ -157,7 +157,7 @@ export const ProviderOverview = ({ provider }: ProviderOverviewProps) => {
           </div>
         </div>
 
-        <div className="bg-parchment/5 border border-parchment/20 p-3 sm:p-4">
+        <div className="glass p-3 sm:p-4">
           <div className="flex items-center gap-1 mb-2">
             <div className="text-xs text-parchment/60 uppercase tracking-wide">
               Delegators
