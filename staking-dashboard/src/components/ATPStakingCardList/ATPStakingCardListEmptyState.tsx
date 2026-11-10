@@ -1,6 +1,6 @@
 /**
  * Empty state component for ATPStakingCardList
- * Displays when no Token Vault positions are available
+ * Displays when the connected wallet is the beneficiary of no Token Vault
  */
 export const ATPStakingCardListEmptyState = () => {
   return (
@@ -17,10 +17,10 @@ export const ATPStakingCardListEmptyState = () => {
           </svg>
         </div>
         <h3 className="font-arizona-serif text-xl text-parchment mb-3">
-          No Staking Positions Available
+          No Token Vaults found
         </h3>
         <p className="font-arizona-text text-sm text-parchment/60 mb-6">
-          There are currently no Token Vault staking positions available. Please check back later or contact support if you believe this is an error.
+          This wallet isn't the beneficiary of any Token Vault. If you hold one, connect the wallet it was issued to.
         </p>
         <button
           onClick={() => window.location.reload()}
