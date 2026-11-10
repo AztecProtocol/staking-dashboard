@@ -38,7 +38,12 @@ export default function MyPositionPage() {
   const isWalletDataLoading = isLoadingTokenDetails || (!!stakingAssetAddress && isBalanceLoading)
   const { activationThreshold, formattedThreshold } =
     useActivationThresholdFormatted()
-  const { atpData } = useATP()
+  const { atpData, isLoadingAtpData, isLoadingAtpHoldings } = useATP()
+  // Only talk about Token Vaults to a wallet that is the beneficiary of one.
+  // A disconnected visitor still sees the section, with its connect prompt.
+  const hasTokenVaults = (atpData?.length ?? 0) > 0
+  const showTokenVaults =
+    !address || hasTokenVaults || isLoadingAtpData || isLoadingAtpHoldings
   const { totalErc20Staked, directStakeBreakdown, delegationBreakdown, erc20DelegationBreakdown, erc20DirectStakeBreakdown, refetch } = useAggregatedStakingData()
 
   // Check if user has any staked positions (ATP vaults or ERC20 wallet stakes)
@@ -92,7 +97,11 @@ export default function MyPositionPage() {
           <PageHeader
             title="Positions Overview"
             description="Overview of your staked positions and claimable rewards."
-            tooltip="A summary of all your staking positions across Wallet and Token Vaults"
+            tooltip={
+              hasTokenVaults
+                ? "A summary of all your staking positions across Wallet and Token Vaults"
+                : "A summary of all your staking positions"
+            }
           />
           <ATPStakingOverview atpData={atpData || []} walletBalance={balance} />
         </div>
@@ -227,27 +236,32 @@ export default function MyPositionPage() {
         ): null}
       </div>
 
-      <PageHeader
-        title="Token Vaults"
-        description="Token Vaults are a representation of your token holdings."
-        tooltip="Token Vaults are tokenized representations of your staking positions with specific lock-up periods."
+      {showTokenVaults && (
+        <>
+          <PageHeader
+            title="Token Vaults"
+            description="Token Vaults are a representation of your token holdings."
+            tooltip="Token Vaults are tokenized representations of your staking positions with specific lock-up periods."
+          />
+
+          <WalletConnectGuard
+            title="Connect Your Wallet"
+            description="Connect your wallet to view your Token Vaults and manage your staking positions on the Aztec network."
+            helpText="After connecting, you'll be able to view your Token Vaults, claim rewards, and manage your staking."
+          >
+            {/* ATP Staking Card List - Show actual ATP data or empty state */}
+            <ATPStakingCardList onStakeClick={handleStakeClick} />
+          </WalletConnectGuard>
+        </>
+      )}
+
+      {/* Staking Choice Modal. Outside the Token Vaults section because the
+          wallet's Stake button opens it too. */}
+      <StakingChoiceModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        selectedAtp={selectedAtp}
       />
-
-      <WalletConnectGuard
-        title="Connect Your Wallet"
-        description="Connect your wallet to view your Token Vaults and manage your staking positions on the Aztec network."
-        helpText="After connecting, you'll be able to view your Token Vaults, claim rewards, and manage your staking."
-      >
-        {/* ATP Staking Card List - Show actual ATP data or empty state */}
-        <ATPStakingCardList onStakeClick={handleStakeClick} />
-
-        {/* Staking Choice Modal */}
-        <StakingChoiceModal
-          isOpen={isModalOpen}
-          onClose={handleCloseModal}
-          selectedAtp={selectedAtp}
-        />
-      </WalletConnectGuard>
 
       {/* Wallet Stakes Details Modal */}
       <WalletStakesDetailsModal
