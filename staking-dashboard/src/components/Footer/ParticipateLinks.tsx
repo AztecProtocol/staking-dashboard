@@ -1,5 +1,5 @@
 import { Icon } from "@/components/Icon"
-import { LIQUID_STAKING_URL, TOKEN_URL } from "@/config/links"
+import { GOVERNANCE_URL, LIQUID_STAKING_URL } from "@/config/links"
 
 const WAYS = [
   {
@@ -10,9 +10,9 @@ const WAYS = [
   },
   {
     title: "Governance",
-    body: "Help decide how the network changes. See how governance works and how to take part with your $AZTEC.",
+    body: "Help decide how the network changes. Vote on proposals with your $AZTEC.",
     action: "Participate in governance",
-    href: TOKEN_URL,
+    href: GOVERNANCE_URL,
   },
 ]
 

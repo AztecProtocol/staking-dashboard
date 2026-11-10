@@ -4,6 +4,9 @@ export const WEBSITE_URL = "https://aztec.network/"
 /** The $AZTEC token page: what the token does, and how to take part in governance. */
 export const TOKEN_URL = "https://aztec.network/token"
 
+/** BlackNodes' Aztec Governance frontend, where $AZTEC holders vote on proposals. */
+export const GOVERNANCE_URL = "https://aztecgov.blacknodes.net/"
+
 /** Liquid staking with Olla, for stakes below the 200,000 $AZTEC minimum. */
 export const LIQUID_STAKING_URL = "https://olla.finance/"
 
