@@ -20,7 +20,7 @@ export const ATPStakingCardListEmptyState = () => {
           No Token Vaults found
         </h3>
         <p className="font-arizona-text text-sm text-parchment/60 mb-6">
-          This wallet isn't the beneficiary of any Token Vault. If you hold one, connect the wallet it was issued to.
+          This wallet isn't the beneficiary of any Token Vault.
         </p>
         <button
           onClick={() => window.location.reload()}
