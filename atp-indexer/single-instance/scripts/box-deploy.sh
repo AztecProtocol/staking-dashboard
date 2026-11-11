@@ -112,7 +112,23 @@ for _ in $(seq 1 270); do
   next_ready && break
   sleep 10
 done
-next_ready || { echo "backfill did not complete in time; leaving current container serving" >&2; exit 1; }
+# Why a builder isn't ready: its container state and the tail of its log. The Actions log of this
+# public repo is public, so URLs (RPC keys) and connection strings are redacted, and the output is
+# kept short because SSM returns only the first 24KB of stdout.
+builder_diagnostics() {
+  echo "--- atp-indexer-next state ---"
+  docker inspect --format 'status={{.State.Status}} restarts={{.RestartCount}} started={{.State.StartedAt}} exit={{.State.ExitCode}} oom={{.State.OOMKilled}} error={{.State.Error}}' \
+    "$(abc ps -q atp-indexer-next 2>/dev/null)" 2>/dev/null || echo "container not found"
+  echo "--- atp-indexer-next log, last 60 lines (redacted) ---"
+  abc logs --no-color --tail 60 atp-indexer-next 2>&1 \
+    | sed -E 's#[a-zA-Z][a-zA-Z0-9+.-]*://[^[:space:]"'"'"']+#<redacted-url>#g' \
+    | cut -c1-300
+}
+next_ready || {
+  echo "backfill did not complete in time; leaving current container serving" >&2
+  builder_diagnostics
+  exit 1
+}
 
 # Sanity: the new schema must hold at least as much history as the old (staking is live, so
 # strictly-fewer rows means the rebuild is wrong).
