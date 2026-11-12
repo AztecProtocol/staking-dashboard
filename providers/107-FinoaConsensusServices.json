@@ -5,5 +5,6 @@
     "providerEmail": "operations@consensus.finoa.io",
     "providerWebsite": "https://finoa-fcs.io/",
     "providerLogoUrl": "https://raw.githubusercontent.com/Finoa-Consensus-Services/fcs-metadata/refs/heads/main/logos/fcs-logo.png",
+    "discordUsername": "lucasn.fcs",
     "providerSelfStake": ["0x4fd4dcbe9e579564b3a40c3b8c309a289d7e0f5b","0x5aebd3307acf459eae65fdbecb6ea2983484ca16","0xd2d772c0cf6effd0d4b12b085b58bb20609e8882","0xa0ccaa9da32487169a01bbf90f45d25716324330","0xf3afb9d2956c92d0618bef33080c2f3b69bd112c"]
 }
