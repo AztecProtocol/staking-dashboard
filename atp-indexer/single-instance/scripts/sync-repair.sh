@@ -11,6 +11,12 @@
 #   sync-repair.sh repair MIN_BAD      back up ponder_sync.intervals, then mark every block from
 #                                      MIN_BAD upwards as not cached, so Ponder fetches it again
 #
+# Ponder stores each cached range closed, with the upper bound one past the last cached block
+# ([a, last+1]), and reads them back by JSON.parse-ing the multirange text, so every range must
+# stay written as [a,b]: a half-open "[a,b)" crashes it with "Expected ',' or ']'". The trim
+# therefore intersects with a closed range, and the second update closes any top range a
+# half-open trim left behind.
+#
 # The live container (atp-indexer) is not touched and keeps serving throughout.
 set -euo pipefail
 cd /opt/staking-dashboard-atp
@@ -58,8 +64,11 @@ repair)
     begin;
     create table public.\"$BACKUP\" as select * from ponder_sync.intervals;
     update ponder_sync.intervals
-      set blocks = blocks * nummultirange(numrange(0, $MIN_BAD))
+      set blocks = blocks * nummultirange(numrange(0, $MIN_BAD, '[]'))
       where chain_id = $CHAIN_ID;
+    update ponder_sync.intervals
+      set blocks = blocks + nummultirange(numrange(upper(blocks), upper(blocks), '[]'))
+      where chain_id = $CHAIN_ID and not isempty(blocks) and not upper_inc(blocks);
     commit;"
   echo "intervals trimmed below block $MIN_BAD (backup: public.\"$BACKUP\")"
   psql -c "select upper(blocks) - 1 as cached_to, count(*) as fragments from ponder_sync.intervals group by 1 order by 1;"
