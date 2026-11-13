@@ -101,14 +101,17 @@ EOF
 compose -f docker-compose.yml -f docker-compose.override.yml -f docker-compose.ab.yml up -d atp-indexer-next
 
 echo "waiting for the new schema to rebuild from the ponder_sync cache (timeout 45m)..."
-# Ponder logs 'Completed backfill indexing' only on a fresh build. A builder that resumed an
-# existing schema (a rerun of the same NEW_SCHEMA) never prints it, so its /ready is checked too.
+# /ready answers 200 once the builder has finished backfill, whether it built the schema fresh
+# or resumed it (a rerun of the same NEW_SCHEMA). The wait is bounded by wall clock, not by a
+# count of checks: each check used to read the builder's whole log, which grows with the
+# backfill, so a slow build pushed the loop past SSM's 60-minute limit and the run ended with
+# no output at all.
 abc() { compose -f docker-compose.yml -f docker-compose.override.yml -f docker-compose.ab.yml "$@"; }
 next_ready() {
-  abc logs atp-indexer-next 2>/dev/null | grep -q 'Completed backfill indexing' \
-    || abc exec -T atp-indexer-next wget -qO- http://localhost:42069/ready >/dev/null 2>&1
+  abc exec -T atp-indexer-next wget -qO- http://localhost:42069/ready >/dev/null 2>&1
 }
-for _ in $(seq 1 270); do
+DEADLINE=$((SECONDS + 45 * 60))
+while [ "$SECONDS" -lt "$DEADLINE" ]; do
   next_ready && break
   sleep 10
 done
