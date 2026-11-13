@@ -6,6 +6,9 @@
 # pooled connections, so a crash could commit an interval's logs or its "cached" marker without
 # its blocks. A later build then fails with "Missing block N" reading the cache.
 #
+#   sync-repair.sh status              read-only: the A/B builder's container state, how far its
+#                                      schema has indexed against the serving schema, how far the
+#                                      cache has fetched, and Ponder's own recent log lines
 #   sync-repair.sh diagnose            stop the crash-looping builder, report cached logs and
 #                                      transactions whose block row is missing
 #   sync-repair.sh repair MIN_BAD      back up ponder_sync.intervals, then mark every block from
@@ -24,7 +27,38 @@ cd /opt/staking-dashboard-atp
 psql() { docker compose exec -T local-postgres psql -U ponder -d ponder -v ON_ERROR_STOP=1 "$@"; }
 CHAIN_ID="$(psql -tAc "select chain_id from ponder_sync.intervals limit 1" | tr -d '\r')"
 
+# A schema's indexing position: the block and time encoded in its latest checkpoint
+# (10-digit timestamp, 16-digit chain id, 16-digit block number, ...).
+schema_progress() {
+  psql -tAc "select '$1', substring(latest_checkpoint, 27, 16)::bigint,
+    to_char(to_timestamp(substring(latest_checkpoint, 1, 10)::bigint) at time zone 'UTC', 'YYYY-MM-DD HH24:MI')
+    from \"$1\"._ponder_checkpoint" 2>/dev/null | tr -d '\r' | tr '|' ' ' || echo "$1 (no checkpoint yet)"
+}
+
 case "${1:-}" in
+status)
+  SERVING="$(sed -n 's/^ *DATABASE_SCHEMA: *"\(.*\)"$/\1/p' docker-compose.override.yml 2>/dev/null || true)"
+  BUILDING="$(sed -n 's/^ *DATABASE_SCHEMA: *"\(.*\)"$/\1/p' docker-compose.ab.yml 2>/dev/null || true)"
+  echo "now: $(date -u '+%Y-%m-%d %H:%M') UTC"
+  echo "--- builder container"
+  if [ -n "$BUILDING" ]; then
+    docker inspect --format 'status={{.State.Status}} restarts={{.RestartCount}} started={{.State.StartedAt}} image={{.Config.Image}}' \
+      staking-dashboard-atp-atp-indexer-next-1 2>/dev/null | sed -E 's#=[^ ]*/#=#' || echo "container not found"
+  else
+    echo "no A/B build in progress"
+  fi
+  echo "--- indexed up to (schema block time)"
+  [ -z "$SERVING" ] || schema_progress "$SERVING"
+  [ -z "$BUILDING" ] || schema_progress "$BUILDING"
+  echo "--- cached range per fragment"
+  psql -c "select upper(blocks) - 1 as cached_to, count(*) as fragments from ponder_sync.intervals group by 1 order by 1;"
+  if [ -n "$BUILDING" ]; then
+    echo "--- builder's Ponder log lines, last 20 min (redacted)"
+    docker logs --since 20m staking-dashboard-atp-atp-indexer-next-1 2>&1 \
+      | grep -E '^[0-9:.]+ +(INFO|WARN|ERROR)' | tail -25 \
+      | sed -E 's#[a-zA-Z][a-zA-Z0-9+.-]*://[^[:space:]"'"'"']+#<redacted-url>#g' | cut -c1-300
+  fi
+  ;;
 diagnose)
   if [ -f docker-compose.ab.yml ]; then
     docker compose -f docker-compose.yml -f docker-compose.override.yml -f docker-compose.ab.yml rm -sf atp-indexer-next
@@ -74,5 +108,5 @@ repair)
   psql -c "select upper(blocks) - 1 as cached_to, count(*) as fragments from ponder_sync.intervals group by 1 order by 1;"
   ;;
 *)
-  echo "usage: $0 diagnose | repair MIN_BAD" >&2; exit 1 ;;
+  echo "usage: $0 status | diagnose | repair MIN_BAD" >&2; exit 1 ;;
 esac
