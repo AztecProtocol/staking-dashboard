@@ -2,7 +2,8 @@ name: Indexer Sync Repair
 
 # Runs atp-indexer/single-instance/scripts/sync-repair.sh on a single-instance box via SSM, for
 # when a crash has left the shared ponder_sync cache with logs but no blocks ("Missing block N").
-# Run `diagnose` first; it prints the MIN_BAD to pass to `repair`.
+# Run `diagnose` first; it prints the MIN_BAD to pass to `repair`. `status` only reads, and
+# reports how far an A/B builder has got.
 
 on:
   workflow_dispatch:
@@ -16,11 +17,12 @@ on:
           - testnet
           - prod
       action:
-        description: "diagnose: stop the builder and report missing blocks. repair: mark blocks from min_bad up as not cached"
+        description: "status: read-only builder progress. diagnose: stop the builder and report missing blocks. repair: mark blocks from min_bad up as not cached"
         required: true
-        default: "diagnose"
+        default: "status"
         type: choice
         options:
+          - status
           - diagnose
           - repair
       min_bad:
@@ -58,7 +60,7 @@ jobs:
             [[ "$MIN_BAD" =~ ^[0-9]+$ ]] || { echo "repair needs min_bad as a block number" >&2; exit 1; }
             ARGS="repair $MIN_BAD"
           else
-            ARGS="diagnose"
+            ARGS="$ACTION"
           fi
           IID=$(aws ec2 describe-instances \
             --filters "Name=tag:Name,Values=staking-dashboard-atp-single-instance-$ENV" "Name=instance-state-name,Values=running" \
