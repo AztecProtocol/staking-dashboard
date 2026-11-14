@@ -9,8 +9,9 @@
 #   sync-repair.sh status              read-only: the A/B builder's container state, how far its
 #                                      schema has indexed against the serving schema, how far the
 #                                      cache has fetched, and Ponder's own recent log lines
-#   sync-repair.sh diagnose            stop the crash-looping builder, report cached logs and
-#                                      transactions whose block row is missing
+#   sync-repair.sh diagnose            stop the crash-looping builder, report cached logs whose
+#                                      block or transaction row is missing, and transactions
+#                                      whose block row is missing
 #   sync-repair.sh repair MIN_BAD      back up ponder_sync.intervals, then mark every block from
 #                                      MIN_BAD upwards as not cached, so Ponder fetches it again
 #
@@ -86,6 +87,24 @@ diagnose)
     where not exists (select 1 from ponder_sync.blocks b where b.chain_id = l.chain_id and b.number = l.block_number)
       and lower(l.address) not in (select addr from factory_addr)
     group by l.address order by first_block;"
+  echo "--- logs with no cached transaction (handlers then see event.transaction undefined)"
+  psql -c "
+    with factory_addr as (
+      select lower(a) as addr
+      from ponder_sync.factories f,
+        lateral jsonb_array_elements_text(
+          case jsonb_typeof(f.factory->'address')
+            when 'array' then f.factory->'address'
+            else jsonb_build_array(f.factory->'address') end) a
+    )
+    select count(*) as logs, count(distinct l.address) as contracts,
+      min(l.block_number) as first_block, max(l.block_number) as last_block
+    from ponder_sync.logs l
+    where not exists (
+        select 1 from ponder_sync.transactions t
+        where t.chain_id = l.chain_id and t.block_number = l.block_number
+          and t.transaction_index = l.transaction_index)
+      and lower(l.address) not in (select addr from factory_addr);"
   echo "--- transactions with no cached block"
   psql -c "
     select count(*) as txs, min(t.block_number) as first_block, max(t.block_number) as last_block
