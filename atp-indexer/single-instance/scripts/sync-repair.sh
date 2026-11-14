@@ -57,6 +57,12 @@ status)
     docker logs --since 20m staking-dashboard-atp-atp-indexer-next-1 2>&1 \
       | grep -E '^[0-9:.]+ +(INFO|WARN|ERROR)' | tail -25 \
       | sed -E 's#[a-zA-Z][a-zA-Z0-9+.-]*://[^[:space:]"'"'"']+#<redacted-url>#g' | cut -c1-300
+    # The lines above carry only the event and block of a handler failure; the error itself is
+    # printed on the following lines (the handler's console.error and Ponder's error detail).
+    echo "--- builder's most recent handler error, with the lines after it (redacted)"
+    docker logs --since 20m staking-dashboard-atp-atp-indexer-next-1 2>&1 \
+      | grep -B4 -A25 'Error while processing event' | tail -30 \
+      | sed -E 's#[a-zA-Z][a-zA-Z0-9+.-]*://[^[:space:]"'"'"']+#<redacted-url>#g' | cut -c1-300
   fi
   ;;
 diagnose)
