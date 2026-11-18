@@ -2,7 +2,10 @@
   "providerId": 108,
   "providerName": "Long Island Blockchain",
   "providerDescription": "Independent node operator based in New York, running Ethereum validators and a self-staked Aztec mainnet sequencer since June 2026 on our own hardware and our own Ethereum L1 nodes.",
+  "providerEmail": "info@libc.fi",
   "providerWebsite": "https://libc.fi",
+  "providerLogoUrl": "https://libc.fi/libc-logo.png",
+  "discordUsername": "direct23",
   "providerSelfStake": [
     "0x31B751B683705cc9dea5B09Eb3741aA37aF49450"
   ]
