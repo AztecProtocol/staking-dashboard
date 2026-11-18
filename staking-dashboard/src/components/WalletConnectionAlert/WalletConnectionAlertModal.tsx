@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { createPortal } from "react-dom"
 import { useAccount } from "wagmi"
+import { isAddressEqual, type Address } from "viem"
 import { useATP } from "@/hooks/useATP"
 import { useRollupData } from "@/hooks/rollup/useRollupData"
 import { useStakingAssetTokenDetails } from "@/hooks/stakingRegistry"
@@ -8,12 +9,23 @@ import { Icon } from "@/components/Icon"
 import { useMultipleStakeableAmounts } from "@/hooks/atp"
 import { formatTokenAmount } from "@/utils/atpFormatters"
 
+// Employee and investor ATP registries on mainnet. Their ATPs have no staking requirement
+// before withdrawal, so they don't count towards this alert.
+const INSIDER_ATP_REGISTRIES: Address[] = [
+  "0xD938bE4A2cB41105Bc2FbE707dca124A2e5d0c80",
+  "0x667d2641cb96734f386adA6A9afCF07B1815fB8b",
+]
+
+const isInsiderAtp = (registry: Address | undefined) =>
+  !!registry && INSIDER_ATP_REGISTRIES.some((insider) => isAddressEqual(insider, registry))
+
 interface WalletConnectionAlertModalProps {
   isSafeWarningShown: boolean
 }
 
 /**
  * Alert modal that appears when user connects wallet and has ATPs with balance > ACTIVATION_THRESHOLD
+ * ATPs from the insider registries are ignored, since they can withdraw without staking
  * Warns users that they must stake and cannot withdraw unless they stake
  * Shows after SafeWarningModal is dismissed
  */
@@ -47,7 +59,9 @@ export const WalletConnectionAlertModal = ({ isSafeWarningShown }: WalletConnect
     }
 
     // Check if any ATP has allocation > activation threshold
-    const hasAtpAboveThreshold = stakeableAtps.reduce((a, b) => a + Number(b.stakeableAmount), 0) >= activationThreshold
+    const hasAtpAboveThreshold = stakeableAtps
+      .filter((atp) => !isInsiderAtp(atp.registry))
+      .reduce((a, b) => a + Number(b.stakeableAmount), 0) >= activationThreshold
 
     if (hasAtpAboveThreshold && storageKey) {
       setIsOpen(true)
