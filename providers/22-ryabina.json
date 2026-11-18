@@ -5,5 +5,12 @@
  "providerEmail": "info@ryabina.io",
  "providerWebsite": "https://ryabina.io",
  "providerLogoUrl": "https://raw.githubusercontent.com/symbioticfi/metadata-mainnet/main/vaults/0x93b96d7cde40dc340ca55001f46b3b8e41bc89b4/logo.png",
- "discordUsername": "g_ryabina"
+ "discordUsername": "g_ryabina",
+ "providerSelfStake": [
+    "0xEff2F0e2d6a0Ae21f3E60A9e37adbC56dF7850E4",
+    "0xd58D7a4b120eF365B365A27495C4E01550312f6b",
+    "0xe9AC0A12f515063Ae5D6117F842c7AB70f80D725",
+    "0x40b6000788d92e535e2421E6c5c08F2b41BDD0b7",
+    "0xE1C944db60d77e6C7e5F0E62732f1e4298eeF56d"
+ ]
 }
