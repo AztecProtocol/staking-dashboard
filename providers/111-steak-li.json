@@ -1,0 +1,16 @@
+{
+  "providerId": 111,
+  "providerName": "steak.li",
+  "providerDescription": "Providing staking services for blockchains since 2020. Experienced SRE with skin in the game.",
+  "providerEmail": "aztec@alias.steak.li",
+  "providerWebsite": "https://x.com/steak_li",
+  "providerLogoUrl": "https://pbs.twimg.com/profile_images/1863682364989210624/tF_xEhP9_400x400.jpg",
+  "discordUsername": "lallamaland",
+  "providerSelfStake": [
+    "0xf8Bf4f5ab963E5B6b6e1895260Fc953AbBEFEC65",
+    "0x8bDBaFB64EbebFB1633477DA85889894f1b7aaAf",
+    "0x9d0C6f628D15BD51D41Dda5D02b77eA52283ff9d",
+    "0x698025824D31C272f910aD10773175C9D10BC2CD",
+    "0x11aEBa1aA33Eac82fa867348935f62DBA042B42B"
+  ]
+}
