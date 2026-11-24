@@ -12,4 +12,4 @@ export const isInsiderAtp = (registry: Address | undefined) =>
   !!registry && INSIDER_ATP_REGISTRIES.some((insider) => isAddressEqual(insider, registry))
 
 export const INSIDER_DELEGATION_MESSAGE =
-  "You will not earn any rewards for staking locked tokens. Stake your unlocked token balance instead."
+  "Locked tokens don't earn staking rewards. To delegate, claim your unlocked tokens from this Token Vault first, then stake them from your wallet."
