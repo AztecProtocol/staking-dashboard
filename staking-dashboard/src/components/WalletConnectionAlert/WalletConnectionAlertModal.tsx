@@ -1,23 +1,13 @@
 import { useEffect, useState } from "react"
 import { createPortal } from "react-dom"
 import { useAccount } from "wagmi"
-import { isAddressEqual, type Address } from "viem"
 import { useATP } from "@/hooks/useATP"
 import { useRollupData } from "@/hooks/rollup/useRollupData"
 import { useStakingAssetTokenDetails } from "@/hooks/stakingRegistry"
 import { Icon } from "@/components/Icon"
 import { useMultipleStakeableAmounts } from "@/hooks/atp"
 import { formatTokenAmount } from "@/utils/atpFormatters"
-
-// Employee and investor ATP registries on mainnet. Their ATPs have no staking requirement
-// before withdrawal, so they don't count towards this alert.
-const INSIDER_ATP_REGISTRIES: Address[] = [
-  "0xD938bE4A2cB41105Bc2FbE707dca124A2e5d0c80",
-  "0x667d2641cb96734f386adA6A9afCF07B1815fB8b",
-]
-
-const isInsiderAtp = (registry: Address | undefined) =>
-  !!registry && INSIDER_ATP_REGISTRIES.some((insider) => isAddressEqual(insider, registry))
+import { isInsiderAtp } from "@/utils/insiderAtp"
 
 interface WalletConnectionAlertModalProps {
   isSafeWarningShown: boolean

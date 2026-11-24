@@ -8,6 +8,7 @@ import { useRollupData } from "@/hooks/rollup/useRollupData"
 import { useATP } from "@/hooks/useATP"
 import { useMultipleStakeableAmounts, type StakeableATPData } from "@/hooks/atp/useMultipleStakeableAmounts"
 import { formatTokenAmount } from "@/utils/atpFormatters"
+import { INSIDER_DELEGATION_MESSAGE, isInsiderAtp } from "@/utils/insiderAtp"
 
 // Internal type for modal selection state - includes vault data for display
 type SelectedStakingSource = "wallet" | { type: "vault"; atp: StakeableATPData }
@@ -23,6 +24,8 @@ export interface SourceSelectionModalProps {
   stakeCountLabel: string
   // Optional constraint (e.g., provider queue length)
   maxStakesOverride?: number
+  // Delegation only: insider ATPs earn no rewards on locked tokens (AZIP-32), so they can't be picked
+  blockInsiderVaults?: boolean
 }
 
 /**
@@ -38,6 +41,7 @@ export const SourceSelectionModal = ({
   headerSubtitle,
   stakeCountLabel,
   maxStakesOverride,
+  blockInsiderVaults = false,
 }: SourceSelectionModalProps) => {
   const { address } = useAccount()
   const { stakingAssetAddress, decimals, symbol } = useStakingAssetTokenDetails()
@@ -197,15 +201,19 @@ export const SourceSelectionModal = ({
                 ? Math.min(maxFromVault, maxStakesOverride)
                 : maxFromVault
               const isSelected = selectedSource !== "wallet" && selectedSource?.type === "vault" && selectedSource.atp.atpAddress === atp.atpAddress
+              const isBlocked = blockInsiderVaults && isInsiderAtp(atp.registry)
 
               return (
                 <button
                   key={atp.atpAddress}
-                  onClick={() => handleSourceSelect({ type: "vault", atp })}
+                  onClick={() => !isBlocked && handleSourceSelect({ type: "vault", atp })}
+                  disabled={isBlocked}
                   className={`w-full text-left p-4 border rounded-inset transition-all ${
                     isSelected
                       ? "bg-aqua/10 border-aqua"
-                      : "bg-parchment/5 border-parchment/30 hover:border-aqua/50"
+                      : isBlocked
+                        ? "bg-parchment/5 border-parchment/10 cursor-not-allowed"
+                        : "bg-parchment/5 border-parchment/30 hover:border-aqua/50"
                   }`}
                 >
                   <div className="flex items-center gap-4">
@@ -219,15 +227,22 @@ export const SourceSelectionModal = ({
                         <span className="font-oracle-standard font-bold text-sm uppercase tracking-wide text-parchment">
                           Token Vault #{index + 1}
                         </span>
-                        <span className="text-xs font-mono text-aqua">
-                          Up to {maxStakesFromVault} stake{maxStakesFromVault !== 1 ? "s" : ""}
-                        </span>
+                        {!isBlocked && (
+                          <span className="text-xs font-mono text-aqua">
+                            Up to {maxStakesFromVault} stake{maxStakesFromVault !== 1 ? "s" : ""}
+                          </span>
+                        )}
                       </div>
                       <div className="text-xs font-mono text-parchment/60">
                         {decimals !== undefined && symbol
                           ? formatTokenAmount(atp.stakeableAmount, decimals, symbol)
                           : "Loading..."}
                       </div>
+                      {isBlocked && (
+                        <div className="text-xs text-amber-400 mt-2">
+                          {INSIDER_DELEGATION_MESSAGE}
+                        </div>
+                      )}
                     </div>
                     {isSelected && (
                       <Icon name="check" className="w-5 h-5 text-aqua" />
