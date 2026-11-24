@@ -34,6 +34,7 @@ export const StakingFlowModal = ({
       headerSubtitle="Select your staking source and amount to be staked"
       stakeCountLabel="Stake Count"
       maxStakesOverride={queueLength}
+      blockInsiderVaults
     />
   )
 }

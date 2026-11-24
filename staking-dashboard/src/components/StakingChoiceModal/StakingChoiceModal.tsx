@@ -4,6 +4,7 @@ import { useATPSelection } from "@/contexts/ATPSelectionContext"
 import { TooltipIcon } from "@/components/Tooltip"
 import { Icon } from "@/components/Icon"
 import type { ATPData } from "@/hooks/atp/atpTypes"
+import { INSIDER_DELEGATION_MESSAGE, isInsiderAtp } from "@/utils/insiderAtp"
 
 interface StakingChoiceModalProps {
   isOpen: boolean
@@ -14,6 +15,8 @@ interface StakingChoiceModalProps {
 export const StakingChoiceModal = ({ isOpen, onClose, selectedAtp }: StakingChoiceModalProps) => {
   const navigate = useNavigate()
   const { setSelectedAtp } = useATPSelection()
+  // Insider ATPs earn no rewards on locked tokens (AZIP-32), so they may only run their own node
+  const delegationBlocked = isInsiderAtp(selectedAtp?.registry)
 
   if (!isOpen) return null
 
@@ -33,6 +36,7 @@ export const StakingChoiceModal = ({ isOpen, onClose, selectedAtp }: StakingChoi
   }
 
   const handleDelegateToProvider = () => {
+    if (delegationBlocked) return
     // Store ATP in context for Delegation flow
     if (selectedAtp) {
       setSelectedAtp(selectedAtp, "delegation")
@@ -72,7 +76,7 @@ export const StakingChoiceModal = ({ isOpen, onClose, selectedAtp }: StakingChoi
           {/* Options - Side by Side */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Delegate to Operator Option */}
-            <div className="glass p-6 hover:bg-parchment/5 transition-all">
+            <div className={`glass p-6 transition-all ${delegationBlocked ? "opacity-60" : "hover:bg-parchment/5"}`}>
               <div className="flex flex-col items-center text-center h-full">
                 {/* Icon */}
                 <div className="w-20 h-20 mb-4 flex items-center justify-center glass">
@@ -93,9 +97,16 @@ export const StakingChoiceModal = ({ isOpen, onClose, selectedAtp }: StakingChoi
                   Delegate your tokens to an existing provider. This is perfect if you don't want to run your own infrastructure.
                 </p>
 
+                {delegationBlocked && (
+                  <p className="font-oracle-standard text-sm font-medium leading-140 text-amber-400 mb-4">
+                    {INSIDER_DELEGATION_MESSAGE}
+                  </p>
+                )}
+
                 <button
                   onClick={handleDelegateToProvider}
-                  className="w-full mt-auto btn-lime py-3 px-6 text-sm"
+                  disabled={delegationBlocked}
+                  className="w-full mt-auto btn-lime py-3 px-6 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Browse Delegates
                 </button>
