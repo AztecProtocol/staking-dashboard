@@ -6,7 +6,8 @@
 # pooled connections, so a crash could commit an interval's logs or its "cached" marker without
 # its blocks. A later build then fails with "Missing block N" reading the cache.
 #
-#   sync-repair.sh status              read-only: the A/B builder's container state, how far its
+#   sync-repair.sh status              read-only: the serving container's state and log, disk
+#                                      use, the A/B builder's container state, how far its
 #                                      schema has indexed against the serving schema, how far the
 #                                      cache has fetched, and Ponder's own recent log lines
 #   sync-repair.sh diagnose            stop the crash-looping builder, report cached logs whose
@@ -26,7 +27,8 @@ set -euo pipefail
 cd /opt/staking-dashboard-atp
 
 psql() { docker compose exec -T local-postgres psql -U ponder -d ponder -v ON_ERROR_STOP=1 "$@"; }
-CHAIN_ID="$(psql -tAc "select chain_id from ponder_sync.intervals limit 1" | tr -d '\r')"
+# Tolerate a Postgres that is down, so `status` can still report why.
+CHAIN_ID="$(psql -tAc "select chain_id from ponder_sync.intervals limit 1" 2>/dev/null | tr -d '\r' || true)"
 
 # A schema's indexing position: the block and time encoded in its latest checkpoint
 # (10-digit timestamp, 16-digit chain id, 16-digit block number, ...).
@@ -41,6 +43,17 @@ status)
   SERVING="$(sed -n 's/^ *DATABASE_SCHEMA: *"\(.*\)"$/\1/p' docker-compose.override.yml 2>/dev/null || true)"
   BUILDING="$(sed -n 's/^ *DATABASE_SCHEMA: *"\(.*\)"$/\1/p' docker-compose.ab.yml 2>/dev/null || true)"
   echo "now: $(date -u '+%Y-%m-%d %H:%M') UTC"
+  # The serving container is what Caddy proxies to; when it is down or restarting the API answers
+  # 502, so report its state and the tail of its log too.
+  echo "--- serving container (atp-indexer)"
+  docker compose ps -a --format '{{.Service}} {{.State}} {{.Status}}' 2>/dev/null || true
+  docker inspect --format 'status={{.State.Status}} restarts={{.RestartCount}} started={{.State.StartedAt}} exit={{.State.ExitCode}} oom={{.State.OOMKilled}} error={{.State.Error}} image={{.Config.Image}}' \
+    staking-dashboard-atp-atp-indexer-1 2>/dev/null | sed -E 's#image=[^ ]*/#image=#' || echo "container not found"
+  echo "--- disk"
+  df -h / /data 2>/dev/null || true
+  echo "--- serving container's log, last 40 lines (redacted)"
+  docker logs --tail 40 staking-dashboard-atp-atp-indexer-1 2>&1 \
+    | sed -E 's#[a-zA-Z][a-zA-Z0-9+.-]*://[^[:space:]"'"'"']+#<redacted-url>#g' | cut -c1-300 || true
   echo "--- builder container"
   if [ -n "$BUILDING" ]; then
     docker inspect --format 'status={{.State.Status}} restarts={{.RestartCount}} started={{.State.StartedAt}} image={{.Config.Image}}' \
