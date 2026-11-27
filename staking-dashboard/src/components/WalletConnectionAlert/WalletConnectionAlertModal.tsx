@@ -7,15 +7,14 @@ import { useStakingAssetTokenDetails } from "@/hooks/stakingRegistry"
 import { Icon } from "@/components/Icon"
 import { useMultipleStakeableAmounts } from "@/hooks/atp"
 import { formatTokenAmount } from "@/utils/atpFormatters"
-import { isInsiderAtp } from "@/utils/insiderAtp"
 
 interface WalletConnectionAlertModalProps {
   isSafeWarningShown: boolean
 }
 
 /**
- * Alert modal that appears when user connects wallet and has ATPs with balance > ACTIVATION_THRESHOLD
- * ATPs from the insider registries are ignored, since they can withdraw without staking
+ * Alert modal that appears when user connects wallet and has NCATPs with balance > ACTIVATION_THRESHOLD
+ * Only NCATPs must stake before withdrawing; LATPs and MATPs can claim without staking, so they are ignored
  * Warns users that they must stake and cannot withdraw unless they stake
  * Shows after SafeWarningModal is dismissed
  */
@@ -48,9 +47,9 @@ export const WalletConnectionAlertModal = ({ isSafeWarningShown }: WalletConnect
       return
     }
 
-    // Check if any ATP has allocation > activation threshold
+    // Only NCATPs have to stake before they can withdraw
     const hasAtpAboveThreshold = stakeableAtps
-      .filter((atp) => !isInsiderAtp(atp.registry))
+      .filter((atp) => atp.typeString === "NCATP")
       .reduce((a, b) => a + Number(b.stakeableAmount), 0) >= activationThreshold
 
     if (hasAtpAboveThreshold && storageKey) {
